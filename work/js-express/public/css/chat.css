@@ -122,6 +122,9 @@ footer {
 .chatroom-messagelist p {
     padding: 0px 40px;
 }
+.chatroom-messagelist .message-content {
+    margin-bottom: 1.5em;
+}
 .chatroom-timestamp-divider {
     position: relative;
     display: inline-block;
