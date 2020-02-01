@@ -74,6 +74,9 @@ header {
 main {
     flex: 1 0 auto;
     box-sizing: border-box;
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    min-height: 250px;
 }
 footer {
     flex: 0 0 auto;
@@ -81,12 +84,6 @@ footer {
     border-top: 1px solid var(--line-color);
     padding: 20px 0px;
     box-sizing: border-box;
-}
-.chatroom-layout {
-    display: grid;
-    grid-template-columns: 220px 1fr;
-    height: 100%;
-    min-height: 250px;
 }
 .chatroom-userlist {
     border-right: 1px solid var(--line-color);
@@ -120,10 +117,10 @@ footer {
     box-sizing: border-box;
     max-height: calc(100vh - 262px);
     overflow-y: scroll;
+    overflow-x: hidden;
 }
-.chatroom-messagelist ul {
-    list-style: none;
-    padding-right: 40px;
+.chatroom-messagelist p {
+    padding: 0px 40px;
 }
 .chatroom-timestamp-divider {
     position: relative;

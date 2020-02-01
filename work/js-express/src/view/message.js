@@ -4,19 +4,17 @@ let messagesHtml = "";
 let lastestDay = "";
 const addDivider = (dateString) => {
     const dayStrings = dateString.split(" ");
-    return `<section class="chatroom-timestamp-divider">
+    return `<div class="chatroom-timestamp-divider">
                 <div class="divider"></div>
                 <div class="timestamp-date">${dayStrings[0]},${dayStrings[1]} ${dayStrings[2]}</div> 
-            </section>\n`
+            </div>\n`
 };
 const addContent = (sender, content, timeString) => {
-    return `<li>
-        <p>
+    return `<p>
             <span class="message-sender">${sender}</span>
             <span class="message-time">${timeString}</span>
         </p>
-        <p class="message-content">${content}</p>
-    </li>\n`
+        <p class="message-content">${content}</p>\n`
 };
 
 const update = (sender, message, timestamp) => {

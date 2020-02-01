@@ -13,31 +13,27 @@
         <h2>Online Chat Room</h2>
     </header>
     <main>
-        <article class="chatroom-layout">
-            <section id="userlist" class="chatroom-userlist">
-                <h4 class="chatroom-userlist-title">Sender list: </h4>
-                <ul>
-                    {userlist}
-                </ul>
-            </section>
-            <section id="message" class="chatroom-message">
-                <section id="message-body" class="chatroom-messagelist">
-                    <ul>
-                    {messagelist}
-                    </ul>
-                </section>
-                <section id="message-input" class="chatroom-addmessage">
-                    <form action="/sendMessage" method="POST" autocomplete="off">
-                        <label for="user">Sender: </label>
-                        <input class="chatroom-addmessage-sender" type="text" name="sender" required autocomplete="off"
-                            placeholder="name">
-                        <label for="content">Message: </label>
-                        <input type="text" name="content" required autocomplete="off" placeholder="message">
-                        <button type="submit">Send</button>
-                    </form>
-                </section>
-            </section>
-        </article>
+        <section id="userlist" class="chatroom-userlist">
+            <h4 class="chatroom-userlist-title">Sender list: </h4>
+            <ul>
+                {userlist}
+            </ul>
+        </section>
+        <div id="message" class="chatroom-message">
+            <div id="message-body" class="chatroom-messagelist">
+                {messagelist}
+            </div>
+            <div id="message-input" class="chatroom-addmessage">
+                <form action="/sendMessage" method="POST" autocomplete="off">
+                    <label for="user">Sender: </label>
+                    <input class="chatroom-addmessage-sender" type="text" name="sender" id="user" required autocomplete="off"
+                        placeholder="name">
+                    <label for="content">Message: </label>
+                    <input type="text" name="content" id="content" required autocomplete="off" placeholder="message">
+                    <button type="submit">Send</button>
+                </form>
+            </div>
+        </div>
     </main>
     <footer>
         <ul class="footer-personal-info">
