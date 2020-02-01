@@ -1,7 +1,6 @@
 const senderList = new Map();
 const messageList = {};
 
-
 //Simply use user name as id
 //private
 const addUserAndGetId = (newSender) => {
@@ -12,7 +11,10 @@ const addUserAndGetId = (newSender) => {
     return newSender;
 };
 
-//public 
+const getMessageList = () => {
+    return messageList;
+};
+
 const getSenderList = () => {
     return senderList;
 };
@@ -20,25 +22,24 @@ const getSenderList = () => {
 const getSenderNamebyId = (id) => {
     return senderList.get(id).name;
 };
+//public 
+
+const isNewSender = (sender) => {
+    return !senderList.has(sender);
+};
+
 //Simply use timestamp as id
-const addMessage = (sender, message) => {
+const addMessage = (sender, message, timestamp) => {
     const senderID = addUserAndGetId(sender);
-    const now = Date.now();
-    messageList[now] = {
-        id: now,
+    messageList[timestamp] = {
+        id: timestamp,
         content: message,
         senderid: senderID,
-        timestamp: now
+        timestamp: timestamp
     };
 };
 
-const getMessageList = () => {
-    return messageList;
-};
-
 module.exports = {
-    getSenderList,
-    getSenderNamebyId,
-    getMessageList,
+    isNewSender,
     addMessage
 };

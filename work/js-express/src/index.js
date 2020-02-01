@@ -13,19 +13,21 @@ let indexHtml = "";
 
 //private
 const updateHTML = () => {
-    indexHtml = indexHtmlTemplate.replace("{userlist}", senderlistPage.render());
+    indexHtml = indexHtmlTemplate.replace(/{[^}]+}/g, (matchStr) => {
+        if (matchStr === "{messagelist}") return messagePage.render();
+        if (matchStr === "{userlist}") return senderlistPage.render();
+    });
 };
 
 //public
 const render = () => {
     return indexHtml;
 };
-const update = (sender, message) => {
-    addMessage(sender, message);
-    senderlistPage.update();
+const update = (sender, message, timestamp) => {
+    senderlistPage.update(sender);
+    messagePage.update(sender, message, timestamp);
+    addMessage(sender, message, timestamp);
     updateHTML();
-    // messagePage.update();
-    
 };
 updateHTML();
 module.exports = { render , update };

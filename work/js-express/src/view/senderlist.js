@@ -1,11 +1,9 @@
-const { getSenderList } = require("../model/data");
+const { isNewSender } = require("../model/data");
 
-let senderListHtml = "<li></li>";
-const update = () => {
-    senderListHtml = "";
-    const senderList = getSenderList();
-    for (let sender of senderList.values()) {
-        senderListHtml += `<li>${sender.name}</li>\n`;
+let senderListHtml = "";
+const update = (sender) => {
+    if (isNewSender(sender)) {
+        senderListHtml += `<li>${sender}</li>\n`;
     }
 };
 const render = () => {

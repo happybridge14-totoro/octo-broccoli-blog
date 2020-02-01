@@ -11,9 +11,9 @@ app.get('/', (req, res) => {
 });
 
 app.post('/sendMessage', express.urlencoded({ extended: false }), (req, res) => {
-  const { content, sender } = req.body;
+  const { content, sender, timestamp=new Date() } = req.body;
   if (content && sender) {
-    indexPage.update(sender, content);
+    indexPage.update(sender, content, timestamp);
   }
   res.redirect('/');
 });

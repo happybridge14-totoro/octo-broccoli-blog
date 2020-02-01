@@ -19,18 +19,13 @@
                     {userlist}
                 </ul>
             </section>
-            <section id="message">
-                <section id="message-body">
+            <section id="message" class="chatroom-message">
+                <section id="message-body" class="chatroom-messagelist">
                     <ul>
-                        <li>list 2</li>
-                        <li>list 2</li>
-                        <li>list 2</li>
-                        <li>list 2</li>
-                        <li>list 2</li>
-                        <li>list 2</li>
+                    {messagelist}
                     </ul>
                 </section>
-                <section id="message-input">
+                <section id="message-input" class="chatroom-addmessage">
                     <form action="/sendMessage" method="POST" autocomplete="off">
                         <label for="user">hello</label>
                         <input type="text" name="sender" required autocomplete="off" placeholder="sender name">
