@@ -97,7 +97,7 @@ footer {
 }
 .chatroom-userlist ul {
     list-style: none;
-    padding: 1em 20px 0 20px;
+    padding: 0 20px;
 }
 .chatroom-userlist li {
     margin-bottom: 1em;
@@ -105,6 +105,9 @@ footer {
     white-space: nowrap;
     width: 180px;
     overflow: hidden;
+}
+.chatroom-userlist-title {
+    padding: 0px 20px;
 }
 .chatroom-message {
     display: flex;
@@ -115,6 +118,8 @@ footer {
 .chatroom-messagelist {
     flex: 1 0 auto;
     box-sizing: border-box;
+    max-height: calc(100vh - 262px);
+    overflow-y: scroll;
 }
 .chatroom-messagelist ul {
     list-style: none;
@@ -158,6 +163,26 @@ footer {
 .chatroom-addmessage {
     flex: 0 0 auto;
     box-sizing: border-box;
+    height: 100px;
+    padding: 5px 10px;
+    border-top: 1px solid var(--line-color);
+}
+.chatroom-addmessage form{
+    display: flex;
+    height: 100%;
+    align-items: center;
+}
+.chatroom-addmessage form label{
+    box-sizing: border-box;
+    margin-right: 1.5em;
+}
+.chatroom-addmessage form input{
+    box-sizing: border-box;
+    margin-right: 1.5em;
+    min-width: 100px;
+}
+.chatroom-addmessage .chatroom-addmessage-sender {
+
 }
 .footer-personal-info {
     list-style: none;

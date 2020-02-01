@@ -15,6 +15,7 @@
     <main>
         <article class="chatroom-layout">
             <section id="userlist" class="chatroom-userlist">
+                <h4 class="chatroom-userlist-title">Sender list: </h4>
                 <ul>
                     {userlist}
                 </ul>
@@ -27,9 +28,10 @@
                 </section>
                 <section id="message-input" class="chatroom-addmessage">
                     <form action="/sendMessage" method="POST" autocomplete="off">
-                        <label for="user">hello</label>
-                        <input type="text" name="sender" required autocomplete="off" placeholder="sender name">
-                        <label for="content">hello</label>
+                        <label for="user">Sender: </label>
+                        <input class="chatroom-addmessage-sender" type="text" name="sender" required autocomplete="off"
+                            placeholder="name">
+                        <label for="content">Message: </label>
                         <input type="text" name="content" required autocomplete="off" placeholder="message">
                         <button type="submit">Send</button>
                     </form>
