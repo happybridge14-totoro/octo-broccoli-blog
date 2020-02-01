@@ -13,15 +13,10 @@
         <h2>Online Chat Room</h2>
     </header>
     <main>
-        <article class="">
-            <section id="userlist">
+        <article class="chatroom-layout">
+            <section id="userlist" class="chatroom-userlist">
                 <ul>
-                    <li>list 1</li>
-                    <li>list 1</li>
-                    <li>list 1</li>
-                    <li>list 1</li>
-                    <li>list 1</li>
-                    <li>list 1</li>
+                    {userlist}
                 </ul>
             </section>
             <section id="message">
@@ -36,11 +31,11 @@
                     </ul>
                 </section>
                 <section id="message-input">
-                    <form action="">
+                    <form action="/sendMessage" method="POST" autocomplete="off">
                         <label for="user">hello</label>
-                        <input type="text" name="user">
+                        <input type="text" name="sender" required autocomplete="off" placeholder="sender name">
                         <label for="content">hello</label>
-                        <input type="text" name="content">
+                        <input type="text" name="content" required autocomplete="off" placeholder="message">
                         <button type="submit">Send</button>
                     </form>
                 </section>

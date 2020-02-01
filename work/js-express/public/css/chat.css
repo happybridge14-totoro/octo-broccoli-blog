@@ -7,6 +7,12 @@
     --clickable-text-hover-color: #56b2dd;
     --normal-text-size: 16px;
     --line-color: #d1d2d3;
+    --button-text-color: #ffffff;
+    --button-background-color: #007a5a;
+    --button-hover-background-color: #148567;
+    --input-background-color: rgba(232,232,232,0.04);
+    --input-border-color: rgba(232,232,232,0.5);
+    --input-invalid-border-color: #f78888;
 }
 .dark-theme {
     font-family: "monaco", sans-serif;
@@ -22,14 +28,34 @@
     color: var(--clickable-text-hover-color);
 }
 .dark-theme button {
-
+    cursor: pointer;
+    background-color: var(--button-background-color);
+    color: var(--button-text);
+    transition: background-color 0.2s;
+    font-weight: 900;
+    box-sizing: border-box;
+    border: none;
+    padding: 6px 16px;
+    border-radius: 5px;
+    font-size: 16px;
+}
+.dark-theme button:hover {
+    background-color: var(--button-hover-background-color);
+}
+.dark-theme input {
+    background-color: var(--input-background-color);
+    border: 1px solid var(--input-border-color);
+    border-radius: 5px;
+    color: var(--text-color);
+    padding: 6px 16px;
+    font-size: 16px;
 }
 
 body,
 html {
     height: 100%;
     box-sizing: border-box;
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 body {
     display: flex;
@@ -47,13 +73,36 @@ main {
     flex: 1 0 auto;
     box-sizing: border-box;
 }
-
 footer {
     flex: 0 0 auto;
     text-align: center;
     border-top: 1px solid var(--line-color);
     padding: 20px 0px;
     box-sizing: border-box;
+}
+.chatroom-layout {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    height: 100%;
+    min-height: 250px;
+}
+.chatroom-userlist {
+    border-right: 1px solid var(--line-color);
+    overflow: hidden;
+    height: 100%;
+    max-height: calc(100vh - 162px);
+    overflow-y: scroll;
+}
+.chatroom-userlist ul {
+    list-style: none;
+    padding: 1em 20px 0 20px;
+}
+.chatroom-userlist li {
+    margin-bottom: 1em;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 180px;
+    overflow: hidden;
 }
 .footer-personal-info {
     list-style: none;
