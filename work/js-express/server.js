@@ -2,18 +2,20 @@ const express = require('express');
 const app = express();
 const PORT = 3000;
 
-const chat = require('./chat');
-const chatWeb = require('./chat-web');
+const chat = require('./src/chat');
+const chatWeb = require('./src/chat-web');
+const indexPage = require('./src/index')
 
 app.use(express.static('./public'));
 
 app.get('/', (req, res) => {
-  res.send(chatWeb.chatPage(chat));
+  res.send(indexPage.render());
 });
 
 app.post('/sendMessage', express.urlencoded({ extended: false }), (req, res) => {
-  const { text, sender } = req.body;
-  chat.addMessage({ sender, text });
+  // const { text, sender } = req.body;
+  // chat.addMessage({ sender, text });
+  indexPage.update();
   res.redirect('/');
 });
 

@@ -1,0 +1,21 @@
+[{
+    "userID": "Jack",
+    "message": "Hi all,",
+    "timestamp": 1580510128092
+}, {
+    "userID": "Mary",
+    "message": "It is a static online chatting system.",
+    "timestamp": 1580511128092
+}, {
+    "userID": "Tom",
+    "message": "The UI of this system is a slack like UI. And it is responsive",
+    "timestamp": 1580512128092
+}, {
+    "userID": "Jack",
+    "message": "Use some elements from web, like icon",
+    "timestamp": 1580513128092
+}, {
+    "userID": "Jack",
+    "message": "Thank you.",
+    "timestamp": 1580514128092
+}]

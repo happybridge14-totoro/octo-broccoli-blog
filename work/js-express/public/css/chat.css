@@ -1,0 +1,68 @@
+:root {
+    --background-color: #1a1d21;
+    --text-color: #d1d2d3;
+    --minor-text-color: #adabab;
+    --highlight-text-color: #ffffff;
+    --clickable-text-color: #1cb3ff;
+    --clickable-text-hover-color: #56b2dd;
+    --normal-text-size: 16px;
+    --line-color: #d1d2d3;
+}
+.dark-theme {
+    font-family: "monaco", sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+.dark-theme a{
+    color: var(--clickable-text-color);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+.dark-theme a:hover{
+    color: var(--clickable-text-hover-color);
+}
+.dark-theme button {
+
+}
+
+body,
+html {
+    height: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+}
+header {
+    flex: 0 0 auto;
+    text-align: center;
+    border-bottom: 1px solid var(--line-color);
+    box-sizing: border-box;
+}
+main {
+    flex: 1 0 auto;
+    box-sizing: border-box;
+}
+
+footer {
+    flex: 0 0 auto;
+    text-align: center;
+    border-top: 1px solid var(--line-color);
+    padding: 20px 0px;
+    box-sizing: border-box;
+}
+.footer-personal-info {
+    list-style: none;
+}
+.footer-personal-info li{
+    display: inline-block;
+}
+.footer-divider::before {
+    content: '|';
+    user-select: none;
+    margin: 0px 1em;
+}
