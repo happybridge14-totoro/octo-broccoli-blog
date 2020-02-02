@@ -29,7 +29,7 @@ const isNewSender = (sender) => {
 };
 
 //Simply use timestamp as id
-const addMessage = (sender, message, timestamp) => {
+const addMessageData = (sender, message, timestamp) => {
     const senderID = addUserAndGetId(sender);
     messageList[timestamp] = {
         id: timestamp,
@@ -41,5 +41,5 @@ const addMessage = (sender, message, timestamp) => {
 
 module.exports = {
     isNewSender,
-    addMessage
+    addMessageData
 };

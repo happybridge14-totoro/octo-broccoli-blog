@@ -3,10 +3,10 @@ const { getMessageList } = require("../model/data");
 let messagesHtml = "";
 let lastestDay = "";
 const addDivider = (dateString) => {
-    const dayStrings = dateString.split(" ");
+    const [day, month, date] = dateString.split(" ");
     return `<div class="chatroom-timestamp-divider">
                 <div class="divider"></div>
-                <div class="timestamp-date">${dayStrings[0]},${dayStrings[1]} ${dayStrings[2]}</div> 
+                <div class="timestamp-date">${day},${month} ${date}</div> 
             </div>\n`
 };
 const addContent = (sender, content, timeString) => {

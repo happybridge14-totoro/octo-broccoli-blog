@@ -3,7 +3,7 @@ const path = require("path");
 
 const senderlistPage = require("./view/senderlist");
 const messagePage = require("./view/message");
-const {addMessage} = require("./model/data");
+const {addMessageData} = require("./model/data");
 
 const encodingOption = 'utf-8';
 const indexTemplatePath = "./index.html";
@@ -26,7 +26,7 @@ const render = () => {
 const update = (sender, message, timestamp) => {
     senderlistPage.update(sender);
     messagePage.update(sender, message, timestamp);
-    addMessage(sender, message, timestamp);
+    addMessageData(sender, message, timestamp);
     updateHTML();
 };
 updateHTML();
