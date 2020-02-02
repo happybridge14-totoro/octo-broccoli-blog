@@ -1,5 +1,6 @@
 :root {
     --background-color: #1a1d21;
+    --hover-background-color: #262b31;
     --text-color: #d1d2d3;
     --minor-text-color: #adabab;
     --highlight-text-color: #ffffff;
@@ -64,6 +65,7 @@ body {
     height: 100%;
     overflow: hidden;
     min-width: 820px;
+    margin: 0px;
 }
 header {
     flex: 0 0 auto;
@@ -90,7 +92,7 @@ footer {
     height: 100%;
     min-height: 320px;
     max-height: calc(100vh - 162px);
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 .chatroom-userlist ul {
     list-style: none;
@@ -116,14 +118,8 @@ footer {
     flex: 1 0 auto;
     box-sizing: border-box;
     max-height: calc(100vh - 262px);
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
-}
-.chatroom-messagelist p {
-    padding: 0px 40px;
-}
-.chatroom-messagelist .message-content {
-    margin-bottom: 1.5em;
 }
 .chatroom-timestamp-divider {
     position: relative;
@@ -146,17 +142,17 @@ footer {
     background-color: var(--background-color);
     padding: 0px 20px;
 }
-.chatroom-messagelist li {
-    margin-bottom: 1em;
+.chatroom-messagelist .chatroom-message-block {
+    padding: 10px 40px;
 }
-.chatroom-messagelist p {
-    margin: 5px 0px;
+.chatroom-messagelist .chatroom-message-block:hover {
+    background-color: var(--hover-background-color);
 }
-.chatroom-messagelist .message-sender {
+.chatroom-message-block .message-sender {
     font-weight: bold;
     font-size: large;
 }
-.chatroom-messagelist .message-time {
+.chatroom-message-block .message-time {
     font-size: small;
     color: var(--minor-text-color);
 }

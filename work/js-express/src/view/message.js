@@ -10,11 +10,13 @@ const addDivider = (dateString) => {
             </div>\n`
 };
 const addContent = (sender, content, timeString) => {
-    return `<p>
-            <span class="message-sender">${sender}</span>
-            <span class="message-time">${timeString}</span>
-        </p>
-        <p class="message-content">${content}</p>\n`
+    return `<div class="chatroom-message-block">
+            <div>
+                <span class="message-sender">${sender}</span>
+                <span class="message-time">${timeString}</span>
+            </div>
+            <div class="message-content">${content}</div>
+        </div>\n`
 };
 
 const update = (sender, message, timestamp) => {
