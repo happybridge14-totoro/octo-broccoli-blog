@@ -1,5 +1,3 @@
-const { getMessageList } = require("../model/data");
-
 let messagesHtml = "";
 let lastestDay = "";
 const addDivider = (dateString) => {
