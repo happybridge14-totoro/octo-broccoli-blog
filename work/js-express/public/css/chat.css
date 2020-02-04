@@ -155,6 +155,9 @@ footer {
     font-size: small;
     color: var(--minor-text-color);
 }
+.chatroom-message-block .message-content {
+    overflow-wrap: break-word;
+}
 .chatroom-addmessage {
     flex: 0 0 auto;
     box-sizing: border-box;
