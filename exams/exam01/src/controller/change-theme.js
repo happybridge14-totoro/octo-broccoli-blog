@@ -1,8 +1,8 @@
 const {session, user} = require("../model/data");
 const changeTheme = (sessionId) => {
-    const {userId} = session.getSession(sessionId);
-    if (userId) {
-        user.changeThemeAndGetUser(userId);
+    const currentSession = session.getSession(sessionId);
+    if (currentSession && currentSession.userId) {
+        user.changeThemeAndGetUser(currentSession.userId);
     }
 };
 
