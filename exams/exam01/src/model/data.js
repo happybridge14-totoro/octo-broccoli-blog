@@ -22,21 +22,33 @@ const getUserByName = (name) => {
     }
     return null;
 };
-const addUser = (name) => {
-    if (!getUserByName(name)) {
-        allUsersInfo[name] = {
+const addOrGetUserByName = (name) => {
+    let user = getUserByName(name);
+    if (!user) {
+        const gameId = createNewGame().id;
+        user = {
             id: name,
             name: name,
-            themeId: defaultThemeId
+            themeId: defaultThemeId,
+            gameId: gameId
         };
+        allUsersInfo[name] = user;
     }
+    return user;
 };
 const changeThemeAndGetUser = (id) => {
     const user = allUsersInfo[id];
-    if (!!user) {
+    if (user) {
         user.themeId = getNextThemeId(user.themeId);
     }
-    return null;
+    return user;
+};
+const updateGameIdForUser = (userId, gameId) => {
+    const user = allUsersInfo[userId];
+    if (user) {
+        user.gameId = gameId;
+    }
+    return user;
 };
 //Theme apis
 const getNextThemeId = (currentThemeId) => {
@@ -50,8 +62,7 @@ const getDefaultThemeName = (id) => {
     return themes[defaultThemeId];
 };
 //Session apis
-const createAndGetSession = (sessionId = generatUUID(), userId = "") => {
-    const gameId = createNewGame().id;
+const createAndGetSession = (gameId, userId = "", sessionId = generatUUID()) => {
     const session = { sessionId, userId, gameId};
     sessionStorage[sessionId] = session;
     return session;
@@ -105,8 +116,9 @@ module.exports = {
     user: {
         hasUser,
         getUserByID,
-        addUser,
-        changeThemeAndGetUser
+        addOrGetUserByName,
+        changeThemeAndGetUser,
+        updateGameIdForUser
     },
     session: {
         createAndGetSession,

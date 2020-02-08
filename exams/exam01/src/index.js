@@ -27,7 +27,7 @@ const render = (sessionId) => {
                     }
                     break;
                 case "{body}":
-                    return renderGamePage(game.steps, game.isFinished);
+                    return renderGamePage(game.steps, game.isFinished, user);
                 default:
                     break;
             }

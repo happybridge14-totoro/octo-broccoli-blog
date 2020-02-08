@@ -1,11 +1,15 @@
-const {session, user} = require("../model/data");
+const {session, user, game} = require("../model/data");
 const beginNewGame = (sessionId) => {
     let newSessionId = sessionId;
     const oldSession = session.getSession(sessionId);
+    const newGameId = game.createNewGame().id;
     if (oldSession) {
-        newSessionId = session.createAndGetSession(sessionId, oldSession.userId).sessionId;
+        if (oldSession.userId) {
+            user.updateGameIdForUser(oldSession.userId, newGameId);
+        }
+        newSessionId = session.createAndGetSession(newGameId, oldSession.userId, sessionId).sessionId;
     } else {
-        newSessionId = session.createAndGetSession().sessionId;
+        newSessionId = session.createAndGetSession(newGameId).sessionId;
     }
     return newSessionId;
 };

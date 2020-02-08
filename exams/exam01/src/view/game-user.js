@@ -1,15 +1,18 @@
-const title = "Welcome to word guess game!";
-
-const personalTitleNotLogin = "Login to change the theme";
-const personalTitleLogin = "Welcome back, ";
-
-const update = () => {
-
+const {theme} = require("../model/data");
+const render = (user) => {
+    if (user) {
+        const themeName = theme.getThemeNameById(user.themeId);
+        return `<h5>Welcome back, ${user.name}!</h5>
+        <form action="/changeTheme" method="POST">
+            <label for="changetheme" class="changeThemeText">Current theme: ${themeName} theme.</label>
+            <button type="submit" id="changetheme" name="changetheme">Change theme</button>
+        </form>`;
+    } else {
+        return `<h5>Sign in to continue your saved game and change the theme!</h5>
+        <form action="/signin" method="POST" autocomplete="off">
+            <input id="username" name="username" type="text">
+            <button type="submit">Sign in</button>
+        </form>`
+    }
 };
-const getTitle = () => {
-    return title;
-};
-const getPersonTitle = (user) => {
-    return user ? personalTitleLogin + user.name + "!" : personalTitleNotLogin;
-};
-modules.exports = {getTitle, getPersonTitle};
+module.exports = render;

@@ -1,6 +1,5 @@
 const express = require("express");
 const cookiePaser = require("./src/utils/cookie");
-// const uuidGenerator = require("./src/utils/uuid-generator");
 const indexPage = require("./src/index");
 const signin = require("./src/controller/signin");
 const signout = require("./src/controller/signout");
@@ -35,9 +34,13 @@ app.post("/guess", express.urlencoded({ extended: false }), (req, res)=> {
   guess(sessionId, word);
   res.redirect("/");
 });
-app.post("/signin", (req, res) => {
+app.post("/signin", express.urlencoded({ extended: false }), (req, res) => {
   const sessionId = req.cookie[sessionKey];
-  signin(sessionId);
+  const {username} = req.body;
+  const newSessionId = signin(sessionId, username);
+  if (newSessionId !== sessionId) {
+    res.cookie(sessionKey, newSessionId);
+  }
   res.redirect("/");
 });
 app.post("/signout", (req, res) => {
