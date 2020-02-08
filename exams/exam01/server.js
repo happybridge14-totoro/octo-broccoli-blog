@@ -1,15 +1,21 @@
 const express = require("express");
+const cookiePaser = require("./src/utils/cookie");
+// const uuidGenerator = require("./src/utils/uuid-generator");
+const indexPage = require("./src/index");
 const app = express();
-const cookiePaser = require("./utils/cookie");
-const uuidGenerator = require("./utils/uuid-generator");
+const PORT = 3000;
 
 app.use(cookiePaser);
+app.use(express.static("./public"));
 app.get("/", (req, res) => {
-    console.log(req.headers);
-    res.cookie("test", "a test");
-  res.send("hello");
+  res.send(indexPage.render());
 });
+app.post("/changetheme", (req, res) => {
 
+});
+app.post("/guess", ()=> {
+
+});
 app.listen(3000, () => {
-    console.log("Listerening to 3000");
+  console.log(`Listerening on http://localhost:${PORT}`);
 });
