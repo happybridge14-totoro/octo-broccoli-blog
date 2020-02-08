@@ -6,7 +6,7 @@
 * I cannot assume knowledge you don't demonstrate, so be clear and explicit.
 
 ## Q: What is the difference between a dynamic asset and a static asset?
-* A dynamic asset is something loaded in memory. Usually, the original file is loaded only once, stored as a param, then we make changes params. If we want to change original asset, we need to restart the server.
+* A dynamic asset is something loaded in memory. Usually, the original file is loaded only once, stored as a param, then we make changes on params. If we want to change the original asset, we need to restart the server.
 * A static asset is the asset loaded only when we request the asset, and we don't store them in memory. Thus, when the asset changes, we don't need to restart the server. When the client request the asset (cache issues are not considered here), the server will always return the latest asset.
 
 ## Q: What is the difference between a relative and absolute file path in an href?  What is the "webserver root/document root" and how do absolute/relative paths relate to this document root?
@@ -31,7 +31,7 @@
 1. Brute force prototype assignment
 
 ## Q: Give a short code demonstration of 1 way to create JS inheritance to __inherit__ a method named "purr".
-```javascript
+```JavaScript
 class Animal {
     constructor(name) {
         this.name = name;
@@ -50,7 +50,7 @@ maru.purr();
 ```
 
 ## Q: Give a short code demonstration of a different way to create JS inheritance to __inherit__ a method named "hiss".
-```javascript
+```JavaScript
 const Person = function(name) {
     this.name = name;
 };
@@ -67,7 +67,7 @@ tom.hiss();
 
 ## Q: Explain what a callback is, and give an example.
 * In JavaScript, functions are first-class objects. So callback is the function passed to another function, and wish to be executed when the other function finished.
-```javascript
+```JavaScript
 const cookiePaser = (req, res, next) => {
     // Do something
     return next();
@@ -107,7 +107,7 @@ const cookiePaser = (req, res, next) => {
         ...
     </section>
 ```
-Than one day, the product manager comes and says "Black and white is out of date, change it to 
+Than one day, the product manager comes and says "Black and white is out of fashion, change it to 
 white text color and purple background. I'll give you the color, come on!"
 
 OK, I've a lot of bugs to fix, so just meet the requirement in 5 minutes.
