@@ -88,6 +88,9 @@ const createNewGame = () => {
         steps: [],
         isFinished: false
     };
+    //As request, "The server will console.log the current secret word at the start of the game."
+    console.log(words[newGame.wordId]);
+    ////////
     games[id] = newGame;
     return newGame;
 };

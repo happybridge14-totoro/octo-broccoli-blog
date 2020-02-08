@@ -45,8 +45,4 @@ const render = (sessionId) => {
     }
 };
 
-const update = () => {
-
-};
-
 module.exports = {render, update};
