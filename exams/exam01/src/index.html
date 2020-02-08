@@ -8,46 +8,12 @@
     <link id="favicon" rel="shortcut icon" href="/favicon.png" sizes="16x16 32x32 48x48" type="image/png">
     <link rel="stylesheet" href="/css/game.css">
 </head>
-<body class="light-theme">
+<body class="{theme}-theme">
     <header>
-        <h2>Hello, Tom. Welcome to word guess game! Enjoy!</h2>
+        <h2>Welcome to word guess game! Enjoy!</h2>
     </header>
     <main class="game-body">
-        <section class="game-history">
-            <h3 class="title">History Guess</h3>
-            <div class="body">
-                <div class="one-guess">
-                    <p>Guess 1:</p>
-                    <p>sdfsdklfjkljksdfjklsdfjklsdfsdfsdklfjkljksdfjklsdfjklsdfsdfsdklfjkljksdfjklsdfjklsdfsdfsdklfjkljksdfjklsdfjklsdf
-                    sdfsdklfjkljksdfjklsdfjklsdfsdfsdklfjkljksdfjklsdfjklsdfsdfsdklfjkljksdfjklsdfjklsdf</p>
-                    <p>4 correct!</p>
-                </div>
-                <p>test 1</p>
-                <p>test 1</p>
-            </div>
-        </section>
-        <section class="game-content">
-            <h3 class="title">Current Game</h3>
-            <div class="body">
-                <div class="result">
-                    <p>hello</p>
-                </div>
-                <div class="action">
-                    <p>hello</p>
-                    <section>hello</section>
-                    <label for="">test</label>
-                    <input type="text">
-                    <button>hello</button>
-                </div>
-                <section class="personal">
-                    <h5>Login to change the theme!</h5>
-                    <form action="/changeTheme" method="POST">
-                        <label for="changetheme" class="changeThemeText">Current theme: light</label>
-                        <button type="submit" id="changetheme" name="changetheme">Change theme</button>
-                    </form>
-                </div>
-            </div>
-        </section>
+        {body}
     </main>
     <footer>
         <ul class="footer-personal-info">

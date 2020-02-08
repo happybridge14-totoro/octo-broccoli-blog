@@ -1,10 +1,10 @@
-const generatUUID = require("./utils/uuid-generator");
+const generatUUID = require("../utils/uuid-generator");
 const words = require("./words");
 
 const allUsersInfo = {};
 const sessionStorage = {};
 
-const themes = ["light, dark"];
+const themes = ["light", "dark"];
 const defaultThemeId = 0;
 
 let gameId = 0;
@@ -46,21 +46,26 @@ const getNextThemeId = (currentThemeId) => {
 const getThemeNameById = (id) => {
     return themes[id];
 };
+const getDefaultThemeName = (id) => {
+    return themes[defaultThemeId];
+};
 //Session apis
-const createAndGetSession = (userId, wordId) => {
-    const sessionId = generatUUID();
-    const gameId = createNewGame();
-    const session = { sessionId, userId, wordId };
+const createAndGetSession = (sessionId = generatUUID(), userId = "") => {
+    const gameId = createNewGame().id;
+    const session = { sessionId, userId, gameId};
     sessionStorage[sessionId] = session;
     return session;
 };
-const updateSession = (sessionId, userId) => {
-
+const getSession = (sessionId) => {
+    return sessionStorage[sessionId];
 };
 const clearSession = (id) => {
     delete sessionStorage[id];
 };
 //Game apis
+const getGame = (id) => {
+    return games[id];
+};
 const removeGame = (id) => {
     delete games[id];
 };
@@ -70,15 +75,20 @@ const createNewGame = () => {
         id: id,
         wordId: getRandomWord(),
         steps: [],
-        finished: false
+        isFinished: false
     };
     games[id] = newGame;
     return newGame;
 };
-const updateSteps = (id, wordGuess, isFinished = false) => {
-    const game = games[id];
-    game.steps.push(wordGuess);
-    game.finished = isFinished;
+const updateSteps = (gameId, guessWord, message, correctCount, guessCount, isFinished = false) => {
+    const game = games[gameId];
+    game.steps.push({
+        guessWord,
+        message,
+        correctCount,
+        guessCount
+    });
+    game.isFinished = isFinished;
 };
 const getRandomWord = () => {
     return Math.floor(Math.random() * words.length);
@@ -89,7 +99,8 @@ const getWordById = (id) => {
 
 module.exports = {
     theme: {
-        getThemeNameById
+        getThemeNameById,
+        getDefaultThemeName
     },
     user: {
         hasUser,
@@ -99,11 +110,13 @@ module.exports = {
     },
     session: {
         createAndGetSession,
-        clearSession
+        clearSession,
+        getSession
     },
     game: {
         createNewGame,
         getWordById,
-        updateSteps
+        updateSteps,
+        getGame
     }
 };

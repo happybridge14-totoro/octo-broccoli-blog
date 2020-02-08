@@ -1,2 +1,2 @@
-const words = [TEA, EAT, TEE, PEA, PET, APE];
+const words = ["TEA", "EAT", "TEE", "PEA", "PET", "APE"];
 module.exports = words;

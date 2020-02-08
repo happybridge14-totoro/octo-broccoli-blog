@@ -124,6 +124,18 @@ footer {
     display: grid;
     grid-template-columns: 1fr 1fr;
 }
+.game-init {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.game-init input {
+    margin-top: 2em;
+}
+.game-init button {
+    margin-top: 2em;
+}
 .game-history {
     box-sizing: border-box;
     word-break: break-all;
@@ -145,10 +157,24 @@ footer {
 .game-content {
     padding: 0px 30px;
 }
+.game-content h3 {
+    text-align: center;
+}
 .game-content .body {
     height: calc(100vh - 193px - 2.34rem);
     display: grid;
-    grid-template-rows: 3fr 3fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    align-items: center;
+    justify-content: center;
+}
+.game-content .result {
+    padding: 5em;
+}
+.game-content .result p{
+    word-break: break-all;
+}
+.game-content .action {
+    text-align: center;
 }
 .game-content .personal {
 

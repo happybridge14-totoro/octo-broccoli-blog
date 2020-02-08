@@ -1,4 +1,4 @@
-const {clearSession} = require("./").session;
+const {clearSession} = require("../model/data").session;
 const signout = (sessionId) => {
     clearSession(sessionId);
 };
