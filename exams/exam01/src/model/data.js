@@ -86,6 +86,7 @@ const createNewGame = () => {
         id: id,
         wordId: getRandomWord(),
         steps: [],
+        guessCount: 0,
         isFinished: false
     };
     //As request, "The server will console.log the current secret word at the start of the game."
@@ -102,6 +103,7 @@ const updateSteps = (gameId, guessWord, message, correctCount, guessCount, isFin
         correctCount,
         guessCount
     });
+    game.guessCount = Math.max(guessCount, game.guessCount);
     game.isFinished = isFinished;
 };
 const getRandomWord = () => {

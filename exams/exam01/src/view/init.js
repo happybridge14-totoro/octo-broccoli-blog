@@ -7,7 +7,7 @@ const render = () => {
     <form action="/signin" method="post" class="game-init">
         <div>Sign in to resume a previous game,</div>
         <div> or start a new game if you are a new user</div>
-        <input id="username" name="username" type="text">
+        <input id="username" name="username" type="text" required>
         <button type="submit">Sign in</button>
     </form>`;
 };

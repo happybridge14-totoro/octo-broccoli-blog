@@ -13,7 +13,7 @@ const render = (user) => {
     } else {
         return `<h5>Sign in to continue your saved game and change the theme!</h5>
         <form action="/signin" method="POST" autocomplete="off">
-            <input id="username" name="username" type="text">
+            <input id="username" name="username" type="text" required>
             <button type="submit">Sign in</button>
         </form>`
     }

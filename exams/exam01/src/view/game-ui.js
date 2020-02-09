@@ -3,8 +3,7 @@ const renderMessage = (steps, isFinished) => {
         return "<p>Begin your new guess!</p>";
     } else {
         const {guessCount, guessWord, message} = steps[steps.length - 1];
-        return `
-            <p>Round ${guessCount}:</p>
+        return (guessCount ? `<p>Round ${guessCount}:</p>` : "" ) + `
             <p>Your guess: ${guessWord}</p>
             <p>${message}</p>`;
     }
@@ -19,7 +18,7 @@ const renderAction = (isFinished) => {
     } else {
         return `
             <form action="/guess" method="POST" autocomplete="off">
-                <input type="text" name="word" id="word" autocomplete="off">
+                <input type="text" name="word" id="word" autocomplete="off" required>
                 <button type="submit">Guess</button>
             </form>`;
     }

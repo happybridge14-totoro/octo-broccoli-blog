@@ -19,17 +19,15 @@ const compare = (word, guess) => {
 };
 const guess = (sessionId, word) => {
     const {gameId} = session.getSession(sessionId);
-    const {wordId, steps} = game.getGame(gameId);
+    const {wordId, guessCount} = game.getGame(gameId);
     const targetWord = game.getWordById(wordId).toLowerCase();
     const wordLowerCase = word.toLowerCase();
-    const lastCount = steps.length === 0 ? 0 : steps[steps.length - 1].guessCount;
+    const currentCount = guessCount + 1;
     if (wordLowerCase === targetWord) {
-        const currentCount = lastCount + 1;
         game.updateSteps(gameId, word, `CORRECT!  You won in ${currentCount} turns!`, targetWord.length, currentCount, true);
     } else if (wordLowerCase.length !== targetWord.length) {
-        game.updateSteps(gameId, word, `Invalid word. Please guess a ${targetWord.length} length word.`, 0, lastCount, false);
+        game.updateSteps(gameId, word, `Invalid word. Please guess a ${targetWord.length} length word.`, 0, 0, false);
     } else {
-        const currentCount = lastCount + 1;
         const count = compare(wordLowerCase, targetWord);
         game.updateSteps(gameId, word, `You matched ${count} letters out of ${targetWord.length}.`, count, currentCount, false);
     }
