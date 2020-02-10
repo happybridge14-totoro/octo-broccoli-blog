@@ -8,13 +8,13 @@ const render = (user) => {
             <button type="submit" id="changetheme" name="changetheme">Change theme</button>
         </form>
         <form action="/signout" method="POST">
-            <button type="submit" id="signout" name="signout">Sign out</button>
+            <button type="submit" id="signout" name="signout" class="signout">Sign out</button>
         </form>`;
     } else {
         return `<h5>Sign in to continue your saved game and change the theme!</h5>
         <form action="/signin" method="POST">
             <input id="username" name="username" type="text" required>
-            <button type="submit">Sign in</button>
+            <button type="submit" class="signin">Sign in</button>
         </form>`
     }
 };

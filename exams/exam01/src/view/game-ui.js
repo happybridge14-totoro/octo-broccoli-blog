@@ -26,7 +26,7 @@ const renderAction = (isFinished) => {
         return `
             <form action="/guess" method="POST" autocomplete="off">
                 <input type="text" name="word" id="word" autocomplete="off" required>
-                <button type="submit">Guess</button>
+                <button type="submit" class="guess">Guess</button>
             </form>`;
     }
 };
