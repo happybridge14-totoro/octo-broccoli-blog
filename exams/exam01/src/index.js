@@ -10,6 +10,7 @@ const render = (sessionId) => {
         const {userId, gameId} = data.session.getSession(sessionId);
         const user = data.user.getUserByID(userId);
         const game = data.game.getGame(gameId);
+        const words = data.game.getWords();
         return indexHtmlTemplate.replace(/{[^}]+}/g, (match) => {
             let ret = match;
             switch (match) {
@@ -21,7 +22,7 @@ const render = (sessionId) => {
                     }
                     break;
                 case "{body}":
-                    return renderGamePage(game.steps, game.isFinished, user);
+                    return renderGamePage(game.steps, game.isFinished, user, words);
                 default:
                     break;
             }

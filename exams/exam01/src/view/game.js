@@ -23,7 +23,7 @@ const templateHtml = `
         </div>
     </section>
 `;
-const render = (steps, isFinished, user) => {
+const render = (steps, isFinished, user, words) => {
     return templateHtml.replace(/{[^}]+}/g, (match) => {
         let ret = match;
         switch (match) {
@@ -31,7 +31,7 @@ const render = (steps, isFinished, user) => {
                 ret = renderGameHistory(steps, isFinished);
                 break;
             case "{message}":
-                ret = renderMessage(steps);
+                ret = renderMessage(steps, words);
                 break;
             case "{action}":
                 ret = renderAction(isFinished);

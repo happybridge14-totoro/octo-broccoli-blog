@@ -1,12 +1,19 @@
-const renderMessage = (steps, isFinished) => {
+const renderMessage = (steps, words) => {
+    let messageHtml = '<p>Please guess the word from the word list below:</p><p class="word-list">';
+    words.forEach(word => {
+        messageHtml += `<span class="words">${word}</span>`
+    });
+    messageHtml += "</p>";
     if (steps.length === 0) {
-        return "<p>Begin your new guess!</p>";
+        messageHtml += "<p>Begin your new guess!</p>";
     } else {
         const {guessCount, guessWord, message} = steps[steps.length - 1];
-        return (guessCount ? `<p>Round ${guessCount}:</p>` : "" ) + `
+        messageHtml += (guessCount ? `<p>Round ${guessCount}:</p>` : "") + `
             <p>Your guess: ${guessWord}</p>
             <p>${message}</p>`;
     }
+
+    return messageHtml;
 };
                 
 const renderAction = (isFinished) => {

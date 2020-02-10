@@ -163,12 +163,19 @@ footer {
 .game-content .body {
     height: calc(100vh - 193px - 2.34rem);
     display: grid;
-    grid-template-rows: 1fr 1fr 1fr;
-    align-items: center;
+    grid-template-rows: 2fr 1fr 1fr;
     padding: 0px 30px
 }
 .game-content .result p{
     word-break: break-all;
+}
+.game-content .result .word-list {
+    padding: 0.5em;
+    border: 1px dashed var(--line-color);
+}
+.game-content .result .words {
+    padding-right: 1em;
+    line-height: 1.5em;
 }
 .changeThemeText {
     margin-right: 5em;

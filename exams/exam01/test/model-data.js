@@ -4,7 +4,6 @@ const {theme, user, session, game} = require("../src/model/dataProxy");
 const words = require("../src/model/words");
 const {themes, DEFAULT_THEME_ID} = require("../src/model/themes");
 const allUsersInfo = require("../src/model/users");
-const sessionStorage = require("../src/model/session-storage");
 const {games, getNextGameId} = require("../src/model/games");
 describe("data.theme", () => {
     describe("#getDefaultThemeName", () => {
@@ -175,6 +174,11 @@ describe("data.game", ()=>{
     describe("#getGame", () => {
         it("respond equal to expected game", () => {
             assert.deepStrictEqual(game.getGame(initGame.id), initGame);
+        });
+    });
+    describe("#getWords", () => {
+        it("respond equal to expected game", () => {
+            assert.deepStrictEqual(game.getWords(), words);
         });
     });
     describe("#updateSteps", () => {

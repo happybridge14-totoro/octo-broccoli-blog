@@ -107,6 +107,9 @@ const getRandomWord = () => {
 const getWordById = (id) => {
     return words[id];
 };
+const getWords = () => {
+    return words;
+};
 
 module.exports = {
     theme: {
@@ -128,6 +131,7 @@ module.exports = {
         createNewGame,
         getWordById,
         updateSteps,
-        getGame
+        getGame,
+        getWords
     }
 };
