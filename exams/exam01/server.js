@@ -31,15 +31,19 @@ app.post("/changeTheme", (req, res) => {
 app.post("/guess", express.urlencoded({ extended: false }), (req, res)=> {
   const sessionId = req.cookie[sessionKey];
   const {word} = req.body;
-  guess(sessionId, word);
+  if (word) {
+    guess(sessionId, word);
+  }
   res.redirect("/");
 });
 app.post("/signin", express.urlencoded({ extended: false }), (req, res) => {
   const sessionId = req.cookie[sessionKey];
   const {username} = req.body;
-  const newSessionId = signin(sessionId, username);
-  if (newSessionId !== sessionId) {
-    res.cookie(sessionKey, newSessionId);
+  if (username) {
+    const newSessionId = signin(sessionId, username);
+    if (newSessionId !== sessionId) {
+      res.cookie(sessionKey, newSessionId);
+    }
   }
   res.redirect("/");
 });
