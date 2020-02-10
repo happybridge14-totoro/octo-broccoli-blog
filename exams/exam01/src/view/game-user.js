@@ -1,4 +1,4 @@
-const {theme} = require("../model/data");
+const {theme} = require("../model/dataProxy");
 const render = (user) => {
     if (user) {
         const themeName = theme.getThemeNameById(user.themeId);

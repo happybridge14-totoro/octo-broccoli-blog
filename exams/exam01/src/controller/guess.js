@@ -1,4 +1,4 @@
-const {session, game} = require("../model/data");
+const {session, game} = require("../model/dataProxy");
 const compare = (word, guess) => { 
     let ret = 0;
     const count = {};

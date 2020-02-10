@@ -1,4 +1,4 @@
-const {clearSession} = require("../model/data").session;
+const {clearSession} = require("../model/dataProxy").session;
 const signout = (sessionId) => {
     clearSession(sessionId);
 };

@@ -1,6 +1,25 @@
-const parseCookie = require("../public/utils/cookie");
+const parseCookie = require("../src/utils/cookie");
 const assert = require("assert");
 describe('CookieParser', function () {
+    describe('#parse("")', function () {
+        it("responds with matching records", function () {
+            const req = {
+                headers: {
+                    cookie: ""
+                }
+            };
+            const expectedReq = {
+                headers: {
+                    cookie: ""
+                },
+                cookie: {
+                }
+            };
+            parseCookie(req, {}, () => {
+                assert.deepStrictEqual(req, expectedReq);
+            });
+        });
+    });
     describe('#parse("test=a%20test")', function () {
         it("responds with matching records", function () {
             const req = {

@@ -1,4 +1,4 @@
-const {session, user, game} = require("../model/data");
+const {session, user, game} = require("../model/dataProxy");
 const signin = (sessionid, username) => {
     const {id, gameId} = user.addOrGetUserByName(username);
     let oldSession = session.getSession(sessionid);

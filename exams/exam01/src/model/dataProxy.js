@@ -1,18 +1,11 @@
 const generatUUID = require("../utils/uuid-generator");
 const words = require("./words");
+const {themes, DEFAULT_THEME_ID} = require("./themes");
+const allUsersInfo = require("./users");
+const sessionStorage = require("./session-storage");
+const {games, getNextGameId} = require("./games");
 
-const allUsersInfo = {};
-const sessionStorage = {};
-
-const themes = ["light", "dark"];
-const defaultThemeId = 0;
-
-let gameId = 0;
-const games = {};
 //User apis
-const hasUser = (id) => {
-    return !!allUsersInfo[id];
-};
 const getUserByID = (id) => {
     return allUsersInfo[id];
 };
@@ -29,7 +22,7 @@ const addOrGetUserByName = (name) => {
         user = {
             id: name,
             name: name,
-            themeId: defaultThemeId,
+            themeId: DEFAULT_THEME_ID,
             gameId: gameId
         };
         allUsersInfo[name] = user;
@@ -58,8 +51,8 @@ const getNextThemeId = (currentThemeId) => {
 const getThemeNameById = (id) => {
     return themes[id];
 };
-const getDefaultThemeName = (id) => {
-    return themes[defaultThemeId];
+const getDefaultThemeName = () => {
+    return themes[DEFAULT_THEME_ID];
 };
 //Session apis
 const createAndGetSession = (gameId, userId = "", sessionId = generatUUID()) => {
@@ -81,7 +74,7 @@ const removeGame = (id) => {
     delete games[id];
 };
 const createNewGame = () => {
-    const id = ++gameId;
+    const id = getNextGameId();
     const newGame = {
         id: id,
         wordId: getRandomWord(),
@@ -97,14 +90,16 @@ const createNewGame = () => {
 };
 const updateSteps = (gameId, guessWord, message, correctCount, guessCount, isFinished = false) => {
     const game = games[gameId];
-    game.steps.push({
-        guessWord,
-        message,
-        correctCount,
-        guessCount
-    });
-    game.guessCount = Math.max(guessCount, game.guessCount);
-    game.isFinished = isFinished;
+    if (game) {
+        game.steps.push({
+            guessWord,
+            message,
+            correctCount,
+            guessCount
+        });
+        game.guessCount = Math.max(guessCount, game.guessCount);
+        game.isFinished = isFinished;
+    } 
 };
 const getRandomWord = () => {
     return Math.floor(Math.random() * words.length);
@@ -119,7 +114,6 @@ module.exports = {
         getDefaultThemeName
     },
     user: {
-        hasUser,
         getUserByID,
         addOrGetUserByName,
         changeThemeAndGetUser,

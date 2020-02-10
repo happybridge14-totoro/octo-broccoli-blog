@@ -1,4 +1,4 @@
-const {session, user, game} = require("../model/data");
+const {session, user, game} = require("../model/dataProxy");
 const beginNewGame = (sessionId) => {
     let newSessionId = sessionId;
     const oldSession = session.getSession(sessionId);

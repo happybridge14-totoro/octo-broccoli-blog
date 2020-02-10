@@ -1,6 +1,6 @@
 const indexHtmlTemplate = require("./index-template");
 
-const data = require("./model/data");
+const data = require("./model/dataProxy");
 const renderInitPage = require("./view/init");
 const renderGamePage = require("./view/game");
 

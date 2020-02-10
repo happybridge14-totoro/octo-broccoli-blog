@@ -1,18 +1,27 @@
-const generatSessionId = require("../public/utils/uuid-generator");
+const generatSessionId = require("../src/utils/uuid-generator");
 const assert = require("assert").strict;
 
 describe("UUID genderator", () => {
+    const ids = new Set();
     describe("#uuidGenerator()", () => {
-        it("test1", () => {
+        beforeEach(() => {
+            for (let i = 0; i < 1000; i++) {
+                ids.add(generatSessionId());
+            }
+        });
+        it("test1, match regex /[0-9a-z]{13}/", () => {
             //  Only available after v13.8.0
             // assert.match(generatSessionId(), /[0-9a-z]{13}/);
-            assert.ok(/[0-9a-z]{13}/.test(generatSessionId()));
+            const id = generatSessionId();
+            assert.ok(/[0-9a-z]{13}/.test(id) && !ids.has(id));
         });
-        it("test2", () => {
-            assert.ok(/[0-9a-z]{13}/.test(generatSessionId()));
+        it("test2, match regex /[0-9a-z]{13}/", () => {
+            const id = generatSessionId();
+            assert.ok(/[0-9a-z]{13}/.test(id) && !ids.has(id));
         });
-        it("test3", () => {
-            assert.ok(/[0-9a-z]{13}/.test(generatSessionId()));
+        it("test3, match regex /[0-9a-z]{13}/", () => {
+            const id = generatSessionId();
+            assert.ok(/[0-9a-z]{13}/.test(id) && !ids.has(id));
         });
     });
 });

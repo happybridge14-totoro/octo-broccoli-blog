@@ -1,4 +1,4 @@
-const {session, user} = require("../model/data");
+const {session, user} = require("../model/dataProxy");
 const changeTheme = (sessionId) => {
     const currentSession = session.getSession(sessionId);
     if (currentSession && currentSession.userId) {
