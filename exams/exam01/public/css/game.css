@@ -165,16 +165,10 @@ footer {
     display: grid;
     grid-template-rows: 1fr 1fr 1fr;
     align-items: center;
-    justify-content: center;
-}
-.game-content .result {
-    padding: 5em;
+    padding: 0px 30px
 }
 .game-content .result p{
     word-break: break-all;
-}
-.game-content .action {
-    text-align: center;
 }
 .changeThemeText {
     margin-right: 5em;

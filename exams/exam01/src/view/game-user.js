@@ -2,7 +2,7 @@ const {theme} = require("../model/dataProxy");
 const render = (user) => {
     if (user) {
         const themeName = theme.getThemeNameById(user.themeId);
-        return `<h5>Welcome back, ${user.name}!</h5>
+        return `<h5>Welcome back, ${user.name}</h5>
         <form action="/changeTheme" method="POST">
             <label class="changeThemeText">Current theme: ${themeName} theme.</label>
             <button type="submit" id="changetheme" name="changetheme">Change theme</button>
