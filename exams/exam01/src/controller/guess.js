@@ -25,7 +25,7 @@ const guess = (sessionId, word) => {
     const currentCount = guessCount + 1;
     if (wordLowerCase === targetWord) {
         game.updateSteps(gameId, word, `CORRECT!  You won in ${currentCount} turns!`, targetWord.length, currentCount, true);
-    } else if (wordLowerCase.length !== targetWord.length) {
+    } else if (!game.hasWord(wordLowerCase)) {
         game.updateSteps(gameId, word, `Invalid word. Please guess a ${targetWord.length} length word.`, 0, 0, false);
     } else {
         const count = compare(wordLowerCase, targetWord);

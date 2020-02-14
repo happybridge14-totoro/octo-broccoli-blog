@@ -4,7 +4,7 @@ const {themes, DEFAULT_THEME_ID} = require("./themes");
 const allUsersInfo = require("./users");
 const sessionStorage = require("./session-storage");
 const {games, getNextGameId} = require("./games");
-
+const wordsSet = new Set(words.map(word=>word.toLowerCase()));
 //User apis
 const getUserByID = (id) => {
     return allUsersInfo[id];
@@ -42,6 +42,9 @@ const updateGameIdForUser = (userId, gameId) => {
         user.gameId = gameId;
     }
     return user;
+};
+const hasWord = (word) => {
+    return wordsSet.has(word);
 };
 //Theme apis
 const getNextThemeId = (currentThemeId) => {
@@ -132,6 +135,7 @@ module.exports = {
         getWordById,
         updateSteps,
         getGame,
-        getWords
+        getWords,
+        hasWord
     }
 };
