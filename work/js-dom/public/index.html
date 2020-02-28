@@ -7,21 +7,33 @@
     <link id="favicon" rel="shortcut icon" href="/favicon.png" sizes="16x16 32x32 48x48" type="image/png">
     <link rel="stylesheet" href="/css/index.css">
 </head>
-<body class="light-theme">
+<body class="dark-theme">
     <header>
         <h2>Store Inventory System</h2>
     </header>
     <main>
-        <section>
-            <h4>detail</h4>
+        <section class="display-area">
+            <h4 class="title">INVENTORY LIST</h4>
+            <div class="list-block"></div>
         </section>
+        <template id="list-template">
+            <p class="list-item">
+                <span class="list-item-name"></span>
+                <button class="list-item-minus">-</button>
+                <span class="list-item-count"></span>
+                <button class="list-item-add">+</button>
+                <button class="list-item-delete">delete</button>
+            </p>
+        </template>
         <div class="user-input-area">
-            <label for="user-input">New todo name:</label>
-            <input type="text" class="user-input" id="user-input">
-            <button class="user-action">Add</button>
+            <label for="user-input-label">New todo name:</label>
+            <div class="user-input-text-area">
+                <input type="text" class="user-input-text" id="user-input">
+                <div class="user-input-error">Please input a name for new todo!</div>
+            </div>
+            <button class="user-input-action">Add</button>
         </div>
     </main>
-
     <footer>
         <ul class="footer-personal-info">
             <li>© 2020 Yiji Huang</li>

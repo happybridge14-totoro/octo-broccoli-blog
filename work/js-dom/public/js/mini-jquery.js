@@ -1,23 +1,29 @@
 const DEFAULT_KEY = "count";
+const CLASS_NAME_ERROR = "error";
 class MiniJquery {
     constructor(parameters) {
         if (typeof parameters === "string") {
-            let targetElement = window.document.querySelector(parameters);
+            let targetElement = null;
+            try {
+                targetElement = window.document.querySelector(parameters);
+            }
+            catch (e) {
+            }
             if (!targetElement) {
-                this.element = window.document.createElement(parameters);
+                targetElement = window.document.createElement("div");
+                targetElement.outerHTML = parameters;
             }
-            else {
-                this.element = targetElement;
-            }
+            this.element = targetElement;
         }
         else {
             this.element = parameters;
         }
     }
     onClick(callback) {
-        if (this.element) {
-            this.element.addEventListener("click", callback);
-        }
+        this.element.addEventListener("click", callback);
+    }
+    onInput(callback) {
+        this.element.addEventListener("input", callback);
     }
     append(child) {
         this.element.appendChild(child.htmlElement);
@@ -45,6 +51,9 @@ class MiniJquery {
             this.element.textContent = newData;
         }
     }
+    clearValue() {
+        this.element.value = "";
+    }
     toString() {
         return this.element.outerHTML;
     }
@@ -52,6 +61,14 @@ class MiniJquery {
         const disabledAttr = this.element.disabled;
         if (disabledAttr || disabledAttr === false) {
             this.element.disabled = value;
+        }
+    }
+    set error(value) {
+        if (value) {
+            this.element.classList.add(CLASS_NAME_ERROR);
+        }
+        else {
+            this.element.classList.remove(CLASS_NAME_ERROR);
         }
     }
     get disable() {
@@ -71,6 +88,14 @@ class MiniJquery {
     get value() {
         return this.element.value || "";
     }
+    get templateClone() {
+        const content = this.element.content;
+        if (content) {
+            const clone = content.cloneNode(true);
+            return new MiniJquery(clone);
+        }
+        return null;
+    }
 }
-let $ = (query) => { return new MiniJquery(query); };
+const $ = (query) => { return new MiniJquery(query); };
 export default $;

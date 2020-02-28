@@ -16,6 +16,8 @@
     --button-hover-background-color: #148567;
     --input-background-color: rgba(232, 232, 232, 0.04);
     --input-border-color: rgba(232, 232, 232, 0.5);
+    --text-error-color: #ff8578;
+    --error-color: #ff8578;
 }
 .light-theme {
     --background-color: white;
@@ -33,6 +35,8 @@
     --button-border-color: #600ba2;
     --input-background-color: white;
     --input-border-color: rgb(29, 28, 29);
+    --text-error-color: #a52826;
+    --error-color: #a52826;
 }
 body {
     font-family: "monaco", sans-serif;
@@ -121,16 +125,48 @@ footer {
     box-sizing: border-box;
     height: 90px;
 }
+.display-area {
+    flex: 1 0 auto;
+    padding: 0px 2em;
+    overflow-y: auto;
+    word-break: break-all;
+}
+.display-area .title {
+    text-align: center;
+}
 .user-input-area {
     height: 90px;
     display: flex;
     justify-content: center;
     align-items: center;
+    flex: 0 0 auto;
 }
-.user-input {
+.user-input-text-area {
+    position: relative;
     margin-right: 1.5em;
+    margin-left: 0.5em;
 }
-
+.user-input-error {
+    position: absolute;
+    font-size: x-small;
+    text-align: center;
+    width: 100%;
+    padding: 1em 0px;
+    color: var(--text-error-color);
+    display: none;
+}
+.user-input-action[disabled], 
+.user-input-action[disabled]:hover {
+    background-color: var(--button-background-color);
+    opacity: 0.5;
+    cursor: default;
+}
+.user-input-text-area.error .user-input-text {
+    border: 1px solid var(--error-color);
+}
+.user-input-text-area.error .user-input-error {
+    display: block;
+}
 .footer-personal-info {
     list-style: none;
 }
