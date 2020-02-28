@@ -132,11 +132,6 @@ interface IDataObject {
             throw new Error("Element missing! Please check the dom elements");
         }
     };
-    // const adjustNode = (node:MiniJqueryObject, id:string, text:string=""):void => {
-    //     if (textNode) {
-    //         textNode.updateData(id, text);
-    //     }
-    // };
     addButton.onClick((e:Event) => {
         needCheck = true;
         const inputValue:string = userInput.value;
