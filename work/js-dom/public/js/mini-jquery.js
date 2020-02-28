@@ -1,4 +1,4 @@
-const DEFAULT_KEY = "count";
+const DEFAULT_KEY = "id";
 const CLASS_NAME_ERROR = "error";
 class MiniJquery {
     constructor(parameters) {
@@ -45,11 +45,15 @@ class MiniJquery {
     getDataByKey(key = DEFAULT_KEY) {
         return this.element.dataset[key] || "";
     }
-    updateData(newData, key = DEFAULT_KEY, display = true) {
-        this.element.dataset[key] = newData;
-        if (display) {
-            this.element.textContent = newData;
-        }
+    updateData(data, key = DEFAULT_KEY) {
+        this.element.dataset[key] = data;
+    }
+    updateContent(content) {
+        this.element.textContent = content;
+        this.element.setAttribute("title", content);
+    }
+    scrollToButtom() {
+        this.element.scrollTop = this.element.scrollHeight;
     }
     clearValue() {
         this.element.value = "";

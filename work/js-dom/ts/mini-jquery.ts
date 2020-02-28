@@ -47,9 +47,15 @@ class MiniJquery {
     getDataByKey(key:string = DEFAULT_KEY):string {
         return this.element.dataset[key] || "";
     }
-    updateData(newData:string, content:string, key:string = DEFAULT_KEY):void {
-        this.element.dataset[key] = newData; 
+    updateData(data:string, key:string = DEFAULT_KEY):void {
+        this.element.dataset[key] = data; 
+    }
+    updateContent(content: string):void {
         this.element.textContent = content;
+        this.element.setAttribute("title", content);
+    }
+    scrollToButtom():void {
+        this.element.scrollTop = this.element.scrollHeight;
     }
     clearValue():void {
         (this.element as HTMLInputElement).value = "";

@@ -17,13 +17,17 @@
             <div class="list-block"></div>
         </section>
         <template id="list-template">
-            <p class="list-item">
-                <span class="list-item-name"></span>
-                <button class="list-item-minus">-</button>
-                <span class="list-item-count"></span>
-                <button class="list-item-add">+</button>
-                <button class="list-item-delete">delete</button>
-            </p>
+            <div class="list-item">
+                <div class="list-item-name"></div>
+                <div class="list-item-operations">
+                    <button class="list-item-minus">-</button>
+                    <span class="list-item-count"></span>
+                    <button class="list-item-plus">+</button>
+                </div>
+                <div>
+                    <button class="list-item-delete">delete</button>
+                </div>
+            </div>
         </template>
         <div class="user-input-area">
             <label for="user-input-label">New todo name:</label>

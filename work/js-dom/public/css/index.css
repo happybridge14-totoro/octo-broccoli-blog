@@ -70,6 +70,12 @@ button:hover {
     background-color: var(--button-hover-background-color);
     color: var(--button-hover-text-color);
 }
+button[disabled],
+button[disabled]:hover {
+    background-color: var(--button-background-color);
+    opacity: 0.5;
+    cursor: default;
+}
 
 input {
     background-color: var(--input-background-color);
@@ -128,10 +134,40 @@ footer {
 .display-area {
     flex: 1 0 auto;
     padding: 0px 2em;
-    overflow-y: auto;
-    word-break: break-all;
 }
 .display-area .title {
+    text-align: center;
+}
+.display-area .list-block {
+    overflow-y: auto;
+    height: calc(100vh - 322px);
+}
+.display-area .list-item {
+    margin: auto;
+    padding: 1em 0px;
+    display: grid;
+    grid-template-columns: 5fr 3fr 2fr;
+    width: 620px;
+    align-items: center;
+}
+.display-area .list-item .list-item-name {
+    line-height: 32px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 0px 1em;
+}
+.display-area .list-item .list-item-operations {
+    display: flex;
+    align-items: center;
+}
+.display-area .list-item .list-item-count {
+    display: inline-block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    margin: 0px 0.5em;
+    width: 3.5em;
     text-align: center;
 }
 .user-input-area {
@@ -155,12 +191,7 @@ footer {
     color: var(--text-error-color);
     display: none;
 }
-.user-input-action[disabled], 
-.user-input-action[disabled]:hover {
-    background-color: var(--button-background-color);
-    opacity: 0.5;
-    cursor: default;
-}
+
 .user-input-text-area.error .user-input-text {
     border: 1px solid var(--error-color);
 }
