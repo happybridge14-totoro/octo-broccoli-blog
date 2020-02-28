@@ -7,18 +7,31 @@
     <link id="favicon" rel="shortcut icon" href="/favicon.png" sizes="16x16 32x32 48x48" type="image/png">
     <link rel="stylesheet" href="/css/index.css">
 </head>
-<body>
-    <div>hello</div>
-    <div>hello</div>
-    <div>hello</div>
-    <div>hello</div>
-    <div>hello</div>
-    <div>hello</div>
-    <div>hello</div>
-    <div>hello</div>
-    <div>hello</div>
-    <div>hello</div>
-    <div>hello</div>
-    <script src="/js/mini-jquery.js"></script>
+<body class="light-theme">
+    <header>
+        <h2>Store Inventory System</h2>
+    </header>
+    <main>
+        <section>
+            <h4>detail</h4>
+        </section>
+        <div class="user-input-area">
+            <label for="user-input">New todo name:</label>
+            <input type="text" class="user-input" id="user-input">
+            <button class="user-action">Add</button>
+        </div>
+    </main>
+
+    <footer>
+        <ul class="footer-personal-info">
+            <li>© 2020 Yiji Huang</li>
+            <li class="footer-divider"></li>
+            <li>
+                <span>E-mail: </span>
+                <a href="mailto:huang.yiji@husky.neu.edu">huang.yiji@husky.neu.edu</a>
+            </li>
+        </ul>
+    </footer>
+    <script type="module" src="/js/index.js"></script>
 </body>
 </html>

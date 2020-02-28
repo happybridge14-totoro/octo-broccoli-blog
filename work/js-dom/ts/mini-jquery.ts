@@ -1,5 +1,4 @@
-((window: Window) => {
-    const DEFAULT_KEY = "count";
+    const DEFAULT_KEY:string = "count";
     class MiniJquery {
         element: HTMLElement;
         constructor(parameters: string | HTMLElement) {
@@ -70,10 +69,12 @@
             return (this.element as HTMLInputElement).value || "";
         }
     }
-    Object.defineProperty(window, "$", {
-        value: (query:string | HTMLElement) => {return new MiniJquery(query)},
-        writable: false,
-        enumerable: false,
-        configurable: false
-    });
-})(window);
+    // Object.defineProperty(window, "$", {
+    //     value: $,
+    //     writable: false,
+    //     enumerable: false,
+    //     configurable: false
+    // });
+
+let $ = (query:string | HTMLElement):MiniJquery=> {return new MiniJquery(query)};
+export default $;
