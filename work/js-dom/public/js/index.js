@@ -121,7 +121,7 @@ import $ from "./mini-jquery.js";
         const newId = getId();
         if (newNode) {
             const count = 0;
-            data[getId()] = {
+            data[newId] = {
                 name: inputValue,
                 count: count
             };

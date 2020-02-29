@@ -117,7 +117,7 @@ interface IDataObject {
         const newId = getId();
         if (newNode) {
             const count:number = 0;
-            data[getId()] = {
+            data[newId] = {
                 name: inputValue,
                 count: count
             };

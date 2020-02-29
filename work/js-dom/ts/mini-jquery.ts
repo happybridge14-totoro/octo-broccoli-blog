@@ -17,7 +17,7 @@ export declare class MiniJqueryObject {
 };
 const DEFAULT_KEY:string = "id";
 const CLASS_NAME_ERROR:string = "error";
-class MiniJquery implements MiniJquery {
+class MiniJquery implements MiniJqueryObject {
     element: HTMLElement;
     constructor(parameters: string | HTMLElement) {
         if (typeof parameters === "string") {
