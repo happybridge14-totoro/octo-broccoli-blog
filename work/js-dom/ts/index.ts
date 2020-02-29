@@ -1,26 +1,4 @@
-import $ from "./mini-jquery.js";
-declare class MiniJqueryObject {
-    constructor(parameters: string | HTMLElement);
-    element: HTMLElement;
-    onClick(callback: (e:Event)=>void):void;
-    onInput(callback: (e:Event)=>void):void;
-    append(child: MiniJqueryObject):void;
-    removeSelf():void;
-    find(query: string):MiniJqueryObject | null;
-    updateContent(content: string):void;
-    updateData(data: string, key?: string):void; 
-    getDataByKey(key?:string):string;
-    clearValue():void;
-    scrollToButtom(): void;
-    toString():string;
-    set disable(value: boolean);
-    set error(value: boolean);
-    get disable():boolean;
-    get htmlElement():HTMLElement;
-    get parent():MiniJqueryObject | null;
-    get value():string;
-    get templateClone():MiniJqueryObject | null;
-};
+import $, {MiniJqueryObject} from "./mini-jquery.js";
 interface IDataObject {
     [key: string]: {
         name: string,

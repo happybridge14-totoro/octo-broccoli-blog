@@ -1,3 +1,4 @@
+;
 const DEFAULT_KEY = "id";
 const CLASS_NAME_ERROR = "error";
 class MiniJquery {

@@ -1,6 +1,5 @@
 import $ from "./mini-jquery.js";
 ;
-;
 (($) => {
     let Operation;
     (function (Operation) {

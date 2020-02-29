@@ -1,6 +1,23 @@
+export declare class MiniJqueryObject {
+    onClick(callback: (e: Event) => void): void;
+    onInput(callback: (e: Event) => void): void;
+    append(child: MiniJqueryObject): void;
+    removeSelf(): void;
+    find(query: string): MiniJqueryObject | null;
+    updateContent(content: string): void;
+    updateData(data: string, key?: string): void;
+    getDataByKey(key?: string): string;
+    clearValue(): void;
+    scrollToButtom(): void;
+    set disable(value: boolean);
+    set error(value: boolean);
+    get parent(): MiniJqueryObject | null;
+    get value(): string;
+    get templateClone(): MiniJqueryObject | null;
+};
 const DEFAULT_KEY:string = "id";
 const CLASS_NAME_ERROR:string = "error";
-class MiniJquery {
+class MiniJquery implements MiniJquery {
     element: HTMLElement;
     constructor(parameters: string | HTMLElement) {
         if (typeof parameters === "string") {
