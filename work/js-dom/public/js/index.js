@@ -135,6 +135,7 @@ import $ from "./mini-jquery.js";
         else {
             userInput.clearValue();
             addButton.disable = true;
+            needCheck = false;
         }
     });
 })($);

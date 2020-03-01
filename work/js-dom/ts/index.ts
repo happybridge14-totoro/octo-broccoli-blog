@@ -130,6 +130,7 @@ interface IDataObject {
         } else {
             userInput.clearValue();
             addButton.disable = true;
+            needCheck = false;
         }
     });
 })($);
