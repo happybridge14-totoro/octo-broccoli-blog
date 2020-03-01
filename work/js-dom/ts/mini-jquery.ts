@@ -1,23 +1,6 @@
-export declare class MiniJqueryObject {
-    onClick(callback: (e: Event) => void): void;
-    onInput(callback: (e: Event) => void): void;
-    append(child: MiniJqueryObject): void;
-    removeSelf(): void;
-    find(query: string): MiniJqueryObject | null;
-    updateContent(content: string): void;
-    updateData(data: string, key?: string): void;
-    getDataByKey(key?: string): string;
-    clearValue(): void;
-    scrollToButtom(): void;
-    set disable(value: boolean);
-    set error(value: boolean);
-    get parent(): MiniJqueryObject | null;
-    get value(): string;
-    get templateClone(): MiniJqueryObject | null;
-};
 const DEFAULT_KEY:string = "id";
 const CLASS_NAME_ERROR:string = "error";
-class MiniJquery implements MiniJqueryObject {
+export class MiniJquery {
     element: HTMLElement;
     constructor(parameters: string | HTMLElement) {
         if (typeof parameters === "string") {
@@ -36,10 +19,10 @@ class MiniJquery implements MiniJqueryObject {
             this.element = parameters;
         }
     }
-    onClick(callback: (e:Event)=>void):void {
+    onClick(callback: (this:void, e:Event)=>void):void {
         this.element.addEventListener("click", callback);
     }
-    onInput(callback: (e:Event)=>void):void {
+    onInput(callback: (this:void, e:Event)=>void):void {
         this.element.addEventListener("input", callback);
     }
     // onSubmit(callback: (e:Event) => void):void {
@@ -63,6 +46,13 @@ class MiniJquery implements MiniJqueryObject {
     }
     getDataByKey(key:string = DEFAULT_KEY):string {
         return this.element.dataset[key] || "";
+    }
+    updateClass(newToken:string, oldToken:string):void {
+        if (oldToken === "") {
+            this.element.classList.add(newToken);
+        } else {
+            this.element.classList.replace(oldToken, newToken);
+        }
     }
     updateData(data:string, key:string = DEFAULT_KEY):void {
         this.element.dataset[key] = data; 

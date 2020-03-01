@@ -7,6 +7,26 @@ import $ from "./mini-jquery.js";
         Operation["MINUS"] = "minus";
         Operation["DELETE"] = "delete";
     })(Operation || (Operation = {}));
+    ;
+    const renderNextTheme = (() => {
+        let themeIndex = -1;
+        let currentClassName = "";
+        const THEMES = ["dark", "light"];
+        const getThemeClassName = (theme) => {
+            return `${theme}-theme`;
+        };
+        const getNextTheme = () => {
+            themeIndex = (++themeIndex) % THEMES.length;
+            return THEMES[themeIndex];
+        };
+        const bodyNode = $("body");
+        return () => {
+            const oldClassName = currentClassName;
+            currentClassName = getThemeClassName(getNextTheme());
+            bodyNode.updateClass(currentClassName, oldClassName);
+        };
+    })();
+    renderNextTheme();
     const KEY_OPERATION = "operation";
     const data = {};
     const getId = () => {
@@ -17,46 +37,34 @@ import $ from "./mini-jquery.js";
     const userInput = $(".user-input-text");
     const addButton = $(".user-input-action");
     const listBlock = $(".list-block");
+    const changeThemeButton = $(".user-theme-change");
     let needCheck = false;
     userInput.clearValue();
     addButton.disable = true;
-    const setMinusButtonStatus = (baseNode, disable) => {
-        if (baseNode) {
-            const minusButton = baseNode.find(".list-item-minus");
-            if (minusButton) {
-                minusButton.disable = disable;
-            }
-        }
-        else {
-            throw new Error("Base node not found!");
-        }
-    };
+    changeThemeButton.onClick((e) => {
+        renderNextTheme();
+    });
     listBlock.onClick((e) => {
-        var _a, _b, _c;
+        var _a, _b;
         if (e.target) {
             const target = $(e.target);
             const operation = target.getDataByKey(KEY_OPERATION);
             const containerNode = (_b = (_a = target) === null || _a === void 0 ? void 0 : _a.parent) === null || _b === void 0 ? void 0 : _b.parent;
             if (containerNode) {
                 const id = containerNode.getDataByKey();
-                const countNode = containerNode.find(".list-item-count");
                 switch (operation) {
-                    case Operation.PLUS:
-                        if (countNode) {
-                            const count = ++(data[id].count);
-                            countNode.updateContent(count.toString());
-                            setMinusButtonStatus(containerNode, count === 0);
-                        }
-                        else {
-                            throw new Error(".list-item-count not found! id: " + id);
-                        }
-                        break;
-                    case Operation.MINUS:
-                        if (countNode) {
-                            if (((_c = data[id]) === null || _c === void 0 ? void 0 : _c.count) > 0) {
-                                const count = --(data[id].count);
+                    case "plus":
+                    case "minus":
+                        const countNode = containerNode.find(".list-item-count");
+                        const currentData = data[id];
+                        if (countNode && currentData) {
+                            const count = operation === "plus" ? ++(currentData.count) : --(currentData.count);
+                            if (count >= 0) {
                                 countNode.updateContent(count.toString());
-                                setMinusButtonStatus(containerNode, count === 0);
+                                const minusButton = containerNode.find(".list-item-minus");
+                                if (minusButton) {
+                                    minusButton.disable = count === 0;
+                                }
                             }
                             else {
                                 throw new Error("Count error! Should bigger than zero!");
@@ -66,7 +74,7 @@ import $ from "./mini-jquery.js";
                             throw new Error(".list-item-count not found! id: " + id);
                         }
                         break;
-                    case Operation.DELETE:
+                    case "delete":
                         delete data[id];
                         containerNode.removeSelf();
                         break;
@@ -106,9 +114,9 @@ import $ from "./mini-jquery.js";
             nameNode.updateContent(itemName);
             countNode.updateContent(count.toString());
             minusButton.disable = count === 0;
-            minusButton.updateData(Operation.MINUS, KEY_OPERATION);
-            plusButton.updateData(Operation.PLUS, KEY_OPERATION);
-            deleteButton.updateData(Operation.DELETE, KEY_OPERATION);
+            minusButton.updateData("minus", KEY_OPERATION);
+            plusButton.updateData("plus", KEY_OPERATION);
+            deleteButton.updateData("delete", KEY_OPERATION);
         }
         else {
             throw new Error("Element missing! Please check the dom elements");
@@ -117,25 +125,28 @@ import $ from "./mini-jquery.js";
     addButton.onClick((e) => {
         needCheck = true;
         const inputValue = userInput.value;
-        const newNode = itemTemplete.templateClone;
-        const newId = getId();
-        if (newNode) {
-            const count = 0;
-            data[newId] = {
-                name: inputValue,
-                count: count
-            };
-            addItem(newNode, newId, inputValue);
-            listBlock.append(newNode);
-            listBlock.scrollToButtom();
-        }
         if (inputValue === "") {
             userInputTextArea.error = true;
         }
         else {
-            userInput.clearValue();
-            addButton.disable = true;
-            needCheck = false;
+            const newNode = itemTemplete.templateClone;
+            const newId = getId();
+            if (newNode) {
+                const count = 0;
+                data[newId] = {
+                    name: inputValue,
+                    count: count
+                };
+                addItem(newNode, newId, inputValue);
+                listBlock.append(newNode);
+                listBlock.scrollToButtom();
+                userInput.clearValue();
+                addButton.disable = true;
+                needCheck = false;
+            }
+            else {
+                throw new Error("Templete element missing!");
+            }
         }
     });
 })($);

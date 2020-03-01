@@ -72,8 +72,9 @@ button:hover {
 }
 button[disabled],
 button[disabled]:hover {
+    color: var(--button-text-color);
     background-color: var(--button-background-color);
-    opacity: 0.5;
+    opacity: 0.2;
     cursor: default;
 }
 
@@ -140,7 +141,7 @@ footer {
 }
 .display-area .list-block {
     overflow-y: auto;
-    height: calc(100vh - 322px);
+    height: calc(100vh - 392px);
 }
 .display-area .list-item {
     margin: auto;
@@ -197,6 +198,12 @@ footer {
 }
 .user-input-text-area.error .user-input-error {
     display: block;
+}
+.user-customize-area {
+    padding: 1em 0px;
+    width: 100%;
+    text-align: center;
+    height: 70;
 }
 .footer-personal-info {
     list-style: none;

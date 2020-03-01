@@ -1,4 +1,4 @@
-import $, {MiniJqueryObject} from "./mini-jquery.js";
+import $, { MiniJquery } from "./mini-jquery.js";
 interface IDataObject {
     [key: string]: {
         name: string,
@@ -6,58 +6,69 @@ interface IDataObject {
     };
 };
 (($)=>{
-    enum Operation {
+    const enum Operation {
         PLUS = "plus",
         MINUS = "minus",
         DELETE = "delete"
-    }
+    };
+    const renderNextTheme: () => void =  (() => {
+        let themeIndex:number = -1;
+        let currentClassName:string = "";
+        const THEMES:string[] = ["dark", "light"];
+        const getThemeClassName = (theme:string):string => {
+            return `${theme}-theme`;
+        };
+        const getNextTheme = ():string => {
+            themeIndex = (++themeIndex) % THEMES.length;
+            return THEMES[themeIndex];
+        };
+        const bodyNode = $("body");
+        return ():void => {
+            const oldClassName:string = currentClassName;
+            currentClassName = getThemeClassName(getNextTheme());
+            bodyNode.updateClass(currentClassName, oldClassName);
+        };
+    })();
+    renderNextTheme();
     const KEY_OPERATION = "operation";
     const data:IDataObject = {};
     const getId = ():string => {
         return Date.now().toString(36);
     };
-    const itemTemplete:MiniJqueryObject = $("#list-template");
-    const userInputTextArea:MiniJqueryObject = $(".user-input-text-area");
-    const userInput:MiniJqueryObject = $(".user-input-text");
-    const addButton:MiniJqueryObject = $(".user-input-action");
-    const listBlock:MiniJqueryObject = $(".list-block");
+    const itemTemplete: MiniJquery = $("#list-template");
+    const userInputTextArea: MiniJquery = $(".user-input-text-area");
+    const userInput: MiniJquery = $(".user-input-text");
+    const addButton: MiniJquery = $(".user-input-action");
+    const listBlock: MiniJquery = $(".list-block");
+    const changeThemeButton: MiniJquery = $(".user-theme-change");
     let needCheck:boolean = false;
     userInput.clearValue();
     addButton.disable = true;
-    const setMinusButtonStatus = (baseNode:MiniJqueryObject|null, disable:boolean):void => {
-        if (baseNode) {
-            const minusButton = baseNode.find(".list-item-minus");
-            if (minusButton) {
-                minusButton.disable = disable;
-            }
-        } else {
-            throw new Error("Base node not found!");
-        }
-    };
-    listBlock.onClick((e:Event) => {
+
+    changeThemeButton.onClick((e:Event):void => {
+        renderNextTheme();
+    });
+
+    listBlock.onClick((e:Event):void=> {
         if (e.target) {
-            const target:MiniJqueryObject = $(e.target as HTMLElement);
+            const target:MiniJquery = $(e.target as HTMLElement);
             const operation = target.getDataByKey(KEY_OPERATION);
-            const containerNode:MiniJqueryObject | null | undefined = target?.parent?.parent;
+            const containerNode:MiniJquery | null | undefined = target?.parent?.parent;
             if (containerNode) {
                 const id: string = containerNode.getDataByKey();
-                const countNode: MiniJqueryObject | null = containerNode.find(".list-item-count");
                 switch (operation) {
                     case Operation.PLUS:
-                        if (countNode) {
-                            const count:number = ++(data[id].count);
-                            countNode.updateContent(count.toString());
-                            setMinusButtonStatus(containerNode, count===0);
-                        } else {
-                            throw new Error(".list-item-count not found! id: " + id);
-                        }
-                        break;
                     case Operation.MINUS:
-                        if (countNode) {
-                            if (data[id]?.count > 0) {
-                                const count:number = --(data[id].count);
+                        const countNode: MiniJquery | null = containerNode.find(".list-item-count");
+                        const currentData = data[id];
+                        if (countNode && currentData) {
+                            const count:number = operation === Operation.PLUS ? ++(currentData.count) : --(currentData.count);
+                            if (count >= 0) {
                                 countNode.updateContent(count.toString());
-                                setMinusButtonStatus(containerNode, count===0);
+                                const minusButton = containerNode.find(".list-item-minus");
+                                if (minusButton) {
+                                    minusButton.disable = count === 0;
+                                }
                             } else {
                                 throw new Error("Count error! Should bigger than zero!");
                             }
@@ -77,7 +88,8 @@ interface IDataObject {
             }
         }
     });
-    userInput.onInput((e:Event) => {
+
+    userInput.onInput((e:Event):void => {
         if (e.target) {
             const value:string = (e.target as HTMLInputElement).value;
             if (value) {
@@ -91,13 +103,14 @@ interface IDataObject {
             }
         }
     });
-    const addItem = (node:MiniJqueryObject, id:string, itemName:string, count:number=0) => {
-        const rootNode: MiniJqueryObject | null = node.find(".list-item");
-        const nameNode:MiniJqueryObject | null = node.find(".list-item-name");
-        const countNode:MiniJqueryObject | null= node.find(".list-item-count");
-        const plusButton:MiniJqueryObject | null = node.find(".list-item-plus");
-        const minusButton:MiniJqueryObject | null = node.find(".list-item-minus");
-        const deleteButton:MiniJqueryObject | null = node.find(".list-item-delete");
+
+    const addItem = (node:MiniJquery, id:string, itemName:string, count:number=0) => {
+        const rootNode: MiniJquery | null = node.find(".list-item");
+        const nameNode:MiniJquery | null = node.find(".list-item-name");
+        const countNode:MiniJquery | null= node.find(".list-item-count");
+        const plusButton:MiniJquery | null = node.find(".list-item-plus");
+        const minusButton:MiniJquery | null = node.find(".list-item-minus");
+        const deleteButton:MiniJquery | null = node.find(".list-item-delete");
         if (rootNode && nameNode && countNode && minusButton && plusButton && deleteButton) {
             rootNode.updateData(id);
             nameNode.updateContent(itemName);
@@ -110,27 +123,29 @@ interface IDataObject {
             throw new Error("Element missing! Please check the dom elements");
         }
     };
-    addButton.onClick((e:Event) => {
+    addButton.onClick((e:Event):void => {
         needCheck = true;
         const inputValue:string = userInput.value;
-        const newNode = itemTemplete.templateClone;
-        const newId = getId();
-        if (newNode) {
-            const count:number = 0;
-            data[newId] = {
-                name: inputValue,
-                count: count
-            };
-            addItem(newNode, newId, inputValue);
-            listBlock.append(newNode);
-            listBlock.scrollToButtom();
-        }
         if (inputValue === "") {
             userInputTextArea.error = true;
         } else {
-            userInput.clearValue();
-            addButton.disable = true;
-            needCheck = false;
+            const newNode = itemTemplete.templateClone;
+            const newId = getId();
+            if (newNode) {
+                const count:number = 0;
+                data[newId] = {
+                    name: inputValue,
+                    count: count
+                };
+                addItem(newNode, newId, inputValue);
+                listBlock.append(newNode);
+                listBlock.scrollToButtom();
+                userInput.clearValue();
+                addButton.disable = true;
+                needCheck = false;
+            } else {
+                throw new Error("Templete element missing!");
+            }
         }
     });
 })($);

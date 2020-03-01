@@ -1,7 +1,6 @@
-;
 const DEFAULT_KEY = "id";
 const CLASS_NAME_ERROR = "error";
-class MiniJquery {
+export class MiniJquery {
     constructor(parameters) {
         if (typeof parameters === "string") {
             let targetElement = null;
@@ -45,6 +44,14 @@ class MiniJquery {
     }
     getDataByKey(key = DEFAULT_KEY) {
         return this.element.dataset[key] || "";
+    }
+    updateClass(newToken, oldToken) {
+        if (oldToken === "") {
+            this.element.classList.add(newToken);
+        }
+        else {
+            this.element.classList.replace(oldToken, newToken);
+        }
     }
     updateData(data, key = DEFAULT_KEY) {
         this.element.dataset[key] = data;
