@@ -1,8 +1,8 @@
 const express = require("express");
 const app = express();
 const path = require("path");
-const deleteSession = require("./src/middleware/delete-session.js");
-const cookieParser = require("./src/middleware/cookie.js");
+const deleteSession = require("./src/middleware/delete-session");
+const cookieParser = require("./src/middleware/cookie");
 const {
     INVALID_USER_ID,
     getUserIdByName,
@@ -11,7 +11,7 @@ const {
     createSessionByUserId,
     addItem,
     updateItem,
-    deleteItem} = require("./src/data.js");
+    deleteItem} = require("./src/data");
 const PORT = 3000;
 const COOKIE_KEY = "sessionid";
 const RESPONSE_SUCCESS = {
@@ -76,7 +76,10 @@ app.delete("/session", deleteSession, (req, res) => {
 // Sign in
 app.post("/session", deleteSession, (req, res) => {
     if (req.body.userName && !/((dog)| )+/.test(req.body.userName)) {
-        const userId = getUserIdByName(req.body.userName);
+        let userId = getUserIdByName(req.body.userName);
+        if (userId === INVALID_USER_ID) {
+            userId = createOrGetUserInfo(userId, req.body.userName).userId;
+        }
         const sessionId = createSessionByUserId(userId);
         res.cookie(COOKIE_KEY, sessionId);
         res.json(RESPONSE_SUCCESS);
@@ -93,7 +96,6 @@ app.delete("/item/:itemid", (req, res) => {
         if (userId !== INVALID_USER_ID) {
             deleteItem(userId, req.params.itemid);
             res.sendStatus(STATUS_CODES.SUCCESS);
-            return;
         } else {
             res.clearCookie(COOKIE_KEY);
             res.status(STATUS_CODES.UNAUTHORIZED)

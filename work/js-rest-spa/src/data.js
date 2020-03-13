@@ -1,4 +1,4 @@
-const uuid = require("./utils/uuid-generator.js");
+const uuid = require("./utils/uuid-generator");
 let userID = 1;
 const user = {};
 const userNameIdMap = new Map();
@@ -28,7 +28,7 @@ const createOrGetUserInfo = (userID, userName) => {
                 itemNames: new Set()
             };
             user[newID] = newUserInfo;
-            userMap.set(userName, newID);
+            userNameIdMap.set(userName, newID);
             return newUserInfo;
         } else {
             return null;
@@ -41,7 +41,7 @@ const getUserIdBySessionId = (sessionId) => {
 const createSessionByUserId = (userId) => {
     const sessionId = uuid();
     sessions[sessionId] = userId;
-    return newSession;
+    return sessionId;
 };
 const deleteSessionById = (sessionId) => {
     delete sessions[sessionId];
@@ -88,10 +88,12 @@ const updateItem = (userId, itemId, itemQuantity) => {
 const deleteItem = (userId, itemId) => {
     const userInfo = user[userId];
     if (userInfo) {
-        const itemName = userInfo.items[itemId].name;
-        delete userInfo.items[itemId];
-        userInfo.itemNames.delete(itemName);
+        const item = userInfo.items[itemId];
+        if (item) {
+            userInfo.itemNames.delete(item.name);
+            delete userInfo.items[itemId];
+        }
     }
 };
 
-module.exports = {INVALID_USER_ID, getUserIdByName, createOrGetUserInfo, getUserIdBySessionId, createSessionByUserId, deleteSessionById, addItem, updateItem};
+module.exports = {INVALID_USER_ID, getUserIdByName, createOrGetUserInfo, getUserIdBySessionId, createSessionByUserId, deleteSessionById, addItem, updateItem, deleteItem};
