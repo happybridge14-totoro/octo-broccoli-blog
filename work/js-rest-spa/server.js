@@ -60,15 +60,16 @@ const STATUS_CODES = {
     "BAD_RQUEST": 400,
     "UNAUTHORIZED": 401,
     "NOT_FOUND": 404,
+    "DUPLICATED": 409,
     "INTERNAL_SERVER_ERROR": 500
 };
 
 app.use(cookieParser);
 app.use(express.json());
-app.use(express.static("/public"));
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname + '/view/index.html'));
 });
+app.use(express.static("./public"));
 // Sign out
 app.delete("/session", deleteSession, (req, res) => {
     res.json(RESPONSE_SUCCESS);
@@ -89,7 +90,7 @@ app.post("/session", deleteSession, (req, res) => {
             .json(ERROR_CODES.WRONG_USER_NAME);
     }
 });
-app.delete("/item/:itemid", (req, res) => {
+app.delete("/items/:itemid", (req, res) => {
     if (req.cookies && req.cookies[COOKIE_KEY]) {
         const sessionId = req.cookies[COOKIE_KEY];
         const userId = getUserIdBySessionId(sessionId);
@@ -139,8 +140,7 @@ app.post("/items", (req, res) => {
                     res.status(STATUS_CODES.UNAUTHORIZED)
                         .json(ERROR_CODES.WRONG_USER_ID);
                 } else if (!validItem) {
-                    res.clearCookie(COOKIE_KEY);
-                    res.status(STATUS_CODES.BAD_RQUEST)
+                    res.status(STATUS_CODES.DUPLICATED)
                         .json(ERROR_CODES.ITEM_DULPLICATED);
                 } else {
                     res.json(Object.assign({itemId}, RESPONSE_SUCCESS));
@@ -163,11 +163,11 @@ app.put("/items/:itemid", (req, res) => {
     if (req.cookies && req.cookies[COOKIE_KEY]) {
         const sessionId = req.cookies[COOKIE_KEY];
         const itemId = req.params.itemid;
-        const {quality} = req.body;
+        const {itemQuality} = req.body;
         if (itemId) {
-            if (quality > 0) {
+            if (itemQuality > 0) {
                 const userId = getUserIdBySessionId(sessionId);
-                const {validUserId, validItemId} = updateItem(userId, itemId, quality);
+                const {validUserId, validItemId} = updateItem(userId, itemId, itemQuality);
                 if (!validUserId) {
                     res.clearCookie(COOKIE_KEY);
                     res.status(STATUS_CODES.UNAUTHORIZED)
@@ -194,7 +194,8 @@ app.put("/items/:itemid", (req, res) => {
     }
 });
 app.use((req, res) => {
-    res.sendStatus(STATUS_CODES.NOT_FOUND);
+    res.status(STATUS_CODES.NOT_FOUND);
+    res.sendFile(path.join(__dirname + '/view/404.html'));
 });
 app.listen(PORT, () => {
     console.log("Listerning to " + PORT);
