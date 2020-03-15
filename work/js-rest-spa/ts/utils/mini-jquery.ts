@@ -27,9 +27,6 @@ export class MiniJquery {
         this.element.addEventListener("input", callback);
         return this;
     }
-    // onSubmit(callback: (e:Event) => void):void {
-    //     this.element.addEventListener("submit", callback);
-    // }
     append(child: MiniJquery):MiniJquery {
         this.element.appendChild(child.htmlElement);
         return this;
@@ -38,6 +35,10 @@ export class MiniJquery {
         if (this.element.parentNode) {
             this.element.parentNode.removeChild(this.element);
         }
+        return this;
+    }
+    removeChildren():MiniJquery {
+        this.element.innerHTML = "";
         return this;
     }
     find(query: string):MiniJquery | null {
@@ -78,6 +79,21 @@ export class MiniJquery {
     }
     toString():string {
         return this.element.outerHTML;
+    }
+    triggleClass(className:string):MiniJquery {
+        this.element.classList.toggle(className);
+        return this;
+    }
+    addClass(className:string):MiniJquery {
+        this.element.classList.add(className);
+        return this;
+    }
+    removeClass(className:string):MiniJquery {
+        this.element.classList.remove(className);
+        return this;
+    }
+    set text(value: string) {
+        this.element.innerText = value;
     }
     set disable(value: boolean) {
         const disabledAttr: boolean | null = (this.element as HTMLInputElement).disabled;
@@ -138,12 +154,12 @@ interface paramObject {
     const param:paramObject = {
         method: method,
     };
-    $[method.toLowerCase()] = (url:string, content: object) => {
+    $[method.toLowerCase()] = (url:string, content: object):Promise<Response> => {
         if (content) {
             param.headers = { 'Content-Type': 'application/json' };
             param.body = JSON.stringify(content);
         }
-        return fetch(url,content);
+        return fetch(url,param);
     };
 });
 export default $; 

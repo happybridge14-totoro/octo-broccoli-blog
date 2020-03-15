@@ -42,7 +42,7 @@ const ERROR_CODES = {
         errorCode: 11,
         errorSummary: "Invalid item name."
     },
-    "ITEM_QUALITY_ERROR": {
+    "ITEM_QUANTITY_ERROR": {
         errorCode: 12,
         errorSummary: "Invalid item quality."
     },
@@ -91,8 +91,8 @@ app.post("/session", deleteSession, (req, res) => {
     }
 });
 app.delete("/items/:itemid", (req, res) => {
-    if (req.cookies && req.cookies[COOKIE_KEY]) {
-        const sessionId = req.cookies[COOKIE_KEY];
+    if (req.cookie && req.cookie[COOKIE_KEY]) {
+        const sessionId = req.cookie[COOKIE_KEY];
         const userId = getUserIdBySessionId(sessionId);
         if (userId !== INVALID_USER_ID) {
             deleteItem(userId, req.params.itemid);
@@ -109,8 +109,8 @@ app.delete("/items/:itemid", (req, res) => {
     }
 });
 app.get("/items", (req, res) => {
-    if (req.cookies && req.cookies[COOKIE_KEY]) {
-        const sessionId = req.cookies[COOKIE_KEY];
+    if (req.cookie && req.cookie[COOKIE_KEY]) {
+        const sessionId = req.cookie[COOKIE_KEY];
         const userId = getUserIdBySessionId(sessionId);
         const userInfo = createOrGetUserInfo(userId);
         if (userInfo) {
@@ -128,13 +128,13 @@ app.get("/items", (req, res) => {
     }
 });
 app.post("/items", (req, res) => {
-    if (req.cookies && req.cookies[COOKIE_KEY]) {
-        const sessionId = req.cookies[COOKIE_KEY];
-        const {itemName, itemQuality} = req.body;
+    if (req.cookie && req.cookie[COOKIE_KEY]) {
+        const sessionId = req.cookie[COOKIE_KEY];
+        const {itemName, itemQuantity} = req.body;
         if (itemName) {
-            if (itemQuality > 0) {
+            if (itemQuantity > 0) {
                 const userId = getUserIdBySessionId(sessionId);
-                const {validId, validItem, itemId} = addItem(userId, itemName, itemQuality);
+                const {validId, validItem, itemId} = addItem(userId, itemName, itemQuantity);
                 if (!validId) {
                     res.clearCookie(COOKIE_KEY);
                     res.status(STATUS_CODES.UNAUTHORIZED)
@@ -147,7 +147,7 @@ app.post("/items", (req, res) => {
                 }
             } else {
                 res.status(STATUS_CODES.BAD_RQUEST)
-                    .json(ERROR_CODES.ITEM_QUALITY_ERROR);
+                    .json(ERROR_CODES.ITEM_QUANTITY_ERROR);
             }
         } else {
             res.status(STATUS_CODES.BAD_RQUEST)
@@ -160,14 +160,14 @@ app.post("/items", (req, res) => {
     }
 });
 app.put("/items/:itemid", (req, res) => {
-    if (req.cookies && req.cookies[COOKIE_KEY]) {
-        const sessionId = req.cookies[COOKIE_KEY];
+    if (req.cookie && req.cookie[COOKIE_KEY]) {
+        const sessionId = req.cookie[COOKIE_KEY];
         const itemId = req.params.itemid;
-        const {itemQuality} = req.body;
+        const {itemQuantity} = req.body;
         if (itemId) {
-            if (itemQuality > 0) {
+            if (itemQuantity > 0) {
                 const userId = getUserIdBySessionId(sessionId);
-                const {validUserId, validItemId} = updateItem(userId, itemId, itemQuality);
+                const {validUserId, validItemId} = updateItem(userId, itemId, itemQuantity);
                 if (!validUserId) {
                     res.clearCookie(COOKIE_KEY);
                     res.status(STATUS_CODES.UNAUTHORIZED)
@@ -181,7 +181,7 @@ app.put("/items/:itemid", (req, res) => {
                 }
             } else {
                 res.status(STATUS_CODES.BAD_RQUEST)
-                    .json(ERROR_CODES.ITEM_QUALITY_ERROR);
+                    .json(ERROR_CODES.ITEM_QUANTITY_ERROR);
             }
         } else {
             res.status(STATUS_CODES.BAD_RQUEST)

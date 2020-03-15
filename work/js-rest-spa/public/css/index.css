@@ -138,8 +138,9 @@ footer {
     margin: 0px auto;
 }
 
-.signin-page {
+.login-page {
     padding-top: 200px;
+    text-align: center;
 }
 #user-name {
     margin: 0px 1em;
@@ -150,6 +151,8 @@ footer {
     text-align: center;
     color: var(--error-color);
     visibility: hidden;
+    height: 1.5em;
+    line-height: 1.5em;
 }
 .error.display {
     visibility: visible;

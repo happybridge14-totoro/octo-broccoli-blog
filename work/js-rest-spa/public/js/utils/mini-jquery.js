@@ -37,6 +37,10 @@ export class MiniJquery {
         }
         return this;
     }
+    removeChildren() {
+        this.element.innerHTML = "";
+        return this;
+    }
     find(query) {
         const targetElement = this.element.querySelector(query);
         if (targetElement) {
@@ -77,6 +81,21 @@ export class MiniJquery {
     }
     toString() {
         return this.element.outerHTML;
+    }
+    triggleClass(className) {
+        this.element.classList.toggle(className);
+        return this;
+    }
+    addClass(className) {
+        this.element.classList.add(className);
+        return this;
+    }
+    removeClass(className) {
+        this.element.classList.remove(className);
+        return this;
+    }
+    set text(value) {
+        this.element.innerText = value;
     }
     set disable(value) {
         const disabledAttr = this.element.disabled;
@@ -137,7 +156,7 @@ var METHOD;
             param.headers = { 'Content-Type': 'application/json' };
             param.body = JSON.stringify(content);
         }
-        return fetch(url, content);
+        return fetch(url, param);
     };
 });
 export default $;
