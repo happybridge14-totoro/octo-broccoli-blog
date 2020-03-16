@@ -132,9 +132,9 @@ app.post("/items", (req, res) => {
         const sessionId = req.cookie[COOKIE_KEY];
         const {itemName, itemQuantity} = req.body;
         if (itemName) {
-            if (!isNaN(itemQuantity) && itemQuantity > 0) {
+            if (/^[0-9]+$/.test(itemQuantity) ) {
                 const userId = getUserIdBySessionId(sessionId);
-                const {validId, validItem, itemId} = addItem(userId, itemName, itemQuantity);
+                const {validId, validItem, itemId} = addItem(userId, itemName, Number.parseInt(itemQuantity).toString());
                 if (!validId) {
                     res.clearCookie(COOKIE_KEY);
                     res.status(STATUS_CODES.UNAUTHORIZED)
@@ -165,9 +165,9 @@ app.put("/items/:itemid", (req, res) => {
         const itemId = req.params.itemid;
         const {itemQuantity} = req.body;
         if (itemId) {
-            if (!isNaN(itemQuantity) && itemQuantity > 0) {
+            if (/^[0-9]+$/.test(itemQuantity) ) {
                 const userId = getUserIdBySessionId(sessionId);
-                const {validUserId, validItemId} = updateItem(userId, itemId, itemQuantity);
+                const {validUserId, validItemId} = updateItem(userId, itemId, Number.parseInt(itemQuantity).toString());
                 if (!validUserId) {
                     res.clearCookie(COOKIE_KEY);
                     res.status(STATUS_CODES.UNAUTHORIZED)

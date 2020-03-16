@@ -42,8 +42,7 @@ const displayItems = (parentElement:MiniJquery, items:object) => {
     const name:MiniJquery = actionContioner.find(".name") || $();
     const quantity:MiniJquery = actionContioner.find(".quantity") || $();
     const checkAddButton = () => {
-        const quantityValue:number = Number.parseFloat(quantity.value);
-        add.disable = name.value.length === 0 || (!Number.isInteger(quantityValue) || quantityValue < 0);
+        add.disable = !/^[0-9]+$/.test(quantity.value);
     };
 
     const displayItem = (itemId:string, itemName:string, itemQuantity:string) => {
@@ -56,7 +55,7 @@ const displayItems = (parentElement:MiniJquery, items:object) => {
         updateBtn.updateData(OPERATION_UPDATE, OPERATION_KEY);
         deleteBtn.updateData(OPERATION_DELETE, OPERATION_KEY);
         name.updateContent(itemName);
-        quantity.value = itemQuantity;
+        quantity.value = Number.parseInt(itemQuantity).toString();
         itemContainer.updateData(itemId);
         itemsContainer.append(itemContent)
                     .scrollToButtom();
@@ -107,6 +106,7 @@ const displayItems = (parentElement:MiniJquery, items:object) => {
                 response = await deleteItem(itemId);
             } else if (operation === OPERATION_UPDATE) {
                 const quantity:MiniJquery = parent.find(".quantity") || $();
+                quantity.value = Number.parseInt(quantity.value).toString();
                 response = await modifyItem(itemId, quantity.value);
             } else {
                 return;
@@ -133,8 +133,7 @@ const displayItems = (parentElement:MiniJquery, items:object) => {
         const input:MiniJquery = $(event.target);
         const parent:MiniJquery = input.parent || $();
         const updateBtn:MiniJquery = parent.find(".update") || $();
-        const quantityValue:number = Number.parseFloat(input.value);
-        updateBtn.disable = !Number.isInteger(quantityValue) || quantityValue < 0;
+        updateBtn.disable = !/^[0-9]+$/.test(input.value);
     });
     add.disable = true;
     signout.onClick((event:Event) => {

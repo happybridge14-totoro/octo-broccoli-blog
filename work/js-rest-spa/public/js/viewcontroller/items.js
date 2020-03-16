@@ -40,8 +40,7 @@ const displayItems = (parentElement, items) => {
     const name = actionContioner.find(".name") || $();
     const quantity = actionContioner.find(".quantity") || $();
     const checkAddButton = () => {
-        const quantityValue = Number.parseFloat(quantity.value);
-        add.disable = name.value.length === 0 || (!Number.isInteger(quantityValue) || quantityValue < 0);
+        add.disable = !/^[0-9]+$/.test(quantity.value);
     };
     const displayItem = (itemId, itemName, itemQuantity) => {
         const itemContent = itemTemplate.templateClone || $();
@@ -53,7 +52,7 @@ const displayItems = (parentElement, items) => {
         updateBtn.updateData(OPERATION_UPDATE, OPERATION_KEY);
         deleteBtn.updateData(OPERATION_DELETE, OPERATION_KEY);
         name.updateContent(itemName);
-        quantity.value = itemQuantity;
+        quantity.value = Number.parseInt(itemQuantity).toString();
         itemContainer.updateData(itemId);
         itemsContainer.append(itemContent)
             .scrollToButtom();
@@ -107,6 +106,7 @@ const displayItems = (parentElement, items) => {
             }
             else if (operation === OPERATION_UPDATE) {
                 const quantity = parent.find(".quantity") || $();
+                quantity.value = Number.parseInt(quantity.value).toString();
                 response = await modifyItem(itemId, quantity.value);
             }
             else {
@@ -136,8 +136,7 @@ const displayItems = (parentElement, items) => {
         const input = $(event.target);
         const parent = input.parent || $();
         const updateBtn = parent.find(".update") || $();
-        const quantityValue = Number.parseFloat(input.value);
-        updateBtn.disable = !Number.isInteger(quantityValue) || quantityValue < 0;
+        updateBtn.disable = !/^[0-9]+$/.test(input.value);
     });
     add.disable = true;
     signout.onClick((event) => {
