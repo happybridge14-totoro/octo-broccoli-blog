@@ -103,6 +103,9 @@ export class MiniJquery {
             this.element.disabled = value;
         }
     }
+    set hidden(value) {
+        this.element.hidden = value;
+    }
     set error(value) {
         if (value) {
             this.element.classList.add(CLASS_NAME_ERROR);
@@ -110,6 +113,9 @@ export class MiniJquery {
         else {
             this.element.classList.remove(CLASS_NAME_ERROR);
         }
+    }
+    set value(value) {
+        this.element.value = value;
     }
     get disable() {
         return !!this.element.disabled;

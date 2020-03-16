@@ -132,7 +132,7 @@ app.post("/items", (req, res) => {
         const sessionId = req.cookie[COOKIE_KEY];
         const {itemName, itemQuantity} = req.body;
         if (itemName) {
-            if (itemQuantity > 0) {
+            if (!isNaN(itemQuantity) && itemQuantity > 0) {
                 const userId = getUserIdBySessionId(sessionId);
                 const {validId, validItem, itemId} = addItem(userId, itemName, itemQuantity);
                 if (!validId) {
@@ -165,7 +165,7 @@ app.put("/items/:itemid", (req, res) => {
         const itemId = req.params.itemid;
         const {itemQuantity} = req.body;
         if (itemId) {
-            if (itemQuantity > 0) {
+            if (!isNaN(itemQuantity) && itemQuantity > 0) {
                 const userId = getUserIdBySessionId(sessionId);
                 const {validUserId, validItemId} = updateItem(userId, itemId, itemQuantity);
                 if (!validUserId) {
@@ -173,7 +173,6 @@ app.put("/items/:itemid", (req, res) => {
                     res.status(STATUS_CODES.UNAUTHORIZED)
                         .json(ERROR_CODES.WRONG_USER_ID);
                 } else if (!validItemId) {
-                    res.clearCookie(COOKIE_KEY);
                     res.status(STATUS_CODES.BAD_RQUEST)
                         .json(ERROR_CODES.ITEM_ID_ERROR);
                 } else {

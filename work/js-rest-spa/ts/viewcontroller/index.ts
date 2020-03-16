@@ -9,20 +9,29 @@ enum PAGES {
     ITEMS
 };
 const stage:MiniJquery = $("#stage");
+const loading:MiniJquery = $(".loading");
+
+let currentPage:PAGES|null;
 
 const displayPage = (page:PAGES, items:object|null = null) => {
     switch(page) {
         case PAGES.ITEMS:
-            stage.removeChildren();
-            displayItemsPage(stage, items).then(() => {
-                displayPage(PAGES.LOGIN);
-            });
+            if (currentPage !== PAGES.ITEMS) {
+                currentPage = PAGES.ITEMS;
+                stage.removeChildren();
+                displayItemsPage(stage, items || {}).then(() => {
+                    displayPage(PAGES.LOGIN);
+                });
+            }
             break;
         case PAGES.LOGIN:
-            stage.removeChildren();
-            displayLoginPage(stage).then(() => {
-                renderPage();
-            });
+            if (currentPage !== PAGES.LOGIN) {
+                currentPage = PAGES.LOGIN;
+                stage.removeChildren();
+                displayLoginPage(stage).then(() => {
+                    renderPage();
+                });
+            }
             break;
         default:
             break;
@@ -34,7 +43,9 @@ const enum STATUS {
 
 const renderPage = async () => {
     try {
+        loading.hidden = false;
         const response:Response = await getItems();
+        loading.hidden = true;
         if (response.ok) {
             const items = await response.json();
             displayPage(PAGES.ITEMS, items);

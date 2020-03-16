@@ -101,12 +101,18 @@ export class MiniJquery {
             (this.element as HTMLInputElement).disabled = value;
         } 
     }
+    set hidden(value: boolean) {
+        this.element.hidden = value;
+    }
     set error(value: boolean) {
         if (value) {
             this.element.classList.add(CLASS_NAME_ERROR);
         } else {
             this.element.classList.remove(CLASS_NAME_ERROR);
         }
+    }
+    set value(value: string) {
+        (this.element as HTMLInputElement).value = value;
     }
     get disable():boolean {
         return !!(this.element as HTMLInputElement).disabled;
@@ -159,7 +165,7 @@ interface paramObject {
             param.headers = { 'Content-Type': 'application/json' };
             param.body = JSON.stringify(content);
         }
-        return fetch(url,param);
+        return fetch(url, param);
     };
 });
 export default $; 

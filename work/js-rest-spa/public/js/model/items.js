@@ -10,7 +10,8 @@ const getURL = (itemId = "") => {
 const deleteItem = (itemId) => {
     return $.delete(getURL(itemId));
 };
-const addItem = (itemName, itemQuantity) => {
+const addItem = (itemName, quantity) => {
+    const itemQuantity = Number.parseInt(quantity);
     return $.post(getURL(), { itemName, itemQuantity });
 };
 const modifyItem = (itemId, itemQuantity) => {

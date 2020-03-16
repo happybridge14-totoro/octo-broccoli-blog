@@ -25,6 +25,7 @@ const displayLoginPage = (parentElement:MiniJquery):Promise<boolean> => {
     signin.onClick(async (event) => {
         event.preventDefault();
         const response = await signIn(input.value||"");
+        input.clearValue();
         if (response.ok) {
             hideError();
             resolver && resolver(true);

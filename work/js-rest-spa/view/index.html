@@ -15,18 +15,41 @@
         <div class="error">
             Error: message
         </div>
+        <div class="loading">
+            Loading...
+        </div>
         <div id="stage">
         </div>
         <template id="login">
             <div class="login-page">
-                <label>User Name: </label>
+                <label for="user-name">User Name: </label>
                 <input id="user-name" type="text">
                 <button class="signin">submit</button>
             </div>
         </template>
         <template id="items">
-            <div>
-                hello world
+            <section class="items-list">
+                <h5 class="items-title">Current Items</h5>
+                <div class="items-detail">
+                </div>
+                <div class="items-action">
+                    <span>Item name:</span>
+                    <input type="text" class="name" minlength="1">
+                    <span>Quantity:</span>
+                    <input type="number" class="quantity" min="0">
+                    <button class="add">Add</button>
+                </div>
+                <div class="user-action">
+                    <button class="signout">Sign out</button>
+                </div>
+            </section>
+        </template>
+        <template id="item">
+            <div class="single-item">
+                <div class="item-name">name</div>
+                <input type="number" class="quantity" min="0">
+                <button class="update">Update</button>
+                <button class="delete">X</button>
             </div>
         </template>
     </main>

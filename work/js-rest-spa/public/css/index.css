@@ -86,6 +86,9 @@ input {
     padding: 6px 16px;
     font-size: 16px;
 }
+input[type="number"] {
+    padding-right: 8px;
+}
 
 header {
     border-bottom: 1px solid var(--line-color);
@@ -132,10 +135,14 @@ footer {
     box-sizing: border-box;
     height: 90px;
 }
-
+.loading {
+    text-align: center;
+    margin-top: 2em;
+}
 #stage {
     width: 620px;
     margin: 0px auto;
+    height: 100%;
 }
 
 .login-page {
@@ -151,8 +158,8 @@ footer {
     text-align: center;
     color: var(--error-color);
     visibility: hidden;
-    height: 1.5em;
-    line-height: 1.5em;
+    height: 56px;
+    box-sizing: border-box;
 }
 .error.display {
     visibility: visible;
@@ -161,6 +168,57 @@ footer {
 .not-found-page{
     margin-top: 2em;
     text-align: center;
+}
+.items-title {
+    box-sizing: border-box;
+    height: 17px;
+}
+.single-item {
+    margin-bottom: 1em;
+}
+.item-name {
+    display: inline-block;
+    width: 15em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.update {
+    margin-right: 2em;
+}
+
+.items-list {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+.items-title {
+    text-align: center;
+}
+.items-detail {
+    height: calc(100vh - 398px);
+    min-height: 100px;
+    overflow-y: auto;
+}
+.items-action {
+    height: 50px;
+    padding: 1em 0px;
+    box-sizing: border-box;
+}
+
+.user-action {
+    text-align: center;
+    padding: 1em 0px;
+    height: 60px;
+    box-sizing: border-box;
+}
+.name {
+    width: 10em;
+    margin: 0px 1em;
+}
+.quantity {
+    width: 3em;
+    margin: 0px 1em;
 }
 
 .footer-personal-info {

@@ -12,8 +12,8 @@ const getURL = (itemId:string=""):string => {
 const deleteItem = (itemId: string):Promise<Response> => {
     return $.delete(getURL(itemId));
 };
-
-const addItem = (itemName:string, itemQuantity:string):Promise<Response> => {
+const addItem = (itemName:string, quantity:string):Promise<Response> => {
+    const itemQuantity:number = Number.parseInt(quantity);
     return $.post(getURL(), {itemName, itemQuantity});
 };
 const modifyItem = (itemId:string, itemQuantity: string):Promise<Response> => {
