@@ -4,11 +4,7 @@ import $, { MiniJquery } from "../utils/mini-jquery.js";
 import displayLoginPage from "./login.js";
 import displayItemsPage from "./items.js";
 import {displayError, hideError} from "./error.js";
-import { STATUS_CODES, ERROR_CODES } from "../utils/status-error-codes.js";
-interface ERROR_OBJECT {
-    errorCode: ERROR_CODES
-    errorMessage?: string
-};
+import { STATUS_CODES, ERROR_CODES, ERROR_OBJECT } from "../utils/status-error-codes.js";
 enum PAGES {
     LOGIN,
     ITEMS
@@ -54,7 +50,7 @@ const renderPage = async () => {
             const items = await response.json();
             displayPage(PAGES.ITEMS, items);
         } else if (response.status === STATUS_CODES.UNAUTHORIZED){
-            const errorMessage = await response.json();
+            const errorMessage:ERROR_OBJECT = await response.json();
             if (errorMessage.errorCode === ERROR_CODES.WRONG_USER_ID) {
                 displayError(WRONT_USER_ID_MESSAGE);
             } else {

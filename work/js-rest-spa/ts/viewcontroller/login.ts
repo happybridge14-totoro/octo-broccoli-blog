@@ -1,5 +1,5 @@
 import {signIn} from "../model/login.js";
-import { STATUS_CODES, ERROR_CODES } from "../utils/status-error-codes.js";
+import { STATUS_CODES, ERROR_CODES, ERROR_OBJECT } from "../utils/status-error-codes.js";
 import $, {MiniJquery} from "../utils/mini-jquery.js";
 import {displayError, hideError} from "./error.js";
 
@@ -15,10 +15,6 @@ const displayLoginPage = (parentElement:MiniJquery):Promise<boolean> => {
     let resolver:any; 
     let rejecter:any; 
     
-    interface ERROR_OBJECT {
-        errorCode: ERROR_CODES
-        errorMessage?: string
-    };
     if (!loginPage.element) {
         throw new Error("#signin is not a template node");
     } 

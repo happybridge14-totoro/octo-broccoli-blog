@@ -10,7 +10,6 @@ const displayLoginPage = (parentElement) => {
     const signin = loginPage.find(".signin") || $();
     let resolver;
     let rejecter;
-    ;
     if (!loginPage.element) {
         throw new Error("#signin is not a template node");
     }

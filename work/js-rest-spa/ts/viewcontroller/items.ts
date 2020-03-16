@@ -1,4 +1,4 @@
-import { STATUS_CODES, ERROR_CODES } from "../utils/status-error-codes.js";
+import { STATUS_CODES, ERROR_CODES , ERROR_OBJECT} from "../utils/status-error-codes.js";
 import $, {MiniJquery} from "../utils/mini-jquery.js";
 import {displayError, hideError} from "./error.js";
 import {signOut} from "../model/login.js";
@@ -11,10 +11,6 @@ const ITEM_QUANTITY_ERROR_MESSAGE:string = "Invalid item quantity!";
 const ITEM_DUPLICATED_ERROR_MESSAGE:string = "Item name already exists!";
 const ITEM_ID_ERROR_MESSAGE:string = "Item has been removed!";
 const UNKNOWN_ERROR_MESSAGE:string = "Unknow error!";
-interface ERROR_OBJECT {
-    errorCode: ERROR_CODES
-    errorMessage?: string
-};
 const OPERATION_KEY = "operation";
 const OPERATION_UPDATE = "update";
 const OPERATION_DELETE = "delete";

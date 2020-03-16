@@ -17,5 +17,9 @@ const enum ERROR_CODES {
     "ITEM_DULPLICATED" = 15,
     "NOT_FOUND" = 1000 
 };
+interface ERROR_OBJECT {
+    errorCode: ERROR_CODES
+    errorMessage?: string
+};
 
-export {STATUS_CODES, ERROR_CODES}
+export {STATUS_CODES, ERROR_CODES, ERROR_OBJECT}

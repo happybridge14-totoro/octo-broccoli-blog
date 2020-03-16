@@ -3,7 +3,6 @@ import $ from "../utils/mini-jquery.js";
 import displayLoginPage from "./login.js";
 import displayItemsPage from "./items.js";
 import { displayError, hideError } from "./error.js";
-;
 var PAGES;
 (function (PAGES) {
     PAGES[PAGES["LOGIN"] = 0] = "LOGIN";

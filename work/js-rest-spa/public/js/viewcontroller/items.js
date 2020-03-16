@@ -9,7 +9,6 @@ const ITEM_QUANTITY_ERROR_MESSAGE = "Invalid item quantity!";
 const ITEM_DUPLICATED_ERROR_MESSAGE = "Item name already exists!";
 const ITEM_ID_ERROR_MESSAGE = "Item has been removed!";
 const UNKNOWN_ERROR_MESSAGE = "Unknow error!";
-;
 const OPERATION_KEY = "operation";
 const OPERATION_UPDATE = "update";
 const OPERATION_DELETE = "delete";
