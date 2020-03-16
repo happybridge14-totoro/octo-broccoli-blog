@@ -2,12 +2,15 @@ import { getItems } from "../model/items.js";
 import $ from "../utils/mini-jquery.js";
 import displayLoginPage from "./login.js";
 import displayItemsPage from "./items.js";
+import { displayError, hideError } from "./error.js";
+;
 var PAGES;
 (function (PAGES) {
     PAGES[PAGES["LOGIN"] = 0] = "LOGIN";
     PAGES[PAGES["ITEMS"] = 1] = "ITEMS";
 })(PAGES || (PAGES = {}));
 ;
+const WRONT_USER_ID_MESSAGE = "Wrong user! Please login again.";
 const stage = $("#stage");
 const loading = $(".loading");
 let currentPage;
@@ -35,21 +38,24 @@ const displayPage = (page, items = null) => {
             break;
     }
 };
-var STATUS;
-(function (STATUS) {
-    STATUS[STATUS["UNAUTHORIZED"] = 401] = "UNAUTHORIZED";
-})(STATUS || (STATUS = {}));
-;
 const renderPage = async () => {
     try {
         loading.hidden = false;
         const response = await getItems();
         loading.hidden = true;
         if (response.ok) {
+            hideError();
             const items = await response.json();
             displayPage(PAGES.ITEMS, items);
         }
         else if (response.status === 401) {
+            const errorMessage = await response.json();
+            if (errorMessage.errorCode === 3) {
+                displayError(WRONT_USER_ID_MESSAGE);
+            }
+            else {
+                hideError();
+            }
             displayPage(PAGES.LOGIN);
         }
         else {

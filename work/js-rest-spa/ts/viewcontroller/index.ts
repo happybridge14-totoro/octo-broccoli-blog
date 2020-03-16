@@ -3,11 +3,17 @@ import {getItems} from "../model/items.js";
 import $, { MiniJquery } from "../utils/mini-jquery.js";
 import displayLoginPage from "./login.js";
 import displayItemsPage from "./items.js";
-
+import {displayError, hideError} from "./error.js";
+import { STATUS_CODES, ERROR_CODES } from "../utils/status-error-codes.js";
+interface ERROR_OBJECT {
+    errorCode: ERROR_CODES
+    errorMessage?: string
+};
 enum PAGES {
     LOGIN,
     ITEMS
 };
+const WRONT_USER_ID_MESSAGE:string = "Wrong user! Please login again.";
 const stage:MiniJquery = $("#stage");
 const loading:MiniJquery = $(".loading");
 
@@ -37,9 +43,6 @@ const displayPage = (page:PAGES, items:object|null = null) => {
             break;
     }
 };
-const enum STATUS {
-    UNAUTHORIZED = 401
-};
 
 const renderPage = async () => {
     try {
@@ -47,9 +50,16 @@ const renderPage = async () => {
         const response:Response = await getItems();
         loading.hidden = true;
         if (response.ok) {
+            hideError();
             const items = await response.json();
             displayPage(PAGES.ITEMS, items);
-        } else if (response.status === STATUS.UNAUTHORIZED){
+        } else if (response.status === STATUS_CODES.UNAUTHORIZED){
+            const errorMessage = await response.json();
+            if (errorMessage.errorCode === ERROR_CODES.WRONG_USER_ID) {
+                displayError(WRONT_USER_ID_MESSAGE);
+            } else {
+                hideError();
+            }
             displayPage(PAGES.LOGIN);
         } else {
             console.error("Unexpect error!");
