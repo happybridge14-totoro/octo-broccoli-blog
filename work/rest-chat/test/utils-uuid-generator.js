@@ -12,19 +12,15 @@ describe("UUID genderator", () => {
         });
         it("test1, match rules/", () => {
             //  Only available after v13.8.0
-            // assert.match(generatSessionId(), /[0-9a-z]{13}/);
             const id = generatUUID();
-            console.log(id);
             assert.ok(rules.test(id) && !ids.has(id));
         });
         it("test2, match rules/", () => {
             const id = generatUUID();
-            console.log(id);
             assert.ok(rules.test(id) && !ids.has(id));
         });
         it("test3, match rules/", () => {
             const id = generatUUID();
-            console.log(id);
             assert.ok(rules.test(id) && !ids.has(id));
         });
     });

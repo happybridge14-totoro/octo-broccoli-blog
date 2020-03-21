@@ -6,7 +6,6 @@ for (let i = 0; i < 16; ++i) {
 for (let i = 16; i < 256; ++i) {
     BYTE_TABLE[i] = i.toString(16);
 }
-BYTE_TABLE[256] = "-";
 const position = [4, 6, 8, 10];
 const generatUUID = () => {
     const rnds = crypto.randomBytes(16);
@@ -20,7 +19,7 @@ const generatUUID = () => {
             ++positionIndex;
             prev += "-";
         }
-        return prev += BYTE_TABLE[bit];
+        return prev + BYTE_TABLE[bit];
     }, "");
 };
 module.exports = generatUUID;
