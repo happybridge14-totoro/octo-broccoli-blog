@@ -20,6 +20,7 @@ const stop = () => {
     if (evtSource) {
         console.log("sse close");
         evtSource.close();
+        evtSource = null;
     }
 };
 

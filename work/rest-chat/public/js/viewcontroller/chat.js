@@ -27,7 +27,9 @@ const displayChat = (parent, data) => {
             });
             handlePromise(timestamp);
         }).catch((e) => {
-            console.error(e);
+            if (e) {
+                console.error(e);
+            }
             if (resolver) {
                 stopMessage();
                 resolver();

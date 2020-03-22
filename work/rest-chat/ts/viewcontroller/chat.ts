@@ -30,7 +30,9 @@ const displayChat = (parent:MiniJquery, data:Array<messageBody>) => {
             });
             handlePromise(timestamp);
         }).catch((e:Error)=>{
-            console.error(e);
+            if (e) {
+                console.error(e);
+            }
             if (resolver) {
                 stopMessage();
                 resolver();
