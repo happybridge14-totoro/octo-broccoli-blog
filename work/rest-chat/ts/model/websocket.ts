@@ -1,4 +1,4 @@
-import {dataObject} from "./dataInterface.js";
+import {dataObject} from "./dataInterface";
 
 let ws:WebSocket|null;
 let intervalHandler = -1;

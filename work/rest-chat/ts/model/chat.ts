@@ -1,6 +1,6 @@
-import $ from "../utils/mini-jquery.js";
-import {getChat, stop as longStop} from "./long-connection.js";
-import { messageBody, messageObject} from "./dataInterface.js";
+import $ from "../utils/mini-jquery";
+import {getChat, stop as longStop} from "./long-connection";
+import { messageBody, messageObject} from "./dataInterface";
 const URL = "/chat";
 let timestamp:number = 0;
 const getURL = (isLong:boolean|null=false):string => {

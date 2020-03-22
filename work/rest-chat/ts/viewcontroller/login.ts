@@ -1,7 +1,7 @@
-import {signIn} from "../model/login.js";
-import { STATUS_CODES, ERROR_CODES, ERROR_OBJECT } from "../utils/status-error-codes.js";
-import $, {MiniJquery} from "../utils/mini-jquery.js";
-import {displayError, hideError} from "./error.js";
+import {signIn} from "../model/login";
+import { STATUS_CODES, ERROR_CODES, ERROR_OBJECT } from "../utils/status-error-codes";
+import $, {MiniJquery} from "../utils/mini-jquery";
+import {displayError, hideError} from "./error";
 
 const USER_NAME_ERROR_MESSAGE = "User name is not valid!";
 const UNEXPECTED_ERROR_MESSAGE = "Something went wrong!";

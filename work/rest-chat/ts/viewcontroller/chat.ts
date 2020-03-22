@@ -1,10 +1,10 @@
-import $, { MiniJquery } from "../utils/mini-jquery.js";
-import { dataObject , messageBody, messageObject, userObject} from "../model/dataInterface.js";
-import {signOut} from "../model/login.js";
-import {sendMessage, getMessage, receiveMessage, stopMessage} from "../model/chat.js";
-import {receiveUsers, stopUser} from "../model/users.js"
-import { STATUS_CODES, ERROR_CODES, ERROR_OBJECT } from "../utils/status-error-codes.js";
-import {displayError, hideError} from "./error.js";
+import $, { MiniJquery } from "../utils/mini-jquery";
+import { dataObject , messageBody, messageObject, userObject} from "../model/dataInterface";
+import {signOut} from "../model/login";
+import {sendMessage, getMessage, receiveMessage, stopMessage} from "../model/chat";
+import {receiveUsers, stopUser} from "../model/users"
+import { STATUS_CODES, ERROR_CODES, ERROR_OBJECT } from "../utils/status-error-codes";
+import {displayError, hideError} from "./error";
 
 const chatPageTemplate:MiniJquery = $("#chat");
 const userTemplate:MiniJquery = $("#user");

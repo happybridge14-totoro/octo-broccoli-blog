@@ -152,7 +152,7 @@ export class MiniJquery {
     // });
 
 const $:any = (query:string | HTMLElement):MiniJquery=> {return new MiniJquery(query)};
-const enum METHOD {
+enum METHOD {
     GET = "GET",
     POST = "POST",
     DELETE = "DELETE",

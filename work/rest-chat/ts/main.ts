@@ -1,2 +1,2 @@
-import init from "./viewcontroller/index.js";
+import init from "./viewcontroller/index";
 init();

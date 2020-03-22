@@ -1,4 +1,4 @@
-const enum STATUS_CODES {
+enum STATUS_CODES {
     "SUCCESS" = 200,
     "BAD_RQUEST" = 400,
     "UNAUTHORIZED" = 401,
@@ -6,7 +6,7 @@ const enum STATUS_CODES {
     "DUPLICATED" = 409,
     "INTERNAL_SERVER_ERROR" = 500
 };
-const enum ERROR_CODES {
+enum ERROR_CODES {
     "WRONG_USER_ID" = 3,
     "WRONG_USER_NAME" = 4,
     "SESSION_NOT_FOUND" = 5,

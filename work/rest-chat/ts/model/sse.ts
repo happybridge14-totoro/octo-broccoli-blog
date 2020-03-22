@@ -1,4 +1,4 @@
-import {dataObject} from "./dataInterface.js";
+import {dataObject} from "./dataInterface";
 
 let evtSource:EventSource | null;
 const start = (cb:(data:dataObject)=>void)=> {

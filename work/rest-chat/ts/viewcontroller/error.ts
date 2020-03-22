@@ -1,4 +1,4 @@
-import $, {MiniJquery} from "../utils/mini-jquery.js";
+import $, {MiniJquery} from "../utils/mini-jquery";
 
 const CLASS_DISPLAY = "display";
 const errorview:MiniJquery = $(".error");

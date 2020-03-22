@@ -1,4 +1,4 @@
-import $ from "../utils/mini-jquery.js";
+import $ from "../utils/mini-jquery";
 const URL = "/session";
 
 const signIn = (userName: string):Promise<Response> => {

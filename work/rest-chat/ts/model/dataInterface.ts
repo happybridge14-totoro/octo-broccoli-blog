@@ -1,4 +1,4 @@
-const enum TYPE {
+enum TYPE {
     USERS = "users",
     CHAT = "chat"
 };

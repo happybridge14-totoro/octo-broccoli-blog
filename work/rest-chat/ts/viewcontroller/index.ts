@@ -1,10 +1,10 @@
-import {getMessage}  from "../model/chat.js";
-import $, { MiniJquery } from "../utils/mini-jquery.js";
-import displayLoginPage from "./login.js";
-import displayChatPage from "./chat.js";
-import {displayError, hideError} from "./error.js";
-import { STATUS_CODES, ERROR_CODES, ERROR_OBJECT } from "../utils/status-error-codes.js";
-import { dataObject , messageBody} from "../model/dataInterface.js";
+import {getMessage}  from "../model/chat";
+import $, { MiniJquery } from "../utils/mini-jquery";
+import displayLoginPage from "./login";
+import displayChatPage from "./chat";
+import {displayError, hideError} from "./error";
+import { STATUS_CODES, ERROR_CODES, ERROR_OBJECT } from "../utils/status-error-codes";
+import { dataObject , messageBody} from "../model/dataInterface";
 enum PAGES {
     LOGIN,
     CHAT

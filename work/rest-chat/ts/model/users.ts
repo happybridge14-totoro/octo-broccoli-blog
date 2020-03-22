@@ -1,6 +1,6 @@
-import $ from "../utils/mini-jquery.js";
-import {getUsers, stop as longStop} from "./long-connection.js";
-import { userObject } from "./dataInterface.js";
+import $ from "../utils/mini-jquery";
+import {getUsers, stop as longStop} from "./long-connection";
+import { userObject } from "./dataInterface";
 const URL = "/users";
 let timestamp:number = 0;
 const getURL = (isLong:boolean|null=false):string => {

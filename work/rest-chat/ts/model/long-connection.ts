@@ -1,5 +1,5 @@
-import {start as sseStart, stop as sseStop} from "./sse.js";
-import {start as wsStart, stop as wsStop} from "./websocket.js";
+import {start as sseStart, stop as sseStop} from "./sse";
+import {start as wsStart, stop as wsStop} from "./websocket";
 import {TYPE, dataObject} from "./dataInterface";
 
 let userTimeStamp:number = 0;
