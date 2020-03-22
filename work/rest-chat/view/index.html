@@ -9,7 +9,7 @@
 </head>
 <body class="dark-theme">
     <header>
-        <h2>Store Inventory System</h2>
+        <h2>Chat System</h2>
     </header>
     <main>
         <div class="error">
@@ -27,29 +27,34 @@
                 <button class="signin">submit</button>
             </div>
         </template>
-        <template id="items">
-            <section class="items-list">
-                <h5 class="items-title">Current Items</h5>
-                <div class="items-detail">
-                </div>
-                <div class="items-action">
-                    <span>Item name:</span>
-                    <input type="text" class="name" minlength="1">
-                    <span>Quantity:</span>
-                    <input type="number" class="quantity" min="0">
-                    <button class="add">Add</button>
-                </div>
-                <div class="user-action">
-                    <button class="signout">Sign out</button>
-                </div>
-            </section>
+        <template id="chat">
+            <div class="chat-page">
+                <section class="users-list">
+                    <h5>Users</h5>
+                    <div class="users-detail"></div>
+                </section>
+                <section class="chat-list">
+                    <h5 class="chat-title">Messages</h5>
+                    <div class="chat-detail">
+                    </div>
+                </section>
+            </div>
+            <div class="chat-action">
+                <span>Message:</span>
+                <input type="text" class="message" minlength="1">
+                <button class="send">Send</button>
+            </div>
+            <div class="user-action">
+                <button class="signout">Sign out</button>
+            </div>
         </template>
-        <template id="item">
-            <div class="single-item">
-                <div class="item-name">name</div>
-                <input type="number" class="quantity" min="0">
-                <button class="update">Update</button>
-                <button class="delete">X</button>
+        <template id="user">
+            <div></div>
+        </template>
+        <template id="message">
+            <div class="single-chat">
+                <div class="chat-name"></div>
+                <div class="chat-content"></div>
             </div>
         </template>
     </main>

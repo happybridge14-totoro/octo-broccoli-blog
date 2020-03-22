@@ -1,25 +1,25 @@
-import { getItems } from "../model/items.js";
+import { getMessage } from "../model/chat.js";
 import $ from "../utils/mini-jquery.js";
 import displayLoginPage from "./login.js";
-import displayItemsPage from "./items.js";
+import displayChatPage from "./chat.js";
 import { displayError, hideError } from "./error.js";
 var PAGES;
 (function (PAGES) {
     PAGES[PAGES["LOGIN"] = 0] = "LOGIN";
-    PAGES[PAGES["ITEMS"] = 1] = "ITEMS";
+    PAGES[PAGES["CHAT"] = 1] = "CHAT";
 })(PAGES || (PAGES = {}));
 ;
 const WRONT_USER_ID_MESSAGE = "Wrong user! Please login again.";
 const stage = $("#stage");
 const loading = $(".loading");
 let currentPage;
-const displayPage = (page, items = null) => {
+const displayPage = (page, chat = []) => {
     switch (page) {
-        case PAGES.ITEMS:
-            if (currentPage !== PAGES.ITEMS) {
-                currentPage = PAGES.ITEMS;
+        case PAGES.CHAT:
+            if (currentPage !== PAGES.CHAT) {
+                currentPage = PAGES.CHAT;
                 stage.removeChildren();
-                displayItemsPage(stage, items || {}).then(() => {
+                displayChatPage(stage, chat).then(() => {
                     displayPage(PAGES.LOGIN);
                 });
             }
@@ -40,12 +40,12 @@ const displayPage = (page, items = null) => {
 const renderPage = async () => {
     try {
         loading.hidden = false;
-        const response = await getItems();
+        const response = await getMessage();
         loading.hidden = true;
         if (response.ok) {
             hideError();
-            const items = await response.json();
-            displayPage(PAGES.ITEMS, items);
+            const chat = await response.json();
+            displayPage(PAGES.CHAT, chat);
         }
         else if (response.status === 401) {
             const errorMessage = await response.json();

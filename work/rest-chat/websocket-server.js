@@ -87,10 +87,10 @@ function parseMessage(buffer) {
     return JSON.parse(json);
 }
 const readyStates = {
-    CONNECTING: 'CONNECTING',
-    OPEN:  'OPEN',
-    CLOSING: 'CLOSING',
-    CLOSED:  'CLOSED'
+    CONNECTING: 'connecting',
+    OPEN:  'open',
+    CLOSING: 'closing',
+    CLOSED:  'closed'
 };
 const sockets = new Set();
 const socketHandler = (server) => {
@@ -154,7 +154,7 @@ const socketHandler = (server) => {
         });
     });
     const sendData = (data) => {
-        for (let socket of ws) {
+        for (let socket of sockets) {
             if (socket.writable && socket.readyState === readyStates.OPEN) {
                 socket.write(constructReply(data));
             }

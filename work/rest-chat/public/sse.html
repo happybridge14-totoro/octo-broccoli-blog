@@ -9,6 +9,12 @@
     <script>
         const evtSource = new EventSource("/sse");
         evtSource.onmessage = function(event) {
+            try {
+                const obj = JSON.parse(event.data);
+                console.log(obj);
+            } catch(e) {
+
+            }
             console.log(event.data + ":" + Date.now());
         }
     </script>

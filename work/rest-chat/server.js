@@ -56,7 +56,8 @@ const STATUS_CODES = {
     "DUPLICATED": 409,
     "INTERNAL_SERVER_ERROR": 500
 };
-
+const SSE_PREFIX = "data:";
+const SSE_SUFFIX = "\n\n";
 const deleteSession = (sessionId) => {
     if (!deleteSessionById(sessionId)) {
         updateUser();
@@ -71,22 +72,29 @@ const updateUser = () => {
     for (let longuser of longUserSet) {
         longuser.json(message);
     }
+    longUserSet.clear();
+    message.type = "users";
     for (let sse of sseSet) {
-        sse.write(JSON.stringify(message));
+        sse.write(SSE_PREFIX + JSON.stringify(message) + SSE_SUFFIX);
     }
     sendSocketData(message);
 };
 const updateMessage = (message) => {
     const chat = {
-        timestamp: Date.now(),
-        userName: message.userName,
-        message: message.message
+        timestamp: message.timestamp,
+        message: [{
+            userName: message.userName,
+            message: message.message,
+            timestamp: message.timestamp
+        }]
     };
     for (let longuser of longChatSet) {
         longuser.json(chat);
     }
+    longChatSet.clear();
+    chat.type = "chat";
     for (let sse of sseSet) {
-        sse.write(JSON.stringify(chat));
+        sse.write(SSE_PREFIX + JSON.stringify(chat) + SSE_SUFFIX);
     }
     sendSocketData(chat);
 };
@@ -129,31 +137,8 @@ app.post("/session", (req, res) => {
             .json(ERROR_CODES.WRONG_USER_NAME);
     }
 });
-app.post("/chat", (req, res) => {
-    if (req.cookie && req.cookie[COOKIE_KEY]) {
-        const sessionId = req.cookie[COOKIE_KEY];
-        const userId = getUserIdBySessionId(sessionId);
-        if (userId !== INVALID_USER_ID) {
-            const message = req.params.message;
-            if (message === "") {
-                res.status(STATUS_CODES.BAD_RQUEST)
-                    .json(ERROR_CODES.WRONG_MESSAGE);
-            } else {
-                const userName = createOrGetUserInfo(userId).userName;
-                updateMessage(addNewMessage(userName, message));
-            }
-        } else {
-            deleteSession(sessionId);
-            res.clearCookie(COOKIE_KEY);
-            res.status(STATUS_CODES.UNAUTHORIZED)
-                .json(ERROR_CODES.WRONG_USER_ID);
-        }
-    } else {
-        res.clearCookie(COOKIE_KEY);
-        res.status(STATUS_CODES.UNAUTHORIZED)
-            .json(ERROR_CODES.SESSION_NOT_FOUND);
-    }
-});
+
+//User
 app.get("/users", (req, res) => {
     if (req.cookie && req.cookie[COOKIE_KEY]) {
         const sessionId = req.cookie[COOKIE_KEY];
@@ -179,6 +164,36 @@ app.get("/long/users", (req, res) => {
     });
     longUserSet.add(res)
 });
+
+//Chat
+app.post("/chat", (req, res) => {
+    if (req.cookie && req.cookie[COOKIE_KEY]) {
+        const sessionId = req.cookie[COOKIE_KEY];
+        const userId = getUserIdBySessionId(sessionId);
+        if (userId !== INVALID_USER_ID) {
+            const message = req.body.message;
+            if (message === "") {
+                res.status(STATUS_CODES.BAD_RQUEST)
+                    .json(ERROR_CODES.WRONG_MESSAGE);
+            } else {
+                const userName = createOrGetUserInfo(userId).userName;
+                const newMessage = addNewMessage(userName, message);
+                updateMessage(newMessage);
+                res.json(RESPONSE_SUCCESS);
+            }
+        } else {
+            deleteSession(sessionId);
+            res.clearCookie(COOKIE_KEY);
+            res.status(STATUS_CODES.UNAUTHORIZED)
+                .json(ERROR_CODES.WRONG_USER_ID);
+        }
+    } else {
+        res.clearCookie(COOKIE_KEY);
+        res.status(STATUS_CODES.UNAUTHORIZED)
+            .json(ERROR_CODES.SESSION_NOT_FOUND);
+    }
+});
+
 app.get("/chat", (req, res) => {
     if (req.cookie && req.cookie[COOKIE_KEY]) {
         const sessionId = req.cookie[COOKIE_KEY];
@@ -198,29 +213,75 @@ app.get("/chat", (req, res) => {
     }
 });
 const longChatSet = new Set();
-app.get("long/chat", (req, res) => {
-    req.on("close", () => {
-        longChatSet.delete(res);
-    });
-    longChatSet.add(res);
+app.get("/long/chat", (req, res) => {
+    if (req.cookie && req.cookie[COOKIE_KEY]) {
+        const sessionId = req.cookie[COOKIE_KEY];
+        const userId = getUserIdBySessionId(sessionId);
+        if (userId !== INVALID_USER_ID) {
+            req.on("close", () => {
+                longChatSet.delete(res);
+            });
+            longChatSet.add(res);
+        } else {
+            deleteSession(sessionId);
+            res.clearCookie(COOKIE_KEY);
+            res.status(STATUS_CODES.UNAUTHORIZED)
+                .json(ERROR_CODES.WRONG_USER_ID);
+        }
+    } else {
+        res.clearCookie(COOKIE_KEY);
+        res.status(STATUS_CODES.UNAUTHORIZED)
+            .json(ERROR_CODES.SESSION_NOT_FOUND);
+    }
 });
+
+// SSE
+const sseSet = new Set();
+app.get("/sse", (req, res) => {
+    if (req.cookie && req.cookie[COOKIE_KEY]) {
+        const sessionId = req.cookie[COOKIE_KEY];
+        const userId = getUserIdBySessionId(sessionId);
+        if (userId !== INVALID_USER_ID) {
+            console.log("sse hello");
+            req.on("close", () => {
+                console.log("sse close");
+                sseSet.delete(res);
+            });
+            res.status(200).set({
+                "connection": "keep-alive",
+                "cache-control": "no-cache",
+                "content-type": "text/event-stream"
+            });
+            sseSet.add(res);;
+        } else {
+            deleteSession(sessionId);
+            res.clearCookie(COOKIE_KEY);
+            res.status(STATUS_CODES.UNAUTHORIZED)
+                .json(ERROR_CODES.WRONG_USER_ID);
+        }
+    } else {
+        res.clearCookie(COOKIE_KEY);
+        res.status(STATUS_CODES.UNAUTHORIZED)
+            .json(ERROR_CODES.SESSION_NOT_FOUND);
+    }
+});
+
+// setInterval(() => {
+//     const hello = "hello";
+//     for (let a of sseSet) {
+//         a.write("data:hello\n\n");
+//         a.write("data:" + JSON.stringify({hello}) + "\n\n");
+//     }
+// }, 5000);
+
+//Web socket
+const server = http.createServer(app).listen(PORT, () => {
+    console.log("Listerning to " + PORT);
+});
+const sendSocketData = websocket(server);
+
+//404
 app.use((req, res) => {
     res.status(STATUS_CODES.NOT_FOUND);
     res.sendFile(path.join(__dirname + '/view/404.html'));
 });
-const server = http.createServer(app).listen(PORT, () => {
-    console.log("Listerning to " + PORT);
-});
-const sseSet = new Set();
-app.get("/sse", (req, res) => {
-    req.on("close", () => {
-        sseSet.delete(res);
-    });
-    res.status(200).set({
-        "connection": "keep-alive",
-        "cache-control": "no-cache",
-        "content-type": "text/event-stream"
-    });
-    sseSet.add(res);
-});
-const sendSocketData = websocket(server);

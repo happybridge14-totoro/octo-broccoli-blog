@@ -4,7 +4,8 @@ const addNewMessage = (userName, message) => {
     const newMessage = {
         messageId: messages.length,
         message, 
-        userName 
+        userName,
+        timestamp: Date.now()
     };
     messages.push(newMessage);
     return newMessage;

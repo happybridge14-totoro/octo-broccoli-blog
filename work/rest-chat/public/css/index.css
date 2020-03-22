@@ -169,14 +169,18 @@ footer {
     margin-top: 2em;
     text-align: center;
 }
-.items-title {
+.chat-page {
+    display:grid;
+    grid-template-columns: 1fr 2fr;
+}
+.chat-title {
     box-sizing: border-box;
     height: 17px;
 }
-.single-item {
+.single-chat {
     margin-bottom: 1em;
 }
-.item-name {
+.chat-name {
     display: inline-block;
     width: 15em;
     overflow: hidden;
@@ -187,20 +191,20 @@ footer {
     margin-right: 2em;
 }
 
-.items-list {
+.chat-list {
     display: flex;
     flex-direction: column;
     height: 100%;
 }
-.items-title {
+.chat-title {
     text-align: center;
 }
-.items-detail {
+.chat-detail {
     height: calc(100vh - 398px);
     min-height: 100px;
     overflow-y: auto;
 }
-.items-action {
+.chat-action {
     height: 50px;
     padding: 1em 0px;
     box-sizing: border-box;

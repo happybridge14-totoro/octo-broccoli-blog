@@ -160,7 +160,7 @@ interface paramObject {
     const param:paramObject = {
         method: method,
     };
-    $[method.toLowerCase()] = (url:string, content: object):Promise<Response> => {
+    $[method.toLowerCase()] = (url:string, content?: object):Promise<Response> => {
         if (content) {
             param.headers = { 'Content-Type': 'application/json' };
             param.body = JSON.stringify(content);
