@@ -5,18 +5,15 @@ const start = (cb) => {
         evtSource.onmessage = function (event) {
             try {
                 const data = JSON.parse(event.data);
-                console.log("sseeeeeee!!!!");
                 cb(data);
             }
             catch (e) {
             }
         };
-        console.log("sse open");
     }
 };
 const stop = () => {
     if (evtSource) {
-        console.log("sse close");
         evtSource.close();
         evtSource = null;
     }

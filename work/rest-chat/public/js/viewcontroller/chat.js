@@ -1,46 +1,45 @@
 import $ from "../utils/mini-jquery.js";
 import { signOut } from "../model/login.js";
 import { sendMessage, receiveMessage, stopMessage } from "../model/chat.js";
+import { receiveUsers, stopUser } from "../model/users.js";
 import { hideError } from "./error.js";
 const chatPageTemplate = $("#chat");
 const userTemplate = $("#user");
 const chatTemplate = $("#message");
 let resolver;
-let chatPromise;
-let userPromise;
 const displayChat = (parent, data) => {
-    const messagePageTemplate = $("#message");
-    const updateChat = (userName, message) => {
-        const messagePage = messagePageTemplate.templateClone || $();
+    const updateChat = ({ userName, message, timestamp }) => {
+        const messagePage = chatTemplate.templateClone || $();
         const name = messagePage.find(".chat-name") || $();
+        const time = messagePage.find(".chat-time") || $();
         const content = messagePage.find(".chat-content") || $();
-        name.text = userName;
-        content.text = message;
+        time.time = timestamp;
+        name.updateContent(userName);
+        content.updateContent(message);
         parent.append(messagePage);
-        parent.scrollToButtom();
     };
     const handlePromise = (timestamp) => {
-        chatPromise = receiveMessage(timestamp);
-        chatPromise.then((content) => {
-            content.message.forEach(({ userName, message }) => {
-                updateChat(userName, message);
+        receiveMessage(timestamp).then((content) => {
+            content.message.forEach((message) => {
+                updateChat(message);
             });
+            parent.scrollToButtom();
             handlePromise(timestamp);
         }).catch((e) => {
-            if (e) {
-                console.error(e);
-            }
             if (resolver) {
                 stopMessage();
+                stopUser();
                 resolver();
+                resolver = null;
             }
         });
     };
     parent.removeChildren();
     if (data) {
         data.forEach((value) => {
-            updateChat(value.userName, value.message);
+            updateChat(value);
         });
+        parent.scrollToButtom();
         let timestamp = 0;
         if (data.length > 0) {
             timestamp = data[data.length - 1].timestamp;
@@ -49,13 +48,41 @@ const displayChat = (parent, data) => {
     }
 };
 const displayUser = (parent) => {
-    const updateUser = () => {
+    const updateUser = (userName, userParent) => {
+        const userPage = userTemplate.templateClone || $();
+        const name = userPage.find(".user-name") || $();
+        name.updateContent(userName);
+        userParent.append(userPage);
     };
+    const handlePromise = (timestamp) => {
+        receiveUsers(timestamp).then((content) => {
+            const parentNode = $("");
+            content.users.forEach((userName) => {
+                updateUser(userName, parentNode);
+            });
+            parent.removeChildren();
+            parent.append(parentNode);
+            parent.scrollToButtom();
+            handlePromise(timestamp);
+        }).catch((e) => {
+            if (e) {
+                console.error(e);
+            }
+            if (resolver) {
+                stopUser();
+                stopMessage();
+                resolver();
+                resolver = null;
+            }
+        });
+    };
+    const timestamp = 0;
+    handlePromise(timestamp);
 };
 const displayChatPage = (stage, chat) => {
     const chatPage = chatPageTemplate.templateClone || $();
     const messagePage = chatPage.find(".chat-detail") || $();
-    const userPage = chatPage.find(".user-detail") || $();
+    const userPage = chatPage.find(".users-detail") || $();
     const signout = chatPage.find(".signout") || $();
     const send = chatPage.find(".send") || $();
     const message = chatPage.find(".message") || $();
@@ -63,9 +90,12 @@ const displayChatPage = (stage, chat) => {
     signout.onClick((event) => {
         event.preventDefault();
         signOut().then(() => {
+            if (resolver) {
+                resolver();
+                resolver = null;
+            }
+            stopUser();
             stopMessage();
-            resolver();
-            resolver = null;
         });
     });
     message.onInput((event) => {
@@ -83,6 +113,7 @@ const displayChatPage = (stage, chat) => {
             if (response.status === 401) {
                 if (resolver) {
                     stopMessage();
+                    stopUser();
                     resolver();
                     resolver = null;
                 }

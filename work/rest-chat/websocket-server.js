@@ -129,14 +129,8 @@ const socketHandler = (server) => {
                 socket.write(constructReply(errorData));
                 return;
             }
-            if (message && message.lastId) {
-                // We'll just send a hardcoded message in this example 
-                socket.write(constructReply({
-                    message: 'Hello from the server!'
-                }));
-            } else if (message === null) {
+            if (message === null) {
                 socket.destroy();
-                // sockets.delete(socket);
             }
         });
         socket.on("error", _=>{

@@ -1,7 +1,8 @@
 import $, { MiniJquery } from "../utils/mini-jquery.js";
-import { dataObject , messageBody, messageObject} from "../model/dataInterface.js";
+import { dataObject , messageBody, messageObject, userObject} from "../model/dataInterface.js";
 import {signOut} from "../model/login.js";
 import {sendMessage, getMessage, receiveMessage, stopMessage} from "../model/chat.js";
+import {receiveUsers, stopUser} from "../model/users.js"
 import { STATUS_CODES, ERROR_CODES, ERROR_OBJECT } from "../utils/status-error-codes.js";
 import {displayError, hideError} from "./error.js";
 
@@ -9,41 +10,43 @@ const chatPageTemplate:MiniJquery = $("#chat");
 const userTemplate:MiniJquery = $("#user");
 const chatTemplate:MiniJquery = $("#message");
 let resolver:any;
-let chatPromise:any;
-let userPromise:any;
 const displayChat = (parent:MiniJquery, data:Array<messageBody>) => {
-    const messagePageTemplate:MiniJquery = $("#message");
-    const updateChat = (userName:string, message:string) => {
-        const messagePage:MiniJquery = messagePageTemplate.templateClone || $();
+    const updateChat = ({userName, message, timestamp}:messageBody) => {
+        const messagePage:MiniJquery = chatTemplate.templateClone || $();
         const name:MiniJquery = messagePage.find(".chat-name") || $();
+        const time:MiniJquery = messagePage.find(".chat-time") || $();
         const content:MiniJquery = messagePage.find(".chat-content") || $();
-        name.text = userName;
-        content.text = message;
+        time.time = timestamp;
+        name.updateContent(userName);
+        content.updateContent(message);
         parent.append(messagePage);
-        parent.scrollToButtom();
     };
     const handlePromise = (timestamp:number) => {
-        chatPromise = receiveMessage(timestamp);
-        chatPromise.then((content:messageObject)=>{
-            content.message.forEach(({userName, message}:messageBody)=> {
-                updateChat(userName, message);
+        receiveMessage(timestamp).then((content:messageObject)=>{
+            content.message.forEach((message:messageBody)=> {
+                updateChat(message);
             });
+            parent.scrollToButtom();
             handlePromise(timestamp);
         }).catch((e:Error)=>{
-            if (e) {
-                console.error(e);
-            }
+            //error handler
+            // if (e) {
+            //     console.error(e);
+            // }
             if (resolver) {
                 stopMessage();
+                stopUser();
                 resolver();
+                resolver = null;
             }
         });
     };
     parent.removeChildren();
     if (data) {
         data.forEach((value:messageBody)=>{
-            updateChat(value.userName, value.message);
+            updateChat(value);
         });
+        parent.scrollToButtom();
         let timestamp:number = 0;
         if (data.length > 0) {
             timestamp = data[data.length - 1].timestamp;
@@ -52,15 +55,43 @@ const displayChat = (parent:MiniJquery, data:Array<messageBody>) => {
     }
 };
 const displayUser = (parent:MiniJquery) => {
-    const updateUser = () => {
-
+    const updateUser = (userName:string, userParent:MiniJquery) => {
+        const userPage:MiniJquery = userTemplate.templateClone || $();
+        const name:MiniJquery = userPage.find(".user-name") || $();
+        name.updateContent(userName);
+        userParent.append(userPage);
     };
+    const handlePromise = (timestamp:number) => {
+        receiveUsers(timestamp).then((content:userObject)=>{
+            const parentNode:MiniJquery = $("");
+            content.users.forEach((userName:string)=> {
+                updateUser(userName, parentNode);
+            });
+            parent.removeChildren();
+            parent.append(parentNode);
+            parent.scrollToButtom();
+            handlePromise(timestamp);
+        }).catch((e:Error)=>{
+            //error handler
+            if (e) {
+                console.error(e);
+            }
+            if (resolver) {
+                stopUser();
+                stopMessage();
+                resolver();
+                resolver = null;
+            }
+        });
+    };
+    const timestamp = 0;
+    handlePromise(timestamp);
 };
 
 const displayChatPage = (stage: MiniJquery, chat: Array<messageBody>) => {
     const chatPage:MiniJquery = chatPageTemplate.templateClone || $();
     const messagePage: MiniJquery = chatPage.find(".chat-detail") || $();
-    const userPage: MiniJquery = chatPage.find(".user-detail") || $();
+    const userPage: MiniJquery = chatPage.find(".users-detail") || $();
     const signout:MiniJquery = chatPage.find(".signout") || $();
     const send:MiniJquery = chatPage.find(".send") || $();
     const message:MiniJquery = chatPage.find(".message") || $();
@@ -68,9 +99,12 @@ const displayChatPage = (stage: MiniJquery, chat: Array<messageBody>) => {
     signout.onClick((event:Event) => {
         event.preventDefault();
         signOut().then(() => {
+            if (resolver) {
+                resolver();
+                resolver = null;
+            }
+            stopUser();
             stopMessage();
-            resolver();
-            resolver = null;
         });
     });
     message.onInput((event) => {
@@ -87,6 +121,7 @@ const displayChatPage = (stage: MiniJquery, chat: Array<messageBody>) => {
             if (response.status === STATUS_CODES.UNAUTHORIZED) {
                 if (resolver) {
                     stopMessage();
+                    stopUser();
                     resolver();
                     resolver = null;
                 }

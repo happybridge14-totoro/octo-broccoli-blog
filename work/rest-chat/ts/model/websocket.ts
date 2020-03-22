@@ -1,24 +1,26 @@
 import {dataObject} from "./dataInterface.js";
 
 let ws:WebSocket|null;
+let intervalHandler = -1;
+const ONE_MINUTE = 60000;
 
 const start = (cb:(data:dataObject)=>void) => {
     if (!ws) {
         ws = new WebSocket('ws://localhost:3000');
+        const ping = () => {
+            clearInterval(intervalHandler);
+            intervalHandler = setInterval(()=>{
+                const ping = "ping";
+                ws?.send(JSON.stringify({ping}));
+            }, ONE_MINUTE)
+        };
         ws.onmessage = (event:MessageEvent) => {
             const data:dataObject = JSON.parse(event.data);
-            console.log("Socket!!!!!!!");
             cb(data);
+            ping();
         };
         ws.onopen = () => {
-            console.log("client ws open");
-            // try {
-            //     const hello = "";
-            //     if (ws) {
-            //         ws.send(JSON.stringify({hello}));
-            //     }
-            // } catch(e) {
-            // }
+            ping();
         }
         window.onbeforeunload = () => {
             if (ws) {
@@ -27,8 +29,9 @@ const start = (cb:(data:dataObject)=>void) => {
             }
         };
         ws.onclose = () => {
+            clearInterval(intervalHandler);
+            intervalHandler = -1;
             ws = null;
-            console.log("client on close");
         };
     }
 };

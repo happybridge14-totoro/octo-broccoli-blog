@@ -180,18 +180,22 @@ footer {
 .single-chat {
     margin-bottom: 1em;
 }
-.chat-name {
-    display: inline-block;
-    width: 15em;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
+
 
 .update {
     margin-right: 2em;
 }
+.users-list {
+    width: 210px;
+}
+.user-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 1em;
+}
 
 .chat-list {
+    width: 420px;
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -208,6 +212,30 @@ footer {
     height: 50px;
     padding: 1em 0px;
     box-sizing: border-box;
+}
+.chat-message {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+}
+.chat-time {
+    font-size: smaller;
+    color: var(--minor-text-color);
+}
+.chat-name {
+    color: var(--highlight-text-color);
+    font-size: larger;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.chat-content {
+    overflow: hidden;
+    word-break: break-all;
+}
+.chat-action {
+    text-align: center;
+}
+.chat-action > *{
+    margin-right: 1em;
 }
 
 .user-action {

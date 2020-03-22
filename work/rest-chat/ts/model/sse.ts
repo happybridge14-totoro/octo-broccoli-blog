@@ -7,18 +7,15 @@ const start = (cb:(data:dataObject)=>void)=> {
         evtSource.onmessage = function(event:MessageEvent) {
             try {
                 const data:dataObject = JSON.parse(event.data);
-                console.log("sseeeeeee!!!!");
                 cb(data);
             } catch(e) {
         
             }
         }
-        console.log("sse open");
     }
 }
 const stop = () => {
     if (evtSource) {
-        console.log("sse close");
         evtSource.close();
         evtSource = null;
     }

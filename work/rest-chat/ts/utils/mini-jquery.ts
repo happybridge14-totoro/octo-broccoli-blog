@@ -1,5 +1,6 @@
 const DEFAULT_KEY:string = "id";
 const CLASS_NAME_ERROR:string = "error";
+const ATTR_DATE_TIME = "datetime";
 export class MiniJquery {
     element: HTMLElement;
     constructor(parameters: string | HTMLElement) {
@@ -12,7 +13,6 @@ export class MiniJquery {
             }
             if (!targetElement) {
                 targetElement = window.document.createElement("div");
-                targetElement.outerHTML = parameters;
             }
             this.element = targetElement;
         } else {
@@ -91,6 +91,11 @@ export class MiniJquery {
     removeClass(className:string):MiniJquery {
         this.element.classList.remove(className);
         return this;
+    }
+    set time(value:number) {
+        const time = new Date(value).toLocaleString();
+        this.element.setAttribute(ATTR_DATE_TIME, time);
+        this.element.innerText = time;
     }
     set text(value: string) {
         this.element.innerText = value;

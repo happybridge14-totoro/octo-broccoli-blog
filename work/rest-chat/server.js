@@ -59,25 +59,21 @@ const STATUS_CODES = {
 const SSE_PREFIX = "data:";
 const SSE_SUFFIX = "\n\n";
 const deleteSession = (sessionId) => {
-    if (!deleteSessionById(sessionId)) {
+    if (deleteSessionById(sessionId)) {
         updateUser();
     };
 };
 const updateUser = () => {
     const users = getActiveUsers();
-    const message = {
-        timestamp: Date.now(),
-        users
-    };
     for (let longuser of longUserSet) {
-        longuser.json(message);
+        longuser.json(users);
     }
     longUserSet.clear();
-    message.type = "users";
+    users.type = "users";
     for (let sse of sseSet) {
-        sse.write(SSE_PREFIX + JSON.stringify(message) + SSE_SUFFIX);
+        sse.write(SSE_PREFIX + JSON.stringify(users) + SSE_SUFFIX);
     }
-    sendSocketData(message);
+    sendSocketData(users);
 };
 const updateMessage = (message) => {
     const chat = {
@@ -108,17 +104,17 @@ app.use(express.static("./public"));
 
 // Sign out
 app.delete("/session", (req, res) => {
-    if (req.cookies && req.cookies[COOKIE_KEY]) {
-        const sessionId = req.cookies[COOKIE_KEY];
+    if (req.cookie && req.cookie[COOKIE_KEY]) {
+        const sessionId = req.cookie[COOKIE_KEY];
         deleteSession(sessionId);
         res.clearCookie(COOKIE_KEY);
     }
-    res.json(RESPONSE_SUCCESS);
+    res.status(STATUS_CODES.SUCCESS).json(RESPONSE_SUCCESS);
 });
 // Sign in
 app.post("/session", (req, res) => {
-    if (req.cookies && req.cookies[COOKIE_KEY]) {
-        const sessionId = req.cookies[COOKIE_KEY];
+    if (req.cookie && req.cookie[COOKIE_KEY]) {
+        const sessionId = req.cookie[COOKIE_KEY];
         deleteSession(sessionId);
         res.clearCookie(COOKIE_KEY);
     }
@@ -159,10 +155,25 @@ app.get("/users", (req, res) => {
 });
 const longUserSet = new Set();
 app.get("/long/users", (req, res) => {
-    req.on("close", () => {
-        longUserSet.delete(res);
-    });
-    longUserSet.add(res)
+    if (req.cookie && req.cookie[COOKIE_KEY]) {
+        const sessionId = req.cookie[COOKIE_KEY];
+        const userId = getUserIdBySessionId(sessionId);
+        if (userId !== INVALID_USER_ID) {
+            req.on("close", () => {
+                longUserSet.delete(res);
+            });
+            longUserSet.add(res);
+        } else {
+            deleteSession(sessionId);
+            res.clearCookie(COOKIE_KEY);
+            res.status(STATUS_CODES.UNAUTHORIZED)
+                .json(ERROR_CODES.WRONG_USER_ID);
+        }
+    } else {
+        res.clearCookie(COOKIE_KEY);
+        res.status(STATUS_CODES.UNAUTHORIZED)
+            .json(ERROR_CODES.SESSION_NOT_FOUND);
+    }
 });
 
 //Chat
@@ -242,16 +253,15 @@ app.get("/sse", (req, res) => {
         const sessionId = req.cookie[COOKIE_KEY];
         const userId = getUserIdBySessionId(sessionId);
         if (userId !== INVALID_USER_ID) {
-            console.log("sse hello");
             req.on("close", () => {
-                console.log("sse close");
                 sseSet.delete(res);
             });
-            res.status(200).set({
+            res.status(STATUS_CODES.SUCCESS).set({
                 "connection": "keep-alive",
                 "cache-control": "no-cache",
                 "content-type": "text/event-stream"
             });
+            res.write("\n\n");
             sseSet.add(res);;
         } else {
             deleteSession(sessionId);

@@ -9,9 +9,7 @@ let chatResolver:any;
 let isStarted:boolean = false;
 const filterMessage = (data:dataObject) => {
     if (data.type === TYPE.CHAT) {
-        console.log("socket---sse");
         if (data.timestamp > chatTimeStamp) {
-            console.log("socket---sse: correct timestamp");
             if (chatResolver) {
                 const newData = {
                     timestamp: data.timestamp,

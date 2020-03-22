@@ -14,7 +14,6 @@ const getMessage = () => {
 const getLongMessage = () => {
     return $.get(getURL(true)).then((res) => {
         if (res.ok) {
-            console.log("long polling!!!");
             return res.json();
         }
         else {

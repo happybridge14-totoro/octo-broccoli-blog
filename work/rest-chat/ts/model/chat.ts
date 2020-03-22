@@ -1,6 +1,6 @@
 import $ from "../utils/mini-jquery.js";
 import {getChat, stop as longStop} from "./long-connection.js";
-import { dataObject, messageBody } from "./dataInterface.js";
+import { messageBody, messageObject} from "./dataInterface.js";
 const URL = "/chat";
 let timestamp:number = 0;
 const getURL = (isLong:boolean|null=false):string => {
@@ -17,7 +17,6 @@ const getMessage = () => {
 const getLongMessage = () => {
     return $.get(getURL(true)).then((res:Response)=>{
         if (res.ok) {
-            console.log("long polling!!!")
             return res.json();
         } else {
             return Promise.reject(res);
@@ -67,10 +66,10 @@ const getSignal = () => {
     }
     return signalPromise;
 };
-const receiveMessage = (tmpTimestamp:number):Promise<dataObject>|dataObject => {
+const receiveMessage = (tmpTimestamp:number):Promise<messageObject> => {
     timestamp = Math.max(timestamp, tmpTimestamp);
     beginShowMessageLoop();
-    return Promise.race([getSignal(), getChat(timestamp), getLongMessage(), getShortMessage()]).then((data:dataObject)=>{
+    return Promise.race([getSignal(), getChat(timestamp), getLongMessage(), getShortMessage()]).then((data:messageObject)=>{
         if (timestamp > data.timestamp) {
             return receiveMessage(timestamp);
         } else {
