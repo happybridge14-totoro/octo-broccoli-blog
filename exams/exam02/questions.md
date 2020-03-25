@@ -12,6 +12,21 @@
   const username = fetch('/username');
   console.log(`user is named ${username}`);
 ```  
+The username here is a Promise, not the result of the fetching data.
+The correct usage should be:
+```
+fetch('/username').then(response => {
+  if (response.ok) {
+    return response.text();
+  } else {
+    throw Error(response.statusText);
+  }
+}).then(username=>{
+  console.log(`user is named ${username}`);
+}).catch(error => {
+  console.error(error);
+});
+```
 
 ## Q3: What does it mean to "store your state in the DOM"?  Why shouldn't you do this?
 
@@ -24,8 +39,10 @@
 ## Q7: Give an example of a piece of information you should not store in a cookie, and why you should not store it that way.
 
 ## Q8: Explain why it is useful to separate a function that fetches data from the what you do with that data
+Separate the logic from the view actions. When the logic changes or the view changes, it won't affect other part. This is the advantage of loose coupling.
 
 ## Q9: Explain why try/catch is useless when dealing with asynchronous errors (assume you aren't using async/await)
+Because the try/catch flow finished before resovle/reject functions are called. If something in try scope, like a promise is correctly returned, than the try/catch flow is finished. The later happening errors won't be caught by the catch block.
 
 ## Q10: Is separation of concerns a front end issue, a server-side issue, or both?  Describe an example the demonstrates your answer.
 
