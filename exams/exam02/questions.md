@@ -6,15 +6,20 @@
 * I cannot assume knowledge you don't demonstrate, so be clear and explicit.
 
 ## Q1: The first rule I've given about REST services is that the URL should represent a resource.  What does that mean?  Give an example where a url DOES not represent a resource, then describe how to modify it so that it does.
+The target of an HTTP request is called a "resource". So it means that the URL should be semantic that represents a "resource" to interact with.
+Bad example: `/deleteStudent`
+`deleteStudent` It is not a resource, it is more like an action
+Good example: `/student/:id` with `delete` method
+`student/:id` is the specific resource, and we use `delete` method to operate this resource
 
 ## Q2: If the service returns the username as a plain text string, what is wrong with the below and what would fix it? (Assume the service works without error)
-```
+```javascript
   const username = fetch('/username');
   console.log(`user is named ${username}`);
 ```  
 The username here is a Promise, not the result of the fetching data.
 The correct usage should be:
-```
+```javascript
 fetch('/username').then(response => {
   if (response.ok) {
     return response.text();
