@@ -3,7 +3,7 @@ const recipes = [];
 const getRecipes = () => {
     return recipes;
 };
-const addRecipes = (author, title, ingredients, instructions) => {
+const addRecipe = (author, title, ingredients, instructions) => {
     const newRecipes = {
         recipeId: recipes.length,
         author, 
@@ -19,4 +19,4 @@ const getRecipesById = (id) => {
     return recipe ? recipe : null;
 };
 
-module.exports = {getRecipes, addRecipes, getRecipesById};
+module.exports = {getRecipes, addRecipe, getRecipesById};

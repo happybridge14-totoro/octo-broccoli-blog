@@ -1,21 +1,18 @@
-const http = require("http");
 const express = require("express");
 const app = express();
 const path = require("path");
 const cookieParser = require("./src/middleware/cookie");
-const websocket = require("./websocket-server");
 const {
     INVALID_USER_ID,
     getUserIdByName,
     createOrGetUserInfo,
-    getUserIdBySessionId,
     createSessionByUserId,
     deleteSessionById
 }  = require("./src/data/user-session");
-const {
-    addNewMessage, 
-    getMessages
-}  = require("./src/data/message");
+const {getRecipes, 
+    addRecipe, 
+    getRecipesById
+} = require("./src/data/recipe");
 const PORT = 3000;
 const COOKIE_KEY = "sessionid";
 const RESPONSE_SUCCESS = {
@@ -38,13 +35,21 @@ const ERROR_CODES = {
         errorCode: 6,
         errorSummary: "Wrong session id."
     },
-    "WRONG_MESSAGE": {
+    "WRONG_RECIPE_ID": {
         errorCode: 11,
-        errorSummary: "Wrong message."
+        errorSummary: "Wrong recipe id."
     },
-    "NOT_FOUND":  {
-        errorCode: 1000,
-        errorSummary: "Path not found."
+    "WRONG_RECIPE_TITLE": {
+        errorCode: 12,
+        errorSummary: "Missing recipe title."
+    },
+    "WRONG_RECIPE_INGREDIENTS": {
+        errorCode: 13,
+        errorSummary: "Missing recipe ingredients."
+    },
+    "WRONG_RECIPE_INSTRUCTIONS": {
+        errorCode: 14,
+        errorSummary: "Missing recipe instructions."
     }
 };
 const STATUS_CODES = {
@@ -76,7 +81,7 @@ app.delete("/session", (req, res) => {
 app.post("/session", (req, res) => {
     if (req.cookie && req.cookie[COOKIE_KEY]) {
         const sessionId = req.cookie[COOKIE_KEY];
-        deleteSessionById(sessionId)
+        deleteSessionById(sessionId);
         res.clearCookie(COOKIE_KEY);
     }
     if (req.body.userName && !/((dog)| )+/.test(req.body.userName)) {
@@ -94,9 +99,80 @@ app.post("/session", (req, res) => {
             .json(ERROR_CODES.WRONG_USER_NAME);
     }
 });
+app.get("/session", (req, res) => {
+    if (req.cookie && req.cookie[COOKIE_KEY]) {
+        const sessionId = req.cookie[COOKIE_KEY];
+        const userId = getUserIdBySessionId(sessionId);
+        if (userId !== INVALID_USER_ID) {
+            res.json(RESPONSE_SUCCESS);
+        } else {
+            deleteSession(sessionId);
+            res.clearCookie(COOKIE_KEY);
+            res.status(STATUS_CODES.UNAUTHORIZED)
+                .json(ERROR_CODES.WRONG_USER_ID);
+        }
+    } else {
+        res.clearCookie(COOKIE_KEY);
+        res.status(STATUS_CODES.UNAUTHORIZED)
+            .json(ERROR_CODES.SESSION_NOT_FOUND);
+    }
+});
+
+app.get("/recipes", (req, res) => {
+    res.json(getRecipes());
+});
+app.get("/recipe/:recipeId", (req, res) => {
+    const recipeId = req.params.recipeId;
+    const recipe = getRecipesById(recipeId);
+    if (recipe) {
+        res.json(recipe);
+    } else {
+        res.status(STATUS_CODES.BAD_RQUEST)
+            .json(ERROR_CODES.WRONG_RECIPE_ID);
+    }
+});
+app.post("/recipe", (req, res) => {
+    if (req.cookie && req.cookie[COOKIE_KEY]) {
+        const sessionId = req.cookie[COOKIE_KEY];
+        const userId = getUserIdBySessionId(sessionId);
+        const userInfo = createOrGetUserInfo(userId);
+        if (userInfo) {
+            const {title, ingredients, instructions} = req.body;
+            if (!title) {
+                res.status(STATUS_CODES.BAD_RQUEST)
+                    .json(ERROR_CODES.WRONG_RECIPE_TITLE);
+                return;
+            }
+            if (!ingredients) {
+                res.status(STATUS_CODES.BAD_RQUEST)
+                    .json(ERROR_CODES.WRONG_RECIPE_INGREDIENTS);
+                return;
+            }
+            if (!instructions) {
+                res.status(STATUS_CODES.BAD_RQUEST)
+                    .json(ERROR_CODES.WRONG_RECIPE_INSTRUCTIONS);
+                return;
+            }
+            const newRecipe = addRecipe(userInfo.userName, title, ingredients, instructions);
+            res.json(newRecipe);
+        } else {
+            deleteSession(sessionId);
+            res.clearCookie(COOKIE_KEY);
+            res.status(STATUS_CODES.UNAUTHORIZED)
+                .json(ERROR_CODES.WRONG_USER_ID);
+        }
+    } else {
+        res.clearCookie(COOKIE_KEY);
+        res.status(STATUS_CODES.UNAUTHORIZED)
+            .json(ERROR_CODES.SESSION_NOT_FOUND);
+    }
+});
 
 //404
 app.use((req, res) => {
     res.status(STATUS_CODES.NOT_FOUND);
     res.sendFile(path.join(__dirname + '/view/404.html'));
+});
+app.listen(PORT, () => {
+    console.log("Listerning to port: " + PORT);
 });

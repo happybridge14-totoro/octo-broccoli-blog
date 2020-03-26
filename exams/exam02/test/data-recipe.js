@@ -24,19 +24,19 @@ describe('data.addRecipes', function () {
     describe('#firstRecips', function () {
         it("responds with matching records", function () {
             const target = recipes[0];
-            assert.deepStrictEqual(target, data.addRecipes(target.author, target.title, target.ingredients, target.instructions));
+            assert.deepStrictEqual(target, data.addRecipe(target.author, target.title, target.ingredients, target.instructions));
         });
     });
     describe('#secondRecips', function () {
         it("responds with matching records", function () {
             const target = recipes[1];
-            assert.deepStrictEqual(target, data.addRecipes(target.author, target.title, target.ingredients, target.instructions));
+            assert.deepStrictEqual(target, data.addRecipe(target.author, target.title, target.ingredients, target.instructions));
         });
     });
     describe('#thirdRecips', function () {
         it("responds with matching records", function () {
             const target = recipes[2];
-            assert.deepStrictEqual(target, data.addRecipes(target.author, target.title, target.ingredients, target.instructions));
+            assert.deepStrictEqual(target, data.addRecipe(target.author, target.title, target.ingredients, target.instructions));
         });
     });
 });
