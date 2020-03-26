@@ -8,5 +8,8 @@ const signIn = (userName: string):Promise<Response> => {
 const signOut = ():Promise<Response> => {
     return $.delete(URL);
 };
+const check = ():Promise<Response> => {
+    return $.get(URL);
+};
 
-export {signIn, signOut};
+export {signIn, signOut, check};
