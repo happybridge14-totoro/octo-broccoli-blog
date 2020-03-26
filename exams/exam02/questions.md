@@ -90,6 +90,7 @@ Different:
 ## Q7: Give an example of a piece of information you should not store in a cookie, and why you should not store it that way.
 Example: password
 Cookies are stored on clients and they are potentially accessible to anyone. It is dangerous to store sensible information in cookies. The worst case is that you closed your browser, but anyone else who open the browser can see all your personal secret information through cookies.
+And another thing shouldn't be stored in cookie is page status. Server should always be stateless. Store status in cookies doesn't make sense.
 
 ## Q8: Explain why it is useful to separate a function that fetches data from the what you do with that data
 Separate the logic from the view actions. When the service call changes, logic changes or the view changes, it won't affect other part. This is the advantage of loose coupling.
