@@ -20,7 +20,7 @@ const displayAnonymousPage = () => {
 
     input.onInput((event:Event) => {
         event.preventDefault();
-        signInBtn.disable = input.value === "" || /((dog)| )+/.test(input.value);
+        signInBtn.disable = input.value === "";
     });
     signInBtn.onClick(async(event:Event) => {
         event.preventDefault();

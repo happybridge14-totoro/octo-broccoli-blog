@@ -6,10 +6,11 @@ const {
     INVALID_USER_ID,
     getUserIdByName,
     createOrGetUserInfo,
+    getUserIdBySessionId,
     createSessionByUserId,
     deleteSessionById
 }  = require("./src/data/user-session");
-const {getRecipes, 
+const {getRecipesTitle, 
     addRecipe, 
     getRecipesById
 } = require("./src/data/recipe");
@@ -105,7 +106,7 @@ app.get("/session", (req, res) => {
         if (userId !== INVALID_USER_ID) {
             res.json(RESPONSE_SUCCESS);
         } else {
-            deleteSession(sessionId);
+            deleteSessionById(sessionId)
             res.clearCookie(COOKIE_KEY);
             res.status(STATUS_CODES.UNAUTHORIZED)
                 .json(ERROR_CODES.WRONG_USER_ID);
@@ -118,7 +119,7 @@ app.get("/session", (req, res) => {
 });
 
 app.get("/recipes", (req, res) => {
-    res.json(getRecipes());
+    res.json(getRecipesTitle());
 });
 app.get("/recipe/:recipeId", (req, res) => {
     const recipeId = req.params.recipeId;

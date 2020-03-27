@@ -1,19 +1,19 @@
 const data = require("../src/data/recipe");
 const assert = require("assert");
 const recipes = [{
-        recipeId: 0,
+        recipeId: "0",
         author: "test1", 
         title: "test1",
         ingredients: "ingredients",
         instructions: "instruction"
     }, {
-        recipeId: 1,
+        recipeId: "1",
         author: "test2", 
         title: "test2",
         ingredients: "ingredients2",
         instructions: "instruction2"
     }, {
-        recipeId: 2,
+        recipeId: "2",
         author: "test1", 
         title: "test3",
         ingredients: "ingredients",
@@ -40,10 +40,10 @@ describe('data.addRecipes', function () {
         });
     });
 });
-describe('data.getRecipes', function () {
+describe('data.getRecipeTitles', function () {
     describe('#getRecipes', function () {
         it("responds with matching records", function () {
-            assert.deepStrictEqual(data.getRecipes(), recipes);
+            assert.deepStrictEqual(data.getRecipesTitle(), recipes.map(({recipeId, title})=>{return {recipeId, title}}));
         });
     });
 });
@@ -52,6 +52,8 @@ describe('data.getRecipeById', function () {
         it("responds with matching records", function () {
             const id = 0;
             const target = recipes[id];
+            console.log(target);
+            console.log(data.getRecipesById(id))
             assert.deepStrictEqual(data.getRecipesById(id), target);
         });
     });

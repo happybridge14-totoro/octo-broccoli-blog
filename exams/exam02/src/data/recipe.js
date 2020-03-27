@@ -1,11 +1,11 @@
 const recipes = [];
 
-const getRecipes = () => {
-    return recipes;
+const getRecipesTitle = () => {
+    return recipes.map(({recipeId, title})=>{return {recipeId, title}});
 };
 const addRecipe = (author, title, ingredients, instructions) => {
     const newRecipes = {
-        recipeId: recipes.length,
+        recipeId: recipes.length.toString(),
         author, 
         title,
         ingredients,
@@ -15,8 +15,8 @@ const addRecipe = (author, title, ingredients, instructions) => {
     return newRecipes;
 };
 const getRecipesById = (id) => {
-    const recipe = recipes[id];
+    const recipe = recipes[Number.parseInt(id)];
     return recipe ? recipe : null;
 };
 
-module.exports = {getRecipes, addRecipe, getRecipesById};
+module.exports = {getRecipesTitle, addRecipe, getRecipesById};

@@ -19,12 +19,42 @@
         </div>
         <div id="user-stage">
         </div>
-        <template id="login">
-            <div class="login-page">
-                <label for="user-name">User Name: </label>
-                <input id="user-name" type="text">
-                <button class="signin">submit</button>
+        <template id="list">
+            <section>
+                <h4>Recipe List</h4>
+                <div id="list-content"></div>
+            </section>
+        </template>
+        <template id="list-recipe">
+            <div class="recipe-item">
+                <div class="recipe-title"></div>
             </div>
+        </template>
+        <template id="recipe-detail">
+            <section>
+                <h4>Recipe Detail</h4>
+                <div class="recipe-detail-title"></div>
+                <div class="recipe-author"></div>
+                <div class="recipe-ingredients"></div>
+                <div class="recipe-instructions"></div>
+                <button class="back">Back</button>
+            </section>
+        </template>
+        <template id="recipe-add">
+            <section>
+                <h4>Add Recipe</h4>
+                <form action="" class="recipe-form">
+                    <label for="recipe-title">Title</label>
+                    <input type="text" id="recipe-add-title" required>
+                    <label for="recipe-ingredients">Ingredients</label>
+                    <textarea id="recipe-ingredients" required></textarea>
+                    <label for="recipe-instructions">Instructions:</label>
+                    <textarea id="recipe-instructions" required></textarea>
+                    <button type="submit" class="submit">Submit</button>
+                </form>
+                <p class="success-message">Submit Success! Going back to recipe list...</p>
+                <button class="back">Back</button>
+            </section>
         </template>
         <template id="anonymous">
             <input type="text" name="" id="username">
@@ -33,13 +63,6 @@
         <template id="logged-in">
             <button id="sign-out">Sign Out</button>
             <button id="add">Add Item</button>
-        </template>
-        <template id="message">
-            <div class="single-chat">
-                <time class="chat-time"></time>
-                <div class="chat-name"></div>
-                <div class="chat-content"></div>
-            </div>
         </template>
     </main>
     <footer>

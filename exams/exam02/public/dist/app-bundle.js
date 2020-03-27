@@ -1128,16 +1128,15 @@ __webpack_require__.r(__webpack_exports__);
 
 var RECIPE_URL = "/recipe";
 var RECIPES_URL = "/recipes";
+;
+;
 
 var getRecipeURLById = function getRecipeURLById(id) {
   return RECIPE_URL + "/" + id;
 };
 
 var getRecipesList = function getRecipesList() {
-  var hello = "hello";
-  return _utils_mini_jquery__WEBPACK_IMPORTED_MODULE_0__["default"].get(RECIPES_URL, {
-    hello: hello
-  });
+  return _utils_mini_jquery__WEBPACK_IMPORTED_MODULE_0__["default"].get(RECIPES_URL);
 };
 
 var getRecipeDetail = function getRecipeDetail(id) {
@@ -1201,6 +1200,12 @@ var MiniJquery = /*#__PURE__*/function () {
   }
 
   _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_2___default()(MiniJquery, [{
+    key: "onSubmit",
+    value: function onSubmit(callback) {
+      this.element.addEventListener("submit", callback);
+      return this;
+    }
+  }, {
     key: "onClick",
     value: function onClick(callback) {
       this.element.addEventListener("click", callback);
@@ -1428,6 +1433,7 @@ var METHOD;
           return prev + "".concat(encodeURIComponent(key), "=").concat(encodeURIComponent(value), "&");
         }, "?");
         query = query.slice(0, -1);
+        url = url + query;
       }
     }
 
@@ -1517,7 +1523,7 @@ var displayAnonymousPage = function displayAnonymousPage() {
   signInBtn.disable = true;
   input.onInput(function (event) {
     event.preventDefault();
-    signInBtn.disable = input.value === "" || /((dog)| )+/.test(input.value);
+    signInBtn.disable = input.value === "";
   });
   signInBtn.onClick( /*#__PURE__*/function () {
     var _ref = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(event) {
@@ -1692,6 +1698,10 @@ var ERROR_TYPE;
 (function (ERROR_TYPE) {
   ERROR_TYPE[ERROR_TYPE["USER_NAME_ERROR"] = 0] = "USER_NAME_ERROR";
   ERROR_TYPE[ERROR_TYPE["UNEXPECTED_ERROR"] = 1] = "UNEXPECTED_ERROR";
+  ERROR_TYPE[ERROR_TYPE["NETWORK_ERROR"] = 2] = "NETWORK_ERROR";
+  ERROR_TYPE[ERROR_TYPE["RECIPE_ID_ERROR"] = 3] = "RECIPE_ID_ERROR";
+  ERROR_TYPE[ERROR_TYPE["RECIPE_PARAM_ERROR"] = 4] = "RECIPE_PARAM_ERROR";
+  ERROR_TYPE[ERROR_TYPE["SESSION_ERROR"] = 5] = "SESSION_ERROR";
 })(ERROR_TYPE || (ERROR_TYPE = {}));
 
 ;
@@ -1702,6 +1712,22 @@ var getErrorMessage = function getErrorMessage(type) {
   switch (type) {
     case ERROR_TYPE.USER_NAME_ERROR:
       message = "User name is not valid!";
+      break;
+
+    case ERROR_TYPE.NETWORK_ERROR:
+      message = "Unable to connect to server! Please try again!";
+      break;
+
+    case ERROR_TYPE.RECIPE_ID_ERROR:
+      message = "Wrong recipe id!";
+      break;
+
+    case ERROR_TYPE.SESSION_ERROR:
+      message = "Invalid user!";
+      break;
+
+    case ERROR_TYPE.RECIPE_PARAM_ERROR:
+      message = "Param error!";
       break;
 
     case ERROR_TYPE.UNEXPECTED_ERROR:
@@ -1810,27 +1836,196 @@ var USER_STATUS;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _utils_mini_jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/mini-jquery */ "./ts/utils/mini-jquery.ts");
-/* harmony import */ var _model_recipes__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../model/recipes */ "./ts/model/recipes.ts");
+/* harmony import */ var _pageInterface__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./pageInterface */ "./ts/viewcontroller/pageInterface.ts");
+/* harmony import */ var _utils_mini_jquery__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/mini-jquery */ "./ts/utils/mini-jquery.ts");
+/* harmony import */ var _model_recipes__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../model/recipes */ "./ts/model/recipes.ts");
+/* harmony import */ var _error__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./error */ "./ts/viewcontroller/error.ts");
+/* harmony import */ var _utils_status_error_codes__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/status-error-codes */ "./ts/utils/status-error-codes.ts");
+
+
+
 
 
 var checkUserStatusCB;
 var currentPage;
-var state = Object(_utils_mini_jquery__WEBPACK_IMPORTED_MODULE_0__["default"])("#recipe-stage");
+var stage = Object(_utils_mini_jquery__WEBPACK_IMPORTED_MODULE_1__["default"])("#recipe-stage");
+var listTemplate = Object(_utils_mini_jquery__WEBPACK_IMPORTED_MODULE_1__["default"])("#list");
+var listRecipeTemplate = Object(_utils_mini_jquery__WEBPACK_IMPORTED_MODULE_1__["default"])("#list-recipe");
+var recipeDetailTemplate = Object(_utils_mini_jquery__WEBPACK_IMPORTED_MODULE_1__["default"])("#recipe-detail");
+var addTemplate = Object(_utils_mini_jquery__WEBPACK_IMPORTED_MODULE_1__["default"])("#recipe-add");
 
-var displayMainPage = function displayMainPage() {
-  Object(_model_recipes__WEBPACK_IMPORTED_MODULE_1__["getRecipesList"])().then(function () {});
+var createRecipeListNode = function createRecipeListNode(recipe) {
+  var recipeId = recipe.recipeId,
+      title = recipe.title;
+  var listRecipe = listRecipeTemplate.templateClone || Object(_utils_mini_jquery__WEBPACK_IMPORTED_MODULE_1__["default"])();
+  var recipeItem = listRecipe.find(".recipe-item") || Object(_utils_mini_jquery__WEBPACK_IMPORTED_MODULE_1__["default"])();
+  recipeItem.updateData(recipeId);
+  var recipeTitle = listRecipe.find(".recipe-title") || Object(_utils_mini_jquery__WEBPACK_IMPORTED_MODULE_1__["default"])();
+  recipeTitle.updateContent(title);
+  return listRecipe;
 };
 
-var displayDetailPage = function displayDetailPage() {};
+var renderMainPage = function renderMainPage(recipes) {
+  var listPage = listTemplate.templateClone || Object(_utils_mini_jquery__WEBPACK_IMPORTED_MODULE_1__["default"])();
+  listPage.onClick(function (event) {
+    event.preventDefault();
+    var target = Object(_utils_mini_jquery__WEBPACK_IMPORTED_MODULE_1__["default"])(event.target);
+    var itemId = target.getDataByKey();
 
-var displayAddPage = function displayAddPage() {};
+    if (itemId || itemId === "0") {
+      displayDetailPage(itemId);
+    }
+  });
+  recipes.forEach(function (recipe) {
+    listPage.append(createRecipeListNode(recipe));
+  });
+  stage.removeChildren();
+  stage.append(listPage);
+};
+
+var renderDetailPage = function renderDetailPage(_ref) {
+  var title = _ref.title,
+      author = _ref.author,
+      ingredients = _ref.ingredients,
+      instructions = _ref.instructions;
+  var detailPage = recipeDetailTemplate.templateClone || Object(_utils_mini_jquery__WEBPACK_IMPORTED_MODULE_1__["default"])();
+  var recipeTitle = detailPage.find(".recipe-detail-title") || Object(_utils_mini_jquery__WEBPACK_IMPORTED_MODULE_1__["default"])();
+  recipeTitle.updateContent(title);
+  var recipeAuthor = detailPage.find(".recipe-author") || Object(_utils_mini_jquery__WEBPACK_IMPORTED_MODULE_1__["default"])();
+  recipeAuthor.updateContent(author);
+  var recipeIngredients = detailPage.find(".recipe-ingredients") || Object(_utils_mini_jquery__WEBPACK_IMPORTED_MODULE_1__["default"])();
+  recipeIngredients.updateContent(ingredients);
+  var recipeInstructions = detailPage.find(".recipe-instructions") || Object(_utils_mini_jquery__WEBPACK_IMPORTED_MODULE_1__["default"])();
+  recipeInstructions.updateContent(instructions);
+  var backBtn = detailPage.find(".back") || Object(_utils_mini_jquery__WEBPACK_IMPORTED_MODULE_1__["default"])();
+  backBtn.onClick(function (event) {
+    event.preventDefault();
+    displayMainPage();
+  });
+};
+
+var handleServiceCall = function handleServiceCall(promise) {
+  return promise.then(function (response) {
+    if (response.ok) {
+      return response.json();
+    } else {
+      return response.json().then(function (errorMessage) {
+        return Promise.reject(errorMessage);
+      });
+    }
+  }, function (error) {
+    Object(_error__WEBPACK_IMPORTED_MODULE_3__["displayError"])(_error__WEBPACK_IMPORTED_MODULE_3__["ERROR_TYPE"].NETWORK_ERROR);
+    return null;
+  });
+};
+
+var displayMainPage = function displayMainPage() {
+  currentPage = _pageInterface__WEBPACK_IMPORTED_MODULE_0__["PAGES"].LIST;
+  handleServiceCall(Object(_model_recipes__WEBPACK_IMPORTED_MODULE_2__["getRecipesList"])()).then(function (recipes) {
+    if (recipes) {
+      renderMainPage(recipes);
+    }
+  })["catch"](function (errorMessage) {
+    Object(_error__WEBPACK_IMPORTED_MODULE_3__["displayError"])(_error__WEBPACK_IMPORTED_MODULE_3__["ERROR_TYPE"].UNEXPECTED_ERROR);
+  });
+};
+
+var displayDetailPage = function displayDetailPage(itemId) {
+  currentPage = _pageInterface__WEBPACK_IMPORTED_MODULE_0__["PAGES"].DETAIL;
+  handleServiceCall(Object(_model_recipes__WEBPACK_IMPORTED_MODULE_2__["getRecipeDetail"])(itemId)).then(function (recipe) {
+    if (recipe) {
+      renderDetailPage(recipe);
+    }
+  })["catch"](function (errorMessage) {
+    if (errorMessage.errorCode === _utils_status_error_codes__WEBPACK_IMPORTED_MODULE_4__["ERROR_CODES"].WRONG_RECIPE_ID) {
+      Object(_error__WEBPACK_IMPORTED_MODULE_3__["displayError"])(_error__WEBPACK_IMPORTED_MODULE_3__["ERROR_TYPE"].RECIPE_ID_ERROR);
+    } else {
+      Object(_error__WEBPACK_IMPORTED_MODULE_3__["displayError"])(_error__WEBPACK_IMPORTED_MODULE_3__["ERROR_TYPE"].UNEXPECTED_ERROR);
+    }
+  });
+};
+
+var displayAddPage = function displayAddPage() {
+  currentPage = _pageInterface__WEBPACK_IMPORTED_MODULE_0__["PAGES"].ADD;
+  var addPage = addTemplate.templateClone || Object(_utils_mini_jquery__WEBPACK_IMPORTED_MODULE_1__["default"])();
+  var submitBtn = addPage.find(".submit") || Object(_utils_mini_jquery__WEBPACK_IMPORTED_MODULE_1__["default"])();
+  var recipeTitle = addPage.find("#recipe-add-title") || Object(_utils_mini_jquery__WEBPACK_IMPORTED_MODULE_1__["default"])();
+  var recipeIngredients = addPage.find("#recipe-ingredients") || Object(_utils_mini_jquery__WEBPACK_IMPORTED_MODULE_1__["default"])();
+  var recipeInstructions = addPage.find("#recipe-instructions") || Object(_utils_mini_jquery__WEBPACK_IMPORTED_MODULE_1__["default"])();
+  var submitForm = addPage.find(".recipe-form") || Object(_utils_mini_jquery__WEBPACK_IMPORTED_MODULE_1__["default"])();
+  var successMessage = addPage.find(".success-message") || Object(_utils_mini_jquery__WEBPACK_IMPORTED_MODULE_1__["default"])();
+  successMessage.hidden = true;
+  submitBtn.disable = true;
+
+  var checkSubmit = function checkSubmit(event) {
+    submitBtn.disable = recipeTitle.value === "" || recipeIngredients.value === "" || recipeInstructions.value === "";
+  };
+
+  recipeTitle.onInput(checkSubmit);
+  recipeIngredients.onInput(checkSubmit);
+  recipeInstructions.onInput(checkSubmit);
+  var submitting = false;
+  submitForm.onSubmit(function (event) {
+    event.preventDefault();
+    if (submitting) return;
+    submitting = true;
+    var title = recipeTitle.value;
+    var ingredients = recipeIngredients.value;
+    var instructions = recipeInstructions.value;
+    handleServiceCall(Object(_model_recipes__WEBPACK_IMPORTED_MODULE_2__["addRecipe"])(title, ingredients, instructions)).then(function (recipe) {
+      if (recipe) {
+        successMessage.hidden = false;
+        setTimeout(function () {
+          displayMainPage();
+        }, 1000);
+      } else {
+        submitting = false;
+      }
+    })["catch"](function (errorMessage) {
+      switch (errorMessage.errorCode) {
+        case _utils_status_error_codes__WEBPACK_IMPORTED_MODULE_4__["ERROR_CODES"].SESSION_NOT_FOUND:
+        case _utils_status_error_codes__WEBPACK_IMPORTED_MODULE_4__["ERROR_CODES"].WRONG_USER_ID:
+          Object(_error__WEBPACK_IMPORTED_MODULE_3__["displayError"])(_error__WEBPACK_IMPORTED_MODULE_3__["ERROR_TYPE"].SESSION_ERROR);
+          checkUserStatusCB();
+          displayMainPage();
+          break;
+
+        case _utils_status_error_codes__WEBPACK_IMPORTED_MODULE_4__["ERROR_CODES"].WRONG_RECIPE_INSTRUCTIONS:
+        case _utils_status_error_codes__WEBPACK_IMPORTED_MODULE_4__["ERROR_CODES"].WRONG_RECIPE_INGREDIENTS:
+        case _utils_status_error_codes__WEBPACK_IMPORTED_MODULE_4__["ERROR_CODES"].WRONG_RECIPE_TITLE:
+          Object(_error__WEBPACK_IMPORTED_MODULE_3__["displayError"])(_error__WEBPACK_IMPORTED_MODULE_3__["ERROR_TYPE"].RECIPE_PARAM_ERROR);
+          submitting = false;
+          break;
+
+        default:
+          submitting = false;
+          Object(_error__WEBPACK_IMPORTED_MODULE_3__["displayError"])(_error__WEBPACK_IMPORTED_MODULE_3__["ERROR_TYPE"].UNEXPECTED_ERROR);
+          break;
+      }
+    });
+  });
+  var backBtn = addPage.find(".back") || Object(_utils_mini_jquery__WEBPACK_IMPORTED_MODULE_1__["default"])();
+  backBtn.onClick(function (event) {
+    event.preventDefault();
+    displayMainPage();
+  });
+  stage.removeChildren();
+  stage.append(addPage);
+};
 
 var displayRecipe = function displayRecipe(target, checkUserStatus) {
   if (currentPage !== target) {
     checkUserStatusCB = checkUserStatus;
-    currentPage = target;
-    displayMainPage();
+
+    switch (target) {
+      case _pageInterface__WEBPACK_IMPORTED_MODULE_0__["PAGES"].ADD:
+        displayAddPage();
+        break;
+
+      default:
+        displayMainPage();
+        break;
+    }
   }
 };
 

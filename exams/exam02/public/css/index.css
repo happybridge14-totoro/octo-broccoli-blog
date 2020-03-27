@@ -89,6 +89,12 @@ input {
 input[type="number"] {
     padding-right: 8px;
 }
+textarea {
+    resize: none;
+    color: var(--text-color);
+    background-color: var(--background-color);
+    padding: 1em;
+}
 
 header {
     border-bottom: 1px solid var(--line-color);

@@ -19,6 +19,10 @@ export class MiniJquery {
             this.element = parameters;
         }
     }
+    onSubmit(callback: (this:void, e:Event)=>void):MiniJquery {
+        this.element.addEventListener("submit", callback);
+        return this;
+    }
     onClick(callback: (this:void, e:Event)=>void):MiniJquery {
         this.element.addEventListener("click", callback);
         return this;
@@ -175,6 +179,7 @@ interface paramObject {
                     return prev + `${encodeURIComponent(key)}=${encodeURIComponent(value)}&`;
                 }, "?");
                 query = query.slice(0, -1);
+                url = url + query;
             }
         }
         return fetch(url, param);
