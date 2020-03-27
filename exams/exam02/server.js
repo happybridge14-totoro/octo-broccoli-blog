@@ -92,7 +92,6 @@ app.post("/session", (req, res) => {
         const sessionId = createSessionByUserId(userId);
         res.cookie(COOKIE_KEY, sessionId);
         res.json(RESPONSE_SUCCESS);
-        updateUser();
     } else {
         res.clearCookie(COOKIE_KEY);
         res.status(STATUS_CODES.UNAUTHORIZED)

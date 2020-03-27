@@ -7,7 +7,8 @@ const getRecipeURLById = (id:string) => {
 };
 
 const getRecipesList = ():Promise<Response> => {
-    return $.get(RECIPES_URL);
+    const hello = "hello";
+    return $.get(RECIPES_URL, {hello});
 };
 
 const getRecipeDetail = (id:string):Promise<Response> => {

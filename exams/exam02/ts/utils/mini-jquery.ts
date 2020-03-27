@@ -161,14 +161,21 @@ enum METHOD {
 interface paramObject {
     [key:string]: any
 };
-[METHOD.GET, METHOD.POST, METHOD.DELETE, METHOD.PUT].forEach((method) => {
+[METHOD.GET, METHOD.POST, METHOD.DELETE, METHOD.PUT].forEach((method:METHOD) => {
     const param:paramObject = {
         method: method,
     };
     $[method.toLowerCase()] = (url:string, content?: object):Promise<Response> => {
         if (content) {
-            param.headers = { 'Content-Type': 'application/json' };
-            param.body = JSON.stringify(content);
+            if (method !== METHOD.GET) {
+                param.headers = { 'Content-Type': 'application/json' };
+                param.body = JSON.stringify(content);
+            } else {
+                let query:string = Object.entries(content).reduce((prev:string, [key, value]) => {
+                    return prev + `${encodeURIComponent(key)}=${encodeURIComponent(value)}&`;
+                }, "?");
+                query = query.slice(0, -1);
+            }
         }
         return fetch(url, param);
     };
