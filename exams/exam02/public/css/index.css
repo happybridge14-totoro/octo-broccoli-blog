@@ -92,7 +92,9 @@ input[type="number"] {
 textarea {
     resize: none;
     color: var(--text-color);
-    background-color: var(--background-color);
+    background-color: var(--input-background-color);
+    border-color: var(--input-border-color);
+    border-radius: 5px;
     padding: 1em;
 }
 
@@ -131,7 +133,7 @@ main {
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    min-height: 320px;
+    min-height: 410px;
 }
 
 footer {
@@ -142,8 +144,55 @@ footer {
     height: 90px;
 }
 
+#recipe-stage {
+    overflow-y: auto;
+    height: calc(100vh - 296px);
+    min-height: 274px;
+    width: 850px;
+    margin: 0px auto;
+}
+#recipe-stage h4 {
+    text-align: center;
+}
+#recipe-stage .recipe-item {
+    margin-bottom: 1em;
+    list-style-position: inside;
+    word-break: break-all;
+}
+#recipe-stage .recipe-title {
+    cursor: pointer;
+}
+.recipe-form textarea {
+    height: 120px;
+}
+.recipe-layout-area {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    margin-bottom: 2em;
+}
+.recipe-submit {
+    text-align: center;
+}
+.success-message {
+    margin-left: 6em;
+    color: var(--highlight-text-color);
+}
+.recipe-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.recipe-author,
+.recipe-detail-title,
+.recipe-instructions,
+.recipe-ingredients {
+    word-break: break-all;
+}
+.back {
+    margin-bottom: 2em;
+}
+
 #user-stage {
-    height: 40px;
+    height: 80px;
     display: flex;
     justify-content: center;
     align-items: center;

@@ -39,6 +39,7 @@ const renderMainPage = (recipes:Array<recipeTitleObject>) => {
     });
     stage.removeChildren();
     stage.append(listPage);
+    stage.scrollToButtom();
 };
 const renderDetailPage = ({title, author, ingredients, instructions}:recipeObject) => {
     const detailPage:MiniJquery = recipeDetailTemplate.templateClone || $();
@@ -56,7 +57,8 @@ const renderDetailPage = ({title, author, ingredients, instructions}:recipeObjec
         displayMainPage();
     });
     stage.removeChildren();
-    stage.append(detailPage)
+    stage.append(detailPage);
+    stage.scrollToTop();
 };
 const handleServiceCall = (promise:Promise<any>):Promise<any> => {
     return promise.then((response:Response)=>{
@@ -128,7 +130,7 @@ const displayAddPage = () => {
                 successMessage.hidden = false;
                 setTimeout(() => {
                     displayMainPage();
-                }, 1000);
+                }, 2000);
             } else {
                 submitting = false;
             }

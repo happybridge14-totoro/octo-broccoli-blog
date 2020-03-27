@@ -22,38 +22,62 @@
         <template id="list">
             <section>
                 <h4>Recipe List</h4>
-                <div id="list-content"></div>
+                <ul id="list-content"></ul>
             </section>
         </template>
         <template id="list-recipe">
-            <div class="recipe-item">
-                <div class="recipe-title"></div>
-            </div>
+                <li class="recipe-item">
+                    <a class="recipe-title"></a>
+                </li>
         </template>
         <template id="recipe-detail">
-            <section>
+            <section class="recipe-detail">
                 <h4>Recipe Detail</h4>
-                <div class="recipe-detail-title"></div>
-                <div class="recipe-author"></div>
-                <div class="recipe-ingredients"></div>
-                <div class="recipe-instructions"></div>
-                <button class="back">Back</button>
+                <div class="recipe-layout-area">
+                    <button class="back">Back</button>
+                </div>
+                <div class="recipe-layout-area">
+                    <div>Title: </div>
+                    <div class="recipe-detail-title"></div>
+                </div>
+                <div class="recipe-layout-area">
+                    <div>Author: </div>
+                    <div class="recipe-author"></div>
+                </div>
+                <div class="recipe-layout-area">
+                    <div>Ingredients: </div>
+                    <div class="recipe-ingredients"></div>
+                </div>
+                <div class="recipe-layout-area">
+                    <div>Instructions: </div>
+                    <div class="recipe-instructions"></div>
+                </div>
             </section>
         </template>
         <template id="recipe-add">
             <section>
                 <h4>Add Recipe</h4>
+                <div class="recipe-layout-area">
+                    <button class="back">Back</button>
+                    <span class="success-message">Submit Success! Going back to recipe list...</span>
+                </div>
                 <form action="" class="recipe-form">
-                    <label for="recipe-title">Title</label>
-                    <input type="text" id="recipe-add-title" required>
-                    <label for="recipe-ingredients">Ingredients</label>
-                    <textarea id="recipe-ingredients" required></textarea>
-                    <label for="recipe-instructions">Instructions:</label>
-                    <textarea id="recipe-instructions" required></textarea>
-                    <button type="submit" class="submit">Submit</button>
+                    <div class="recipe-layout-area">
+                        <label for="recipe-title">Title</label>
+                        <input type="text" id="recipe-add-title" required>
+                    </div>
+                    <div class="recipe-layout-area">
+                        <label for="recipe-ingredients">Ingredients</label>
+                        <textarea id="recipe-ingredients" required></textarea>
+                    </div>
+                    <div class="recipe-layout-area">
+                        <label for="recipe-instructions">Instructions:</label>
+                        <textarea id="recipe-instructions" required></textarea>
+                    </div>
+                    <div class="recipe-submit">
+                        <button type="submit" class="submit">Submit</button>
+                    </div>
                 </form>
-                <p class="success-message">Submit Success! Going back to recipe list...</p>
-                <button class="back">Back</button>
             </section>
         </template>
         <template id="anonymous">

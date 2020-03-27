@@ -1281,6 +1281,12 @@ var MiniJquery = /*#__PURE__*/function () {
       return this;
     }
   }, {
+    key: "scrollToTop",
+    value: function scrollToTop() {
+      this.element.scrollTop = 0;
+      return this;
+    }
+  }, {
     key: "scrollToButtom",
     value: function scrollToButtom() {
       this.element.scrollTop = this.element.scrollHeight;
@@ -1883,6 +1889,7 @@ var renderMainPage = function renderMainPage(recipes) {
   });
   stage.removeChildren();
   stage.append(listPage);
+  stage.scrollToButtom();
 };
 
 var renderDetailPage = function renderDetailPage(_ref) {
@@ -1906,6 +1913,7 @@ var renderDetailPage = function renderDetailPage(_ref) {
   });
   stage.removeChildren();
   stage.append(detailPage);
+  stage.scrollToTop();
 };
 
 var handleServiceCall = function handleServiceCall(promise) {
@@ -1981,7 +1989,7 @@ var displayAddPage = function displayAddPage() {
         successMessage.hidden = false;
         setTimeout(function () {
           displayMainPage();
-        }, 1000);
+        }, 2000);
       } else {
         submitting = false;
       }

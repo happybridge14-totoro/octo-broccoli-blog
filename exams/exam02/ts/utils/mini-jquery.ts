@@ -73,6 +73,10 @@ export class MiniJquery {
         this.element.setAttribute("title", content);
         return this;
     }
+    scrollToTop():MiniJquery {
+        this.element.scrollTop = 0;
+        return this;
+    }
     scrollToButtom():MiniJquery {
         this.element.scrollTop = this.element.scrollHeight;
         return this;
