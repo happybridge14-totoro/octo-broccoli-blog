@@ -24,16 +24,18 @@ const createRecipeListNode = (recipe:recipeTitleObject):MiniJquery => {
 };
 const renderMainPage = (recipes:Array<recipeTitleObject>) => {
     const listPage:MiniJquery = listTemplate.templateClone || $();
-    listPage.onClick((event:Event) => {
+    const listContentPage:MiniJquery = listPage.find("#list-content") || $();
+    listContentPage.onClick((event:Event) => {
         event.preventDefault();
         const target:MiniJquery = $(event.target);
-        const itemId = target.getDataByKey();
+        const targetParent:MiniJquery = target.parent || $();
+        const itemId = targetParent.getDataByKey();
         if (itemId || itemId === "0") {
             displayDetailPage(itemId);
         }
     });
     recipes.forEach((recipe:recipeTitleObject)=>{
-        listPage.append(createRecipeListNode(recipe));
+        listContentPage.append(createRecipeListNode(recipe));
     });
     stage.removeChildren();
     stage.append(listPage);
@@ -53,6 +55,8 @@ const renderDetailPage = ({title, author, ingredients, instructions}:recipeObjec
         event.preventDefault();
         displayMainPage();
     });
+    stage.removeChildren();
+    stage.append(detailPage)
 };
 const handleServiceCall = (promise:Promise<any>):Promise<any> => {
     return promise.then((response:Response)=>{

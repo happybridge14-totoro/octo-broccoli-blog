@@ -1867,17 +1867,19 @@ var createRecipeListNode = function createRecipeListNode(recipe) {
 
 var renderMainPage = function renderMainPage(recipes) {
   var listPage = listTemplate.templateClone || Object(_utils_mini_jquery__WEBPACK_IMPORTED_MODULE_1__["default"])();
-  listPage.onClick(function (event) {
+  var listContentPage = listPage.find("#list-content") || Object(_utils_mini_jquery__WEBPACK_IMPORTED_MODULE_1__["default"])();
+  listContentPage.onClick(function (event) {
     event.preventDefault();
     var target = Object(_utils_mini_jquery__WEBPACK_IMPORTED_MODULE_1__["default"])(event.target);
-    var itemId = target.getDataByKey();
+    var targetParent = target.parent || Object(_utils_mini_jquery__WEBPACK_IMPORTED_MODULE_1__["default"])();
+    var itemId = targetParent.getDataByKey();
 
     if (itemId || itemId === "0") {
       displayDetailPage(itemId);
     }
   });
   recipes.forEach(function (recipe) {
-    listPage.append(createRecipeListNode(recipe));
+    listContentPage.append(createRecipeListNode(recipe));
   });
   stage.removeChildren();
   stage.append(listPage);
@@ -1902,6 +1904,8 @@ var renderDetailPage = function renderDetailPage(_ref) {
     event.preventDefault();
     displayMainPage();
   });
+  stage.removeChildren();
+  stage.append(detailPage);
 };
 
 var handleServiceCall = function handleServiceCall(promise) {

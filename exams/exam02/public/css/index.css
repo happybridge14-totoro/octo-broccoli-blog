@@ -141,24 +141,16 @@ footer {
     box-sizing: border-box;
     height: 90px;
 }
-.loading {
-    text-align: center;
-    margin-top: 2em;
-}
-#stage {
-    width: 620px;
-    margin: 0px auto;
-    height: 100%;
-}
 
-.login-page {
-    padding-top: 200px;
-    text-align: center;
+#user-stage {
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
-#user-name {
+#user-stage > * {
     margin: 0px 1em;
 }
-
 .error {
     padding: 1em 0px;
     text-align: center;
@@ -174,89 +166,6 @@ footer {
 .not-found-page{
     margin-top: 2em;
     text-align: center;
-}
-.chat-page {
-    display:grid;
-    grid-template-columns: 1fr 2fr;
-}
-.chat-title {
-    box-sizing: border-box;
-    height: 17px;
-}
-.single-chat {
-    margin-bottom: 1em;
-}
-
-
-.update {
-    margin-right: 2em;
-}
-.users-list {
-    width: 210px;
-}
-.user-name {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    margin-bottom: 1em;
-}
-
-.chat-list {
-    width: 420px;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-}
-.chat-title {
-    text-align: center;
-}
-.chat-detail {
-    height: calc(100vh - 398px);
-    min-height: 100px;
-    overflow-y: auto;
-}
-.chat-action {
-    height: 50px;
-    padding: 1em 0px;
-    box-sizing: border-box;
-}
-.chat-message {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-}
-.chat-time {
-    font-size: smaller;
-    color: var(--minor-text-color);
-}
-.chat-name {
-    color: var(--highlight-text-color);
-    font-size: larger;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-.chat-content {
-    overflow: hidden;
-    word-break: break-all;
-}
-.chat-action {
-    text-align: center;
-}
-.chat-action > *{
-    margin-right: 1em;
-}
-
-.user-action {
-    text-align: center;
-    padding: 1em 0px;
-    height: 60px;
-    box-sizing: border-box;
-}
-.name {
-    width: 10em;
-    margin: 0px 1em;
-}
-.quantity {
-    width: 3em;
-    margin: 0px 1em;
 }
 
 .footer-personal-info {
