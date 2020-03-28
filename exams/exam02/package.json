@@ -1,8 +1,8 @@
 {
-  "name": "rest-chat",
+  "name": "exam02",
   "version": "1.0.0",
-  "description": "* start from the up-to-date master branch (`git checkout master; git pull origin master`) * Create a feature branch named 'chat-spa' (`git checkout -b chat-spa`) * modify the files in this directory to have the require features * add, commit, and push the branch to github * Create a PR to merge to master * Be sure to include the TA(s) and I as reviewers.   * Due by 11:59pm (PT) Sun Mar 22",
-  "main": "index.js",
+  "description": "* start from the up-to-date master branch (`git checkout master; git pull origin master`) * Create a feature branch named 'exam2' (git checkout -b exam2) * modify the questions.md file to have the answers required * add, commit, and push the branch to github * Create a PR to merge to master * Be sure to include the TA(s) and I as reviewers.   * Due by 11:59pm (PT) Sun Mar 29",
+  "main": "main.js",
   "scripts": {
     "start": "node server.js",
     "build": "webpack",
