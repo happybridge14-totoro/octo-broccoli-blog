@@ -1431,15 +1431,14 @@ var METHOD;
         };
         param.body = JSON.stringify(content);
       } else {
-        var query = Object.entries(content).reduce(function (prev, _ref) {
+        var query = Object.entries(content).map(function (_ref) {
           var _ref2 = _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default()(_ref, 2),
               key = _ref2[0],
               value = _ref2[1];
 
-          return prev + "".concat(encodeURIComponent(key), "=").concat(encodeURIComponent(value), "&");
-        }, "?");
-        query = query.slice(0, -1);
-        url = url + query;
+          return "".concat(encodeURIComponent(key), "=").concat(encodeURIComponent(value));
+        }).join("&");
+        url = url + (query === "" ? "" : "?" + query);
       }
     }
 

@@ -179,11 +179,10 @@ interface paramObject {
                 param.headers = { 'Content-Type': 'application/json' };
                 param.body = JSON.stringify(content);
             } else {
-                let query:string = Object.entries(content).reduce((prev:string, [key, value]) => {
-                    return prev + `${encodeURIComponent(key)}=${encodeURIComponent(value)}&`;
-                }, "?");
-                query = query.slice(0, -1);
-                url = url + query;
+                const query = Object.entries(content).map(([key, value]) => {
+                    return `${encodeURIComponent(key)}=${encodeURIComponent(value)}`;
+                }).join("&");
+                url = url + (query === "" ? "" : "?" + query);
             }
         }
         return fetch(url, param);
