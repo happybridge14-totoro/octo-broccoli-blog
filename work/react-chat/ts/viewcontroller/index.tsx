@@ -1,13 +1,13 @@
+import * as React from "react";
+const {memo, useState, useEffect, useRef, useCallback} = React;
+
 import {getMessage}  from "../model/chat";
-import { messageBody } from "../model/dataInterface";
 import { STATUS_CODES, ERROR_CODES, ERROR_OBJECT } from "../utils/status-error-codes";
-import {EVENTS, addEventListener, removeEventListener} from "../utils/event";
-// import {displayError, hideError, ERROR_TYPE} from "./error";
+import {EVENTS, addEventListener, removeEventListener, dispatch} from "../utils/event";
+import {ErrorMessage, ERROR_TYPE} from "./error-message";
+import {Login} from "./login";
 
 import "./index.module.css";
-
-import * as React from "react";
-import {memo, useState, useEffect, useRef, useCallback} from "react";
 
 enum PAGES {
     INIT,
@@ -17,6 +17,7 @@ enum PAGES {
 
 export const Index = memo(() => {
     const [currentPage, setCurrentPage] = useState(PAGES.INIT);
+    const [chatData, setChatData] = useState(null);
     const loadingEl = useRef<HTMLInputElement>(null);
     const showLoading = (show:boolean) => {
         if (loadingEl && loadingEl.current) {
@@ -30,23 +31,24 @@ export const Index = memo(() => {
                 const response:Response = await getMessage();
                 showLoading(false);
                 if (response.ok) {
-                    // hideError();
+                    dispatch(EVENTS.HIDE_ERROR);
                     const chat = await response.json();
-                    // displayPage(PAGES.CHAT, chat);
+                    setChatData(chatData);
+                    setCurrentPage(PAGES.CHAT);
                 } else if (response.status === STATUS_CODES.UNAUTHORIZED){
                     const errorMessage:ERROR_OBJECT = await response.json();
                     if (errorMessage.errorCode === ERROR_CODES.WRONG_USER_ID) {
-                        // displayError(ERROR_TYPE.SESSION_ERROR);
+                        dispatch(EVENTS.DISPLAY_ERROR, ERROR_TYPE.SESSION_ERROR);
                     } else {
-                        // hideError();
+                        dispatch(EVENTS.HIDE_ERROR);
                     }
-                    // displayPage(PAGES.LOGIN);
+                    setCurrentPage(PAGES.LOGIN);
                 } else {
-                    console.error("Unexpect error!");
+                    dispatch(EVENTS.DISPLAY_ERROR, ERROR_TYPE.UNEXPECTED_ERROR);
                 }
             } catch(e) {
-                // displayError(ERROR_TYPE.NETWORK_ERROR)
                 showLoading(false);
+                dispatch(EVENTS.DISPLAY_ERROR, ERROR_TYPE.NETWORK_ERROR);
             }
         };
         addEventListener(EVENTS.REFRESH, checkUser);
@@ -55,16 +57,19 @@ export const Index = memo(() => {
         };
     }, []);
     const renderContent = useCallback(() => {
-        return (<div></div>);
-        // if (currentPage === PAGES.LOGIN) {
-        //     return (<LOGIN></LOGIN>);
-        // } else {
+        if (currentPage === PAGES.LOGIN) {
+            return (<Login></Login>);
+        } else {
+            return (<div></div>);
         //     return (<CHAT></CHAT>);
-        // }
-    }, [currentPage])
-    return (<div className="stage">
-        {/* <Error></Error> */}
-        <div className="loading" ref={loadingEl}>Loading...</div>
-        {renderContent()}
-    </div>);
+        }
+    }, [currentPage]);
+
+    return (
+        <div className="stage">
+            <ErrorMessage></ErrorMessage>
+            <div className="loading" ref={loadingEl}>Loading...</div>
+            {renderContent()}
+        </div>
+    );
 });

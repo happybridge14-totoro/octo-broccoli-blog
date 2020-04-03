@@ -1,7 +1,6 @@
-import $, {MiniJquery} from "../utils/mini-jquery";
-
-const CLASS_DISPLAY = "display";
-const errorview:MiniJquery = $(".error");
+import * as React from "react";
+const {memo, useState, useEffect} = React;
+import {EVENTS, addEventListener, removeEventListener} from "../utils/event";
 
 enum ERROR_TYPE {
     USER_NAME_ERROR,
@@ -37,13 +36,28 @@ const getErrorMessage = (type:ERROR_TYPE):string => {
     }
     return message;
 }
-const displayError = (errorType:ERROR_TYPE) => {
-    errorview.text = getErrorMessage(errorType);
-    errorview.addClass(CLASS_DISPLAY);
-};
-const hideError = () => {
-    errorview.text = "";
-    errorview.removeClass(CLASS_DISPLAY);
-};
 
-export {displayError, hideError, ERROR_TYPE};
+const ErrorMessage = memo(() => {
+    const [errorText, setErrorTest] = useState("");
+    useEffect(() => {
+        const displayError = (errorType:ERROR_TYPE) => {
+            setErrorTest(getErrorMessage(errorType));
+        };
+        const hideError = () => {
+            setErrorTest("");
+        };
+        addEventListener(EVENTS.DISPLAY_ERROR, displayError);
+        addEventListener(EVENTS.HIDE_ERROR, hideError);
+        return ()=>{
+            removeEventListener(EVENTS.DISPLAY_ERROR, displayError);
+            removeEventListener(EVENTS.HIDE_ERROR, hideError);
+        };
+    }, []);
+
+    return (
+        <div className={`error ${errorText === "" ? "" : "display"}`}>
+            {errorText}
+        </div>
+    );
+});
+export {ErrorMessage, ERROR_TYPE};

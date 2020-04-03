@@ -1,4 +1,4 @@
-import $ from "../utils/mini-jquery";
+import api from "../utils/api";
 import {getUsers, stop as longStop} from "./long-connection";
 import { userObject } from "./dataInterface";
 const URL = "/users";
@@ -8,10 +8,10 @@ const getURL = (isLong:boolean|null=false):string => {
 };
 
 const getUser = () => {
-    return $.get(getURL());
+    return api.get(getURL());
 };
 const getLongUser = () => {
-    return $.get(getURL(true)).then((res:Response)=>{
+    return api.get(getURL(true)).then((res:Response)=>{
         if (res.ok) {
             return res.json();
         } else {

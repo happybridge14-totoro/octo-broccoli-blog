@@ -642,6 +642,30 @@ exports.TYPE = TYPE;
 
 /***/ }),
 
+/***/ "./ts/model/login.ts":
+/*!***************************!*\
+  !*** ./ts/model/login.ts ***!
+  \***************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const api_1 = __webpack_require__(/*! ../utils/api */ "./ts/utils/api.ts");
+const URL = "/session";
+const signIn = (userName) => {
+    return api_1.default.post(URL, { userName });
+};
+exports.signIn = signIn;
+const signOut = () => {
+    return api_1.default.delete(URL);
+};
+exports.signOut = signOut;
+
+
+/***/ }),
+
 /***/ "./ts/model/long-connection.ts":
 /*!*************************************!*\
   !*** ./ts/model/long-connection.ts ***!
@@ -878,6 +902,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const EVENTS = {
     REFRESH: "refresh",
     DISPLAY_ERROR: "displayError",
+    HIDE_ERROR: "hideError",
 };
 exports.EVENTS = EVENTS;
 const eventMap = new Map();
@@ -951,6 +976,78 @@ exports.ERROR_CODES = ERROR_CODES;
 
 /***/ }),
 
+/***/ "./ts/viewcontroller/error-message.tsx":
+/*!*********************************************!*\
+  !*** ./ts/viewcontroller/error-message.tsx ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const React = __webpack_require__(/*! react */ "react");
+const { memo, useState, useEffect } = React;
+const event_1 = __webpack_require__(/*! ../utils/event */ "./ts/utils/event.ts");
+var ERROR_TYPE;
+(function (ERROR_TYPE) {
+    ERROR_TYPE[ERROR_TYPE["USER_NAME_ERROR"] = 0] = "USER_NAME_ERROR";
+    ERROR_TYPE[ERROR_TYPE["UNEXPECTED_ERROR"] = 1] = "UNEXPECTED_ERROR";
+    ERROR_TYPE[ERROR_TYPE["NETWORK_ERROR"] = 2] = "NETWORK_ERROR";
+    ERROR_TYPE[ERROR_TYPE["RECIPE_ID_ERROR"] = 3] = "RECIPE_ID_ERROR";
+    ERROR_TYPE[ERROR_TYPE["RECIPE_PARAM_ERROR"] = 4] = "RECIPE_PARAM_ERROR";
+    ERROR_TYPE[ERROR_TYPE["SESSION_ERROR"] = 5] = "SESSION_ERROR";
+})(ERROR_TYPE || (ERROR_TYPE = {}));
+exports.ERROR_TYPE = ERROR_TYPE;
+;
+const getErrorMessage = (type) => {
+    let message = "";
+    switch (type) {
+        case ERROR_TYPE.USER_NAME_ERROR:
+            message = "User name is not valid!";
+            break;
+        case ERROR_TYPE.NETWORK_ERROR:
+            message = "Unable to connect to server! Please try again!";
+            break;
+        case ERROR_TYPE.RECIPE_ID_ERROR:
+            message = "Wrong recipe id!";
+            break;
+        case ERROR_TYPE.SESSION_ERROR:
+            message = "Invalid user!";
+            break;
+        case ERROR_TYPE.RECIPE_PARAM_ERROR:
+            message = "Param error!";
+            break;
+        case ERROR_TYPE.UNEXPECTED_ERROR:
+        default:
+            "Something went wrong!";
+            break;
+    }
+    return message;
+};
+const ErrorMessage = memo(() => {
+    const [errorText, setErrorTest] = useState("");
+    useEffect(() => {
+        const displayError = (errorType) => {
+            setErrorTest(getErrorMessage(errorType));
+        };
+        const hideError = () => {
+            setErrorTest("");
+        };
+        event_1.addEventListener(event_1.EVENTS.DISPLAY_ERROR, displayError);
+        event_1.addEventListener(event_1.EVENTS.HIDE_ERROR, hideError);
+        return () => {
+            event_1.removeEventListener(event_1.EVENTS.DISPLAY_ERROR, displayError);
+            event_1.removeEventListener(event_1.EVENTS.HIDE_ERROR, hideError);
+        };
+    }, []);
+    return (React.createElement("div", { className: `error ${errorText === "" ? "" : "display"}` }, errorText));
+});
+exports.ErrorMessage = ErrorMessage;
+
+
+/***/ }),
+
 /***/ "./ts/viewcontroller/index.module.css":
 /*!********************************************!*\
   !*** ./ts/viewcontroller/index.module.css ***!
@@ -1001,12 +1098,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const React = __webpack_require__(/*! react */ "react");
+const { memo, useState, useEffect, useRef, useCallback } = React;
 const chat_1 = __webpack_require__(/*! ../model/chat */ "./ts/model/chat.ts");
 const status_error_codes_1 = __webpack_require__(/*! ../utils/status-error-codes */ "./ts/utils/status-error-codes.ts");
 const event_1 = __webpack_require__(/*! ../utils/event */ "./ts/utils/event.ts");
+const error_message_1 = __webpack_require__(/*! ./error-message */ "./ts/viewcontroller/error-message.tsx");
+const login_1 = __webpack_require__(/*! ./login */ "./ts/viewcontroller/login.tsx");
 __webpack_require__(/*! ./index.module.css */ "./ts/viewcontroller/index.module.css");
-const React = __webpack_require__(/*! react */ "react");
-const react_1 = __webpack_require__(/*! react */ "react");
 var PAGES;
 (function (PAGES) {
     PAGES[PAGES["INIT"] = 0] = "INIT";
@@ -1014,36 +1113,44 @@ var PAGES;
     PAGES[PAGES["CHAT"] = 2] = "CHAT";
 })(PAGES || (PAGES = {}));
 ;
-exports.Index = react_1.memo(() => {
-    const [currentPage, setCurrentPage] = react_1.useState(PAGES.INIT);
-    const loadingEl = react_1.useRef(null);
+exports.Index = memo(() => {
+    const [currentPage, setCurrentPage] = useState(PAGES.INIT);
+    const [chatData, setChatData] = useState(null);
+    const loadingEl = useRef(null);
     const showLoading = (show) => {
         if (loadingEl && loadingEl.current) {
             loadingEl.current.hidden = show;
         }
     };
-    react_1.useEffect(() => {
+    useEffect(() => {
         const checkUser = () => __awaiter(void 0, void 0, void 0, function* () {
             try {
                 showLoading(true);
                 const response = yield chat_1.getMessage();
                 showLoading(false);
                 if (response.ok) {
+                    event_1.dispatch(event_1.EVENTS.HIDE_ERROR);
                     const chat = yield response.json();
+                    setChatData(chatData);
+                    setCurrentPage(PAGES.CHAT);
                 }
                 else if (response.status === status_error_codes_1.STATUS_CODES.UNAUTHORIZED) {
                     const errorMessage = yield response.json();
                     if (errorMessage.errorCode === status_error_codes_1.ERROR_CODES.WRONG_USER_ID) {
+                        event_1.dispatch(event_1.EVENTS.DISPLAY_ERROR, error_message_1.ERROR_TYPE.SESSION_ERROR);
                     }
                     else {
+                        event_1.dispatch(event_1.EVENTS.HIDE_ERROR);
                     }
+                    setCurrentPage(PAGES.LOGIN);
                 }
                 else {
-                    console.error("Unexpect error!");
+                    event_1.dispatch(event_1.EVENTS.DISPLAY_ERROR, error_message_1.ERROR_TYPE.UNEXPECTED_ERROR);
                 }
             }
             catch (e) {
                 showLoading(false);
+                event_1.dispatch(event_1.EVENTS.DISPLAY_ERROR, error_message_1.ERROR_TYPE.NETWORK_ERROR);
             }
         });
         event_1.addEventListener(event_1.EVENTS.REFRESH, checkUser);
@@ -1051,12 +1158,79 @@ exports.Index = react_1.memo(() => {
             event_1.removeEventListener(event_1.EVENTS.REFRESH, checkUser);
         };
     }, []);
-    const renderContent = react_1.useCallback(() => {
-        return (React.createElement("div", null));
+    const renderContent = useCallback(() => {
+        if (currentPage === PAGES.LOGIN) {
+            return (React.createElement(login_1.Login, null));
+        }
+        else {
+            return (React.createElement("div", null));
+        }
     }, [currentPage]);
     return (React.createElement("div", { className: "stage" },
+        React.createElement(error_message_1.ErrorMessage, null),
         React.createElement("div", { className: "loading", ref: loadingEl }, "Loading..."),
         renderContent()));
+});
+
+
+/***/ }),
+
+/***/ "./ts/viewcontroller/login.tsx":
+/*!*************************************!*\
+  !*** ./ts/viewcontroller/login.tsx ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const React = __webpack_require__(/*! react */ "react");
+const { memo, useState } = React;
+const login_1 = __webpack_require__(/*! ../model/login */ "./ts/model/login.ts");
+const status_error_codes_1 = __webpack_require__(/*! ../utils/status-error-codes */ "./ts/utils/status-error-codes.ts");
+const event_1 = __webpack_require__(/*! ../utils/event */ "./ts/utils/event.ts");
+const error_message_1 = __webpack_require__(/*! ./error-message */ "./ts/viewcontroller/error-message.tsx");
+exports.Login = memo(() => {
+    const [userName, setUserName] = useState("");
+    const signin = (event) => __awaiter(void 0, void 0, void 0, function* () {
+        event.preventDefault();
+        try {
+            const response = yield login_1.signIn(userName);
+            setUserName("");
+            if (response.ok) {
+                event_1.dispatch(event_1.EVENTS.HIDE_ERROR);
+                event_1.dispatch(event_1.EVENTS.REFRESH);
+            }
+            else {
+                if (response.status === status_error_codes_1.STATUS_CODES.UNAUTHORIZED) {
+                    const error = yield response.json();
+                    if (error.errorCode === status_error_codes_1.ERROR_CODES.WRONG_USER_NAME) {
+                        event_1.dispatch(event_1.EVENTS.DISPLAY_ERROR, error_message_1.ERROR_TYPE.USER_NAME_ERROR);
+                        return;
+                    }
+                }
+                event_1.dispatch(event_1.EVENTS.DISPLAY_ERROR, error_message_1.ERROR_TYPE.UNEXPECTED_ERROR);
+            }
+        }
+        catch (e) {
+            event_1.dispatch(event_1.EVENTS.DISPLAY_ERROR, error_message_1.ERROR_TYPE.NETWORK_ERROR);
+        }
+    });
+    return (React.createElement("div", { className: "login-page" },
+        React.createElement("label", null,
+            "User Name:",
+            React.createElement("input", { id: "user-name", type: "text", value: userName })),
+        React.createElement("button", { className: "signin", onClick: signin }, "submit")));
 });
 
 
