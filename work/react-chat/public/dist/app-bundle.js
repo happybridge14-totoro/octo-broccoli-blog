@@ -661,6 +661,7 @@ var STATUS_CODES;
     STATUS_CODES[STATUS_CODES["SUCCESS"] = 200] = "SUCCESS";
     STATUS_CODES[STATUS_CODES["BAD_RQUEST"] = 400] = "BAD_RQUEST";
     STATUS_CODES[STATUS_CODES["UNAUTHORIZED"] = 401] = "UNAUTHORIZED";
+    STATUS_CODES[STATUS_CODES["FORBIDDEN"] = 403] = "FORBIDDEN";
     STATUS_CODES[STATUS_CODES["NOT_FOUND"] = 404] = "NOT_FOUND";
     STATUS_CODES[STATUS_CODES["DUPLICATED"] = 409] = "DUPLICATED";
     STATUS_CODES[STATUS_CODES["INTERNAL_SERVER_ERROR"] = 500] = "INTERNAL_SERVER_ERROR";
@@ -776,7 +777,7 @@ exports.Chat = memo(({ data }) => {
                 setSendButtonDisabled(true);
             }
             else {
-                if (response.status === status_error_codes_1.STATUS_CODES.UNAUTHORIZED) {
+                if (response.status === status_error_codes_1.STATUS_CODES.UNAUTHORIZED || response.status === status_error_codes_1.STATUS_CODES.FORBIDDEN) {
                     chat_1.stopMessage();
                     users_1.stopUser();
                     event_1.dispatch(event_1.EVENTS.REFRESH);
@@ -947,7 +948,7 @@ exports.Index = memo(() => {
                     setChatData(chat);
                     setCurrentPage(PAGES.CHAT);
                 }
-                else if (response.status === status_error_codes_1.STATUS_CODES.UNAUTHORIZED) {
+                else if (response.status === status_error_codes_1.STATUS_CODES.UNAUTHORIZED || response.status === status_error_codes_1.STATUS_CODES.FORBIDDEN) {
                     const errorMessage = yield response.json();
                     if (errorMessage.errorCode === status_error_codes_1.ERROR_CODES.WRONG_USER_ID) {
                         event_1.dispatch(event_1.EVENTS.DISPLAY_ERROR, error_message_1.ERROR_TYPE.SESSION_ERROR);
@@ -1033,7 +1034,7 @@ exports.Login = memo(() => {
                 event_1.dispatch(event_1.EVENTS.REFRESH);
             }
             else {
-                if (response.status === status_error_codes_1.STATUS_CODES.UNAUTHORIZED) {
+                if (response.status === status_error_codes_1.STATUS_CODES.UNAUTHORIZED || response.status === status_error_codes_1.STATUS_CODES.FORBIDDEN) {
                     const error = yield response.json();
                     if (error.errorCode === status_error_codes_1.ERROR_CODES.WRONG_USER_NAME) {
                         event_1.dispatch(event_1.EVENTS.DISPLAY_ERROR, error_message_1.ERROR_TYPE.USER_NAME_ERROR);

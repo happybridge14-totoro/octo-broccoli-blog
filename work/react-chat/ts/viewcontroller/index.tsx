@@ -35,7 +35,7 @@ export const Index = memo(() => {
                     const chat:Array<messageBody> = await response.json();
                     setChatData(chat);
                     setCurrentPage(PAGES.CHAT);
-                } else if (response.status === STATUS_CODES.UNAUTHORIZED){
+                } else if (response.status === STATUS_CODES.UNAUTHORIZED || response.status === STATUS_CODES.FORBIDDEN){
                     const errorMessage:ERROR_OBJECT = await response.json();
                     if (errorMessage.errorCode === ERROR_CODES.WRONG_USER_ID) {
                         dispatch(EVENTS.DISPLAY_ERROR, ERROR_TYPE.SESSION_ERROR);

@@ -21,7 +21,7 @@ export const Login = memo(() => {
                 dispatch(EVENTS.HIDE_ERROR);
                 dispatch(EVENTS.REFRESH);
             } else {
-                if (response.status === STATUS_CODES.UNAUTHORIZED) {
+                if (response.status === STATUS_CODES.UNAUTHORIZED || response.status === STATUS_CODES.FORBIDDEN) {
                     const error:ERROR_OBJECT = await response.json();
                     if (error.errorCode === ERROR_CODES.WRONG_USER_NAME) {
                         dispatch(EVENTS.DISPLAY_ERROR, ERROR_TYPE.USER_NAME_ERROR);

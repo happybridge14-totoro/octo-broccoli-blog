@@ -52,6 +52,7 @@ const STATUS_CODES = {
     "SUCCESS": 200,
     "BAD_RQUEST": 400,
     "UNAUTHORIZED": 401,
+    "FORBIDDEN": 403,
     "NOT_FOUND": 404,
     "DUPLICATED": 409,
     "INTERNAL_SERVER_ERROR": 500
@@ -144,7 +145,7 @@ app.get("/users", (req, res) => {
         } else {
             deleteSession(sessionId);
             res.clearCookie(COOKIE_KEY);
-            res.status(STATUS_CODES.UNAUTHORIZED)
+            res.status(STATUS_CODES.FORBIDDEN)
                 .json(ERROR_CODES.WRONG_USER_ID);
         }
     } else {
@@ -166,7 +167,7 @@ app.get("/long/users", (req, res) => {
         } else {
             deleteSession(sessionId);
             res.clearCookie(COOKIE_KEY);
-            res.status(STATUS_CODES.UNAUTHORIZED)
+            res.status(STATUS_CODES.FORBIDDEN)
                 .json(ERROR_CODES.WRONG_USER_ID);
         }
     } else {
@@ -195,7 +196,7 @@ app.post("/chat", (req, res) => {
         } else {
             deleteSession(sessionId);
             res.clearCookie(COOKIE_KEY);
-            res.status(STATUS_CODES.UNAUTHORIZED)
+            res.status(STATUS_CODES.FORBIDDEN)
                 .json(ERROR_CODES.WRONG_USER_ID);
         }
     } else {
@@ -214,7 +215,7 @@ app.get("/chat", (req, res) => {
         } else {
             deleteSession(sessionId);
             res.clearCookie(COOKIE_KEY);
-            res.status(STATUS_CODES.UNAUTHORIZED)
+            res.status(STATUS_CODES.FORBIDDEN)
                 .json(ERROR_CODES.WRONG_USER_ID);
         }
     } else {
@@ -236,7 +237,7 @@ app.get("/long/chat", (req, res) => {
         } else {
             deleteSession(sessionId);
             res.clearCookie(COOKIE_KEY);
-            res.status(STATUS_CODES.UNAUTHORIZED)
+            res.status(STATUS_CODES.FORBIDDEN)
                 .json(ERROR_CODES.WRONG_USER_ID);
         }
     } else {
@@ -266,7 +267,7 @@ app.get("/sse", (req, res) => {
         } else {
             deleteSession(sessionId);
             res.clearCookie(COOKIE_KEY);
-            res.status(STATUS_CODES.UNAUTHORIZED)
+            res.status(STATUS_CODES.FORBIDDEN)
                 .json(ERROR_CODES.WRONG_USER_ID);
         }
     } else {

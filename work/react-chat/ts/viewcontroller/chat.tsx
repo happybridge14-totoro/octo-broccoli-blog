@@ -79,7 +79,7 @@ export const Chat = memo(({data}:ChatProps) => {
                 setMessage("");
                 setSendButtonDisabled(true);
             } else {
-                if (response.status === STATUS_CODES.UNAUTHORIZED) {
+                if (response.status === STATUS_CODES.UNAUTHORIZED || response.status === STATUS_CODES.FORBIDDEN) {
                     stopMessage();
                     stopUser();
                     dispatch(EVENTS.REFRESH);
