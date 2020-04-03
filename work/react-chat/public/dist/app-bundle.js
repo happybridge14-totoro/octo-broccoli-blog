@@ -86,409 +86,6 @@
 /************************************************************************/
 /******/ ({
 
-/***/ "./node_modules/css-loader/dist/cjs.js!./ts/viewcontroller/index.module.css":
-/*!**********************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js!./ts/viewcontroller/index.module.css ***!
-  \**********************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-// Imports
-var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
-exports = ___CSS_LOADER_API_IMPORT___(false);
-// Module
-exports.push([module.i, ".stage {\n    color: white;\n}", ""]);
-// Exports
-module.exports = exports;
-
-
-/***/ }),
-
-/***/ "./node_modules/css-loader/dist/runtime/api.js":
-/*!*****************************************************!*\
-  !*** ./node_modules/css-loader/dist/runtime/api.js ***!
-  \*****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/*
-  MIT License http://www.opensource.org/licenses/mit-license.php
-  Author Tobias Koppers @sokra
-*/
-// css base code, injected by the css-loader
-// eslint-disable-next-line func-names
-module.exports = function (useSourceMap) {
-  var list = []; // return the list of modules as css string
-
-  list.toString = function toString() {
-    return this.map(function (item) {
-      var content = cssWithMappingToString(item, useSourceMap);
-
-      if (item[2]) {
-        return "@media ".concat(item[2], " {").concat(content, "}");
-      }
-
-      return content;
-    }).join('');
-  }; // import a list of modules into the list
-  // eslint-disable-next-line func-names
-
-
-  list.i = function (modules, mediaQuery, dedupe) {
-    if (typeof modules === 'string') {
-      // eslint-disable-next-line no-param-reassign
-      modules = [[null, modules, '']];
-    }
-
-    var alreadyImportedModules = {};
-
-    if (dedupe) {
-      for (var i = 0; i < this.length; i++) {
-        // eslint-disable-next-line prefer-destructuring
-        var id = this[i][0];
-
-        if (id != null) {
-          alreadyImportedModules[id] = true;
-        }
-      }
-    }
-
-    for (var _i = 0; _i < modules.length; _i++) {
-      var item = [].concat(modules[_i]);
-
-      if (dedupe && alreadyImportedModules[item[0]]) {
-        // eslint-disable-next-line no-continue
-        continue;
-      }
-
-      if (mediaQuery) {
-        if (!item[2]) {
-          item[2] = mediaQuery;
-        } else {
-          item[2] = "".concat(mediaQuery, " and ").concat(item[2]);
-        }
-      }
-
-      list.push(item);
-    }
-  };
-
-  return list;
-};
-
-function cssWithMappingToString(item, useSourceMap) {
-  var content = item[1] || ''; // eslint-disable-next-line prefer-destructuring
-
-  var cssMapping = item[3];
-
-  if (!cssMapping) {
-    return content;
-  }
-
-  if (useSourceMap && typeof btoa === 'function') {
-    var sourceMapping = toComment(cssMapping);
-    var sourceURLs = cssMapping.sources.map(function (source) {
-      return "/*# sourceURL=".concat(cssMapping.sourceRoot || '').concat(source, " */");
-    });
-    return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
-  }
-
-  return [content].join('\n');
-} // Adapted from convert-source-map (MIT)
-
-
-function toComment(sourceMap) {
-  // eslint-disable-next-line no-undef
-  var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
-  var data = "sourceMappingURL=data:application/json;charset=utf-8;base64,".concat(base64);
-  return "/*# ".concat(data, " */");
-}
-
-/***/ }),
-
-/***/ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js":
-/*!****************************************************************************!*\
-  !*** ./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js ***!
-  \****************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var isOldIE = function isOldIE() {
-  var memo;
-  return function memorize() {
-    if (typeof memo === 'undefined') {
-      // Test for IE <= 9 as proposed by Browserhacks
-      // @see http://browserhacks.com/#hack-e71d8692f65334173fee715c222cb805
-      // Tests for existence of standard globals is to allow style-loader
-      // to operate correctly into non-standard environments
-      // @see https://github.com/webpack-contrib/style-loader/issues/177
-      memo = Boolean(window && document && document.all && !window.atob);
-    }
-
-    return memo;
-  };
-}();
-
-var getTarget = function getTarget() {
-  var memo = {};
-  return function memorize(target) {
-    if (typeof memo[target] === 'undefined') {
-      var styleTarget = document.querySelector(target); // Special case to return head of iframe instead of iframe itself
-
-      if (window.HTMLIFrameElement && styleTarget instanceof window.HTMLIFrameElement) {
-        try {
-          // This will throw an exception if access to iframe is blocked
-          // due to cross-origin restrictions
-          styleTarget = styleTarget.contentDocument.head;
-        } catch (e) {
-          // istanbul ignore next
-          styleTarget = null;
-        }
-      }
-
-      memo[target] = styleTarget;
-    }
-
-    return memo[target];
-  };
-}();
-
-var stylesInDom = [];
-
-function getIndexByIdentifier(identifier) {
-  var result = -1;
-
-  for (var i = 0; i < stylesInDom.length; i++) {
-    if (stylesInDom[i].identifier === identifier) {
-      result = i;
-      break;
-    }
-  }
-
-  return result;
-}
-
-function modulesToDom(list, options) {
-  var idCountMap = {};
-  var identifiers = [];
-
-  for (var i = 0; i < list.length; i++) {
-    var item = list[i];
-    var id = options.base ? item[0] + options.base : item[0];
-    var count = idCountMap[id] || 0;
-    var identifier = "".concat(id, " ").concat(count);
-    idCountMap[id] = count + 1;
-    var index = getIndexByIdentifier(identifier);
-    var obj = {
-      css: item[1],
-      media: item[2],
-      sourceMap: item[3]
-    };
-
-    if (index !== -1) {
-      stylesInDom[index].references++;
-      stylesInDom[index].updater(obj);
-    } else {
-      stylesInDom.push({
-        identifier: identifier,
-        updater: addStyle(obj, options),
-        references: 1
-      });
-    }
-
-    identifiers.push(identifier);
-  }
-
-  return identifiers;
-}
-
-function insertStyleElement(options) {
-  var style = document.createElement('style');
-  var attributes = options.attributes || {};
-
-  if (typeof attributes.nonce === 'undefined') {
-    var nonce =  true ? __webpack_require__.nc : undefined;
-
-    if (nonce) {
-      attributes.nonce = nonce;
-    }
-  }
-
-  Object.keys(attributes).forEach(function (key) {
-    style.setAttribute(key, attributes[key]);
-  });
-
-  if (typeof options.insert === 'function') {
-    options.insert(style);
-  } else {
-    var target = getTarget(options.insert || 'head');
-
-    if (!target) {
-      throw new Error("Couldn't find a style target. This probably means that the value for the 'insert' parameter is invalid.");
-    }
-
-    target.appendChild(style);
-  }
-
-  return style;
-}
-
-function removeStyleElement(style) {
-  // istanbul ignore if
-  if (style.parentNode === null) {
-    return false;
-  }
-
-  style.parentNode.removeChild(style);
-}
-/* istanbul ignore next  */
-
-
-var replaceText = function replaceText() {
-  var textStore = [];
-  return function replace(index, replacement) {
-    textStore[index] = replacement;
-    return textStore.filter(Boolean).join('\n');
-  };
-}();
-
-function applyToSingletonTag(style, index, remove, obj) {
-  var css = remove ? '' : obj.media ? "@media ".concat(obj.media, " {").concat(obj.css, "}") : obj.css; // For old IE
-
-  /* istanbul ignore if  */
-
-  if (style.styleSheet) {
-    style.styleSheet.cssText = replaceText(index, css);
-  } else {
-    var cssNode = document.createTextNode(css);
-    var childNodes = style.childNodes;
-
-    if (childNodes[index]) {
-      style.removeChild(childNodes[index]);
-    }
-
-    if (childNodes.length) {
-      style.insertBefore(cssNode, childNodes[index]);
-    } else {
-      style.appendChild(cssNode);
-    }
-  }
-}
-
-function applyToTag(style, options, obj) {
-  var css = obj.css;
-  var media = obj.media;
-  var sourceMap = obj.sourceMap;
-
-  if (media) {
-    style.setAttribute('media', media);
-  } else {
-    style.removeAttribute('media');
-  }
-
-  if (sourceMap && btoa) {
-    css += "\n/*# sourceMappingURL=data:application/json;base64,".concat(btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))), " */");
-  } // For old IE
-
-  /* istanbul ignore if  */
-
-
-  if (style.styleSheet) {
-    style.styleSheet.cssText = css;
-  } else {
-    while (style.firstChild) {
-      style.removeChild(style.firstChild);
-    }
-
-    style.appendChild(document.createTextNode(css));
-  }
-}
-
-var singleton = null;
-var singletonCounter = 0;
-
-function addStyle(obj, options) {
-  var style;
-  var update;
-  var remove;
-
-  if (options.singleton) {
-    var styleIndex = singletonCounter++;
-    style = singleton || (singleton = insertStyleElement(options));
-    update = applyToSingletonTag.bind(null, style, styleIndex, false);
-    remove = applyToSingletonTag.bind(null, style, styleIndex, true);
-  } else {
-    style = insertStyleElement(options);
-    update = applyToTag.bind(null, style, options);
-
-    remove = function remove() {
-      removeStyleElement(style);
-    };
-  }
-
-  update(obj);
-  return function updateStyle(newObj) {
-    if (newObj) {
-      if (newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap) {
-        return;
-      }
-
-      update(obj = newObj);
-    } else {
-      remove();
-    }
-  };
-}
-
-module.exports = function (list, options) {
-  options = options || {}; // Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
-  // tags it will allow on a page
-
-  if (!options.singleton && typeof options.singleton !== 'boolean') {
-    options.singleton = isOldIE();
-  }
-
-  list = list || [];
-  var lastIdentifiers = modulesToDom(list, options);
-  return function update(newList) {
-    newList = newList || [];
-
-    if (Object.prototype.toString.call(newList) !== '[object Array]') {
-      return;
-    }
-
-    for (var i = 0; i < lastIdentifiers.length; i++) {
-      var identifier = lastIdentifiers[i];
-      var index = getIndexByIdentifier(identifier);
-      stylesInDom[index].references--;
-    }
-
-    var newLastIdentifiers = modulesToDom(newList, options);
-
-    for (var _i = 0; _i < lastIdentifiers.length; _i++) {
-      var _identifier = lastIdentifiers[_i];
-
-      var _index = getIndexByIdentifier(_identifier);
-
-      if (stylesInDom[_index].references === 0) {
-        stylesInDom[_index].updater();
-
-        stylesInDom.splice(_index, 1);
-      }
-    }
-
-    lastIdentifiers = newLastIdentifiers;
-  };
-};
-
-/***/ }),
-
 /***/ "./ts/main.tsx":
 /*!*********************!*\
   !*** ./ts/main.tsx ***!
@@ -790,6 +387,119 @@ exports.stop = stop;
 
 /***/ }),
 
+/***/ "./ts/model/users.ts":
+/*!***************************!*\
+  !*** ./ts/model/users.ts ***!
+  \***************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const api_1 = __webpack_require__(/*! ../utils/api */ "./ts/utils/api.ts");
+const long_connection_1 = __webpack_require__(/*! ./long-connection */ "./ts/model/long-connection.ts");
+const URL = "/users";
+let timestamp = 0;
+const getURL = (isLong = false) => {
+    return (isLong ? "/long" : "") + URL;
+};
+const getUser = () => {
+    return api_1.default.get(getURL());
+};
+const getLongUser = () => {
+    return api_1.default.get(getURL(true)).then((res) => {
+        if (res.ok) {
+            return res.json();
+        }
+        else {
+            return Promise.reject(res);
+        }
+    });
+};
+let intervalHandler = -1;
+let shortUserResolver;
+let shortUserRejecter;
+const beginShowUserLoop = () => {
+    if (intervalHandler === -1) {
+        setTimeout(() => {
+            getUser().then((res) => {
+                if (res.ok) {
+                    res.json().then((data) => {
+                        if (data.timestamp > timestamp) {
+                            shortUserResolver(data);
+                        }
+                    });
+                }
+                else {
+                    shortUserRejecter(res);
+                }
+            });
+        });
+        intervalHandler = setInterval(() => {
+            getUser().then((res) => {
+                if (res.ok) {
+                    res.json().then((data) => {
+                        if (data.timestamp > timestamp) {
+                            shortUserResolver(data.users);
+                        }
+                    });
+                }
+                else {
+                    shortUserRejecter(res);
+                }
+            });
+        }, 5000);
+    }
+};
+const getShortUser = () => {
+    return new Promise((resolve, reject) => {
+        shortUserResolver = resolve;
+        shortUserRejecter = reject;
+    });
+};
+let signalRejecter;
+let signalPromise;
+const getSignal = () => {
+    if (!signalPromise) {
+        signalPromise = new Promise((resolve, reject) => {
+            signalRejecter = reject;
+        });
+    }
+    return signalPromise;
+};
+const receiveUsers = (tmpTimestamp) => {
+    timestamp = Math.max(timestamp, tmpTimestamp);
+    beginShowUserLoop();
+    return Promise.race([getSignal(), long_connection_1.getUsers(timestamp), getLongUser(), getShortUser()]).then((data) => {
+        if (timestamp > data.timestamp) {
+            return receiveUsers(timestamp);
+        }
+        else {
+            timestamp = data.timestamp;
+            return data;
+        }
+    });
+};
+exports.receiveUsers = receiveUsers;
+const stopUser = () => {
+    timestamp = 0;
+    long_connection_1.stop();
+    if (signalRejecter) {
+        signalRejecter();
+        signalPromise = null;
+        signalRejecter = null;
+    }
+    if (intervalHandler != -1) {
+        clearInterval(intervalHandler);
+        intervalHandler = -1;
+    }
+};
+exports.stopUser = stopUser;
+
+
+/***/ }),
+
 /***/ "./ts/model/websocket.ts":
 /*!*******************************!*\
   !*** ./ts/model/websocket.ts ***!
@@ -976,6 +686,140 @@ exports.ERROR_CODES = ERROR_CODES;
 
 /***/ }),
 
+/***/ "./ts/viewcontroller/chat.tsx":
+/*!************************************!*\
+  !*** ./ts/viewcontroller/chat.tsx ***!
+  \************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const React = __webpack_require__(/*! react */ "react");
+const { memo, useState, useEffect, useRef, useCallback, useReducer } = React;
+const login_1 = __webpack_require__(/*! ../model/login */ "./ts/model/login.ts");
+const chat_1 = __webpack_require__(/*! ../model/chat */ "./ts/model/chat.ts");
+const status_error_codes_1 = __webpack_require__(/*! ../utils/status-error-codes */ "./ts/utils/status-error-codes.ts");
+const event_1 = __webpack_require__(/*! ../utils/event */ "./ts/utils/event.ts");
+const error_message_1 = __webpack_require__(/*! ./error-message */ "./ts/viewcontroller/error-message.tsx");
+const users_1 = __webpack_require__(/*! ../model/users */ "./ts/model/users.ts");
+exports.Chat = memo(({ data }) => {
+    const [messages, dispatchMessage] = useReducer((state, newMessages) => {
+        return [...state, ...newMessages];
+    }, data);
+    const [users, setUsers] = useState([]);
+    const [usersTimeStamp, setUsersTimeStamp] = useState(0);
+    const initTimeStamp = messages.length > 0 ? messages[messages.length - 1].timestamp : 0;
+    const [messageTimeStamp, setMessageTimeStamp] = useState(initTimeStamp);
+    const messageRef = useRef(null);
+    const userRef = useRef(null);
+    useEffect(() => {
+        if (messageRef && messageRef.current) {
+            messageRef.current.scrollTop = messageRef.current.scrollHeight;
+        }
+    }, []);
+    useEffect(() => {
+        users_1.receiveUsers(usersTimeStamp).then(({ timestamp, users }) => {
+            setUsersTimeStamp(timestamp);
+            setUsers(users);
+            if (userRef && userRef.current) {
+                userRef.current.scrollTop = userRef.current.scrollHeight;
+            }
+        }).catch((e) => {
+            chat_1.stopMessage();
+            users_1.stopUser();
+            event_1.dispatch(event_1.EVENTS.REFRESH);
+        });
+    }, [usersTimeStamp, setUsersTimeStamp, setUsers, userRef]);
+    useEffect(() => {
+        chat_1.receiveMessage(messageTimeStamp).then(({ timestamp, message }) => {
+            setMessageTimeStamp(timestamp);
+            dispatchMessage(message);
+            if (messageRef && messageRef.current) {
+                messageRef.current.scrollTop = messageRef.current.scrollHeight;
+            }
+        });
+    }, [messageTimeStamp, setMessageTimeStamp, dispatchMessage, messageRef]);
+    const renderUser = () => {
+        return users.map((user, index) => {
+            return (React.createElement("div", { className: "user-name", key: index }, user));
+        });
+    };
+    const renderMessage = () => {
+        return messages.map(({ userName, message, timestamp }) => {
+            const time = new Date(timestamp).toLocaleString();
+            return (React.createElement("div", { className: "single-chat", key: timestamp },
+                React.createElement("time", { className: "chat-time" }, time),
+                React.createElement("div", { className: "chat-name" }, userName),
+                React.createElement("div", { className: "chat-content" }, message)));
+        });
+    };
+    const [message, setMessage] = useState("");
+    const [sendButtonDisabled, setSendButtonDisabled] = useState(false);
+    const send = useCallback((event) => __awaiter(void 0, void 0, void 0, function* () {
+        event.preventDefault();
+        try {
+            const response = yield chat_1.sendMessage(message);
+            if (response.ok) {
+                event_1.dispatch(event_1.EVENTS.HIDE_ERROR);
+                setMessage("");
+                setSendButtonDisabled(true);
+            }
+            else {
+                if (response.status === status_error_codes_1.STATUS_CODES.UNAUTHORIZED) {
+                    chat_1.stopMessage();
+                    users_1.stopUser();
+                    event_1.dispatch(event_1.EVENTS.REFRESH);
+                }
+            }
+        }
+        catch (e) {
+            event_1.dispatch(event_1.EVENTS.DISPLAY_ERROR, error_message_1.ERROR_TYPE.NETWORK_ERROR);
+        }
+    }), [message, setSendButtonDisabled]);
+    const handleInput = useCallback((e) => {
+        e.preventDefault();
+        const value = e.target.value;
+        setMessage(value);
+        setSendButtonDisabled(value === "");
+    }, [setMessage, setSendButtonDisabled]);
+    const signOutHandler = useCallback((event) => {
+        event.preventDefault();
+        login_1.signOut().then(() => {
+            users_1.stopUser();
+            chat_1.stopMessage();
+            event_1.dispatch(event_1.EVENTS.REFRESH);
+        });
+    }, []);
+    return (React.createElement("div", null,
+        React.createElement("div", { className: "chat-page" },
+            React.createElement("section", { className: "users-list" },
+                React.createElement("h5", null, "Users"),
+                React.createElement("div", { className: "users-detail", ref: userRef }, renderUser())),
+            React.createElement("section", { className: "chat-list" },
+                React.createElement("h5", { className: "chat-title" }, "Messages"),
+                React.createElement("div", { className: "chat-detail", ref: messageRef }, renderMessage()))),
+        React.createElement("div", { className: "chat-action" },
+            React.createElement("span", null, "Message:"),
+            React.createElement("input", { type: "text", className: "message", minLength: 1, value: message, onChange: handleInput }),
+            React.createElement("button", { className: "send", onClick: send, disabled: sendButtonDisabled }, "Send")),
+        React.createElement("div", { className: "user-action" },
+            React.createElement("button", { className: "signout", onClick: signOutHandler }, "Sign out"))));
+});
+
+
+/***/ }),
+
 /***/ "./ts/viewcontroller/error-message.tsx":
 /*!*********************************************!*\
   !*** ./ts/viewcontroller/error-message.tsx ***!
@@ -1048,37 +892,6 @@ exports.ErrorMessage = ErrorMessage;
 
 /***/ }),
 
-/***/ "./ts/viewcontroller/index.module.css":
-/*!********************************************!*\
-  !*** ./ts/viewcontroller/index.module.css ***!
-  \********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-var api = __webpack_require__(/*! ../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
-            var content = __webpack_require__(/*! !../../node_modules/css-loader/dist/cjs.js!./index.module.css */ "./node_modules/css-loader/dist/cjs.js!./ts/viewcontroller/index.module.css");
-
-            content = content.__esModule ? content.default : content;
-
-            if (typeof content === 'string') {
-              content = [[module.i, content, '']];
-            }
-
-var options = {};
-
-options.insert = "head";
-options.singleton = false;
-
-var update = api(content, options);
-
-var exported = content.locals ? content.locals : {};
-
-
-
-module.exports = exported;
-
-/***/ }),
-
 /***/ "./ts/viewcontroller/index.tsx":
 /*!*************************************!*\
   !*** ./ts/viewcontroller/index.tsx ***!
@@ -1105,7 +918,7 @@ const status_error_codes_1 = __webpack_require__(/*! ../utils/status-error-codes
 const event_1 = __webpack_require__(/*! ../utils/event */ "./ts/utils/event.ts");
 const error_message_1 = __webpack_require__(/*! ./error-message */ "./ts/viewcontroller/error-message.tsx");
 const login_1 = __webpack_require__(/*! ./login */ "./ts/viewcontroller/login.tsx");
-__webpack_require__(/*! ./index.module.css */ "./ts/viewcontroller/index.module.css");
+const chat_2 = __webpack_require__(/*! ./chat */ "./ts/viewcontroller/chat.tsx");
 var PAGES;
 (function (PAGES) {
     PAGES[PAGES["INIT"] = 0] = "INIT";
@@ -1115,13 +928,13 @@ var PAGES;
 ;
 exports.Index = memo(() => {
     const [currentPage, setCurrentPage] = useState(PAGES.INIT);
-    const [chatData, setChatData] = useState(null);
     const loadingEl = useRef(null);
-    const showLoading = (show) => {
+    const showLoading = useCallback((show) => {
         if (loadingEl && loadingEl.current) {
-            loadingEl.current.hidden = show;
+            loadingEl.current.hidden = !show;
         }
-    };
+    }, [loadingEl]);
+    const [chatData, setChatData] = useState([]);
     useEffect(() => {
         const checkUser = () => __awaiter(void 0, void 0, void 0, function* () {
             try {
@@ -1131,7 +944,7 @@ exports.Index = memo(() => {
                 if (response.ok) {
                     event_1.dispatch(event_1.EVENTS.HIDE_ERROR);
                     const chat = yield response.json();
-                    setChatData(chatData);
+                    setChatData(chat);
                     setCurrentPage(PAGES.CHAT);
                 }
                 else if (response.status === status_error_codes_1.STATUS_CODES.UNAUTHORIZED) {
@@ -1153,6 +966,7 @@ exports.Index = memo(() => {
                 event_1.dispatch(event_1.EVENTS.DISPLAY_ERROR, error_message_1.ERROR_TYPE.NETWORK_ERROR);
             }
         });
+        checkUser();
         event_1.addEventListener(event_1.EVENTS.REFRESH, checkUser);
         return () => {
             event_1.removeEventListener(event_1.EVENTS.REFRESH, checkUser);
@@ -1162,8 +976,11 @@ exports.Index = memo(() => {
         if (currentPage === PAGES.LOGIN) {
             return (React.createElement(login_1.Login, null));
         }
+        else if (currentPage === PAGES.CHAT) {
+            return (React.createElement(chat_2.Chat, { data: chatData }));
+        }
         else {
-            return (React.createElement("div", null));
+            return "";
         }
     }, [currentPage]);
     return (React.createElement("div", { className: "stage" },
@@ -1195,13 +1012,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = __webpack_require__(/*! react */ "react");
-const { memo, useState } = React;
+const { memo, useState, useCallback } = React;
 const login_1 = __webpack_require__(/*! ../model/login */ "./ts/model/login.ts");
 const status_error_codes_1 = __webpack_require__(/*! ../utils/status-error-codes */ "./ts/utils/status-error-codes.ts");
 const event_1 = __webpack_require__(/*! ../utils/event */ "./ts/utils/event.ts");
 const error_message_1 = __webpack_require__(/*! ./error-message */ "./ts/viewcontroller/error-message.tsx");
 exports.Login = memo(() => {
     const [userName, setUserName] = useState("");
+    const keyPressHandler = useCallback((e) => {
+        const value = e.target.value;
+        setUserName(value);
+    }, [setUserName]);
     const signin = (event) => __awaiter(void 0, void 0, void 0, function* () {
         event.preventDefault();
         try {
@@ -1229,7 +1050,7 @@ exports.Login = memo(() => {
     return (React.createElement("div", { className: "login-page" },
         React.createElement("label", null,
             "User Name:",
-            React.createElement("input", { id: "user-name", type: "text", value: userName })),
+            React.createElement("input", { id: "user-name", type: "text", value: userName, onChange: keyPressHandler })),
         React.createElement("button", { className: "signin", onClick: signin }, "submit")));
 });
 

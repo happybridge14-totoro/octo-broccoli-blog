@@ -13,37 +13,6 @@
     </header>
     <main>
         <div id="stage"></div>
-        <template id="chat">
-            <div class="chat-page">
-                <section class="users-list">
-                    <h5>Users</h5>
-                    <div class="users-detail"></div>
-                </section>
-                <section class="chat-list">
-                    <h5 class="chat-title">Messages</h5>
-                    <div class="chat-detail">
-                    </div>
-                </section>
-            </div>
-            <div class="chat-action">
-                <span>Message:</span>
-                <input type="text" class="message" minlength="1">
-                <button class="send">Send</button>
-            </div>
-            <div class="user-action">
-                <button class="signout">Sign out</button>
-            </div>
-        </template>
-        <template id="user">
-            <div class="user-name"></div>
-        </template>
-        <template id="message">
-            <div class="single-chat">
-                <time class="chat-time"></time>
-                <div class="chat-name"></div>
-                <div class="chat-content"></div>
-            </div>
-        </template>
     </main>
     <footer>
         <ul class="footer-personal-info">
@@ -55,6 +24,8 @@
             </li>
         </ul>
     </footer>
+    <script src="/dist/react.production.min.js"></script>
+    <script src="/dist/react-dom.production.min.js"></script>
     <script src="/dist/app-bundle.js"></script>
 </body>
 </html>

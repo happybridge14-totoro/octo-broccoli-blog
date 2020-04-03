@@ -6,8 +6,8 @@ import { STATUS_CODES, ERROR_CODES, ERROR_OBJECT } from "../utils/status-error-c
 import {EVENTS, addEventListener, removeEventListener, dispatch} from "../utils/event";
 import {ErrorMessage, ERROR_TYPE} from "./error-message";
 import {Login} from "./login";
-
-import "./index.module.css";
+import {Chat} from "./chat";
+import { messageBody } from "../model/dataInterface";
 
 enum PAGES {
     INIT,
@@ -17,13 +17,13 @@ enum PAGES {
 
 export const Index = memo(() => {
     const [currentPage, setCurrentPage] = useState(PAGES.INIT);
-    const [chatData, setChatData] = useState(null);
     const loadingEl = useRef<HTMLInputElement>(null);
-    const showLoading = (show:boolean) => {
+    const showLoading = useCallback((show:boolean) => {
         if (loadingEl && loadingEl.current) {
-            loadingEl.current.hidden = show;
+            loadingEl.current.hidden = !show;
         }
-    };
+    }, [loadingEl]);
+    const [chatData, setChatData] = useState<Array<messageBody>>([]);
     useEffect(() => {
         const checkUser = async () => {
             try {
@@ -32,8 +32,8 @@ export const Index = memo(() => {
                 showLoading(false);
                 if (response.ok) {
                     dispatch(EVENTS.HIDE_ERROR);
-                    const chat = await response.json();
-                    setChatData(chatData);
+                    const chat:Array<messageBody> = await response.json();
+                    setChatData(chat);
                     setCurrentPage(PAGES.CHAT);
                 } else if (response.status === STATUS_CODES.UNAUTHORIZED){
                     const errorMessage:ERROR_OBJECT = await response.json();
@@ -51,6 +51,7 @@ export const Index = memo(() => {
                 dispatch(EVENTS.DISPLAY_ERROR, ERROR_TYPE.NETWORK_ERROR);
             }
         };
+        checkUser();
         addEventListener(EVENTS.REFRESH, checkUser);
         return () => {
             removeEventListener(EVENTS.REFRESH, checkUser);
@@ -59,9 +60,10 @@ export const Index = memo(() => {
     const renderContent = useCallback(() => {
         if (currentPage === PAGES.LOGIN) {
             return (<Login></Login>);
+        } else if (currentPage === PAGES.CHAT) {
+            return (<Chat data={chatData}></Chat>);
         } else {
-            return (<div></div>);
-        //     return (<CHAT></CHAT>);
+            return "";
         }
     }, [currentPage]);
 
