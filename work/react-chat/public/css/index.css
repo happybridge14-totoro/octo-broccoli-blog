@@ -9,6 +9,7 @@
     --highlight-text-color: white;
     --clickable-text-color: #1cb3ff;
     --clickable-text-hover-color: #56b2dd;
+    --clickable-text-hover-color: #eb872b;
     --line-color: rgba(209, 210, 211, 0.4);
     --button-text-color: white;
     --button-hover-text-color: white;
@@ -47,11 +48,11 @@ body {
 a {
     color: var(--clickable-text-color);
     text-decoration: none;
-    transition: color 0.2s;
 }
 
 a:hover {
     color: var(--clickable-text-hover-color);
+    text-decoration: underline;
 }
 
 button {
