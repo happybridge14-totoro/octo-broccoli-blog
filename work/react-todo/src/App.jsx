@@ -1,17 +1,26 @@
 import React from 'react';
 import './App.css';
 import Main from "./pages/Main";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { EVENTS, addEventListener, removeEventListener } from './utils/event';
 
-const DARK_THEME = "dark-theme";
-const LIGHT_THEME = "light-theme";
-
+const THEME_SUFFIX = "-theme";
+const DEFAULT_THEME = "dark";
 function App() {
-  const [theme, setTheme] = useState(DARK_THEME);
+  const [theme, setTheme] = useState(DEFAULT_THEME + THEME_SUFFIX);
+  useEffect(() => {
+    const changeTheme = (theme) => {
+      setTheme(theme + THEME_SUFFIX);
+    };
+    addEventListener(EVENTS.SET_THEME, changeTheme);
+    return () => {
+      removeEventListener(EVENTS.SET_THEME, changeTheme);
+    };
+  }, [setTheme])
   return (
     <div className={`${theme} App`}>
       <header>
-          <h2>Chat System</h2>
+          <h2>TODO APP</h2>
       </header>
       <main>
         <Main></Main>

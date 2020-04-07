@@ -1,7 +1,8 @@
 const EVENTS = {
     REFRESH: "refresh",
     DISPLAY_ERROR: "displayError",
-    HIDE_ERROR: "hideError"
+    HIDE_ERROR: "hideError",
+    SET_THEME: "setTheme"
 };
 const events = {};
 Object.values(EVENTS).forEach((event) => {

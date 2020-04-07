@@ -4,6 +4,7 @@ import api from "../proxy";
 import ErrorMessage, {ERROR_TYPE} from "./Error-message";
 import { STATUS_CODES } from "../utils/error-status";
 import Login from "./Login";
+import Todo from "./Todo";
 
 const SESSION_URL = "/session";
 
@@ -25,11 +26,11 @@ const Main = memo(() => {
         return () => {
             removeEventListener(EVENTS.REFRESH, refreshPage);
         };
-    }, [])
+    }, [refreshPage])
 
-    return (<div>
+    return (<div id="stage">
         <ErrorMessage></ErrorMessage>
-        ${isLoggedIn ? <Login></Login> : <Login></Login>}
+        {isLoggedIn ? <Todo></Todo> : <Login></Login>}
     </div>);
 });
 

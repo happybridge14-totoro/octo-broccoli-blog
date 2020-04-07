@@ -1,7 +1,6 @@
 import React, {useState, memo, useEffect} from "react";
-import {EVENTS, addEventListener, removeEventListener, dispatch} from "../utils/event";
+import {EVENTS, addEventListener, removeEventListener} from "../utils/event";
 
-const SESSION_URL = "/session";
 export const ERROR_TYPE = {
     USER_NAME_ERROR: 0,
     NETWORK_ERROR: 1,
@@ -37,13 +36,15 @@ const getErrorMessage = (type) => {
 };
 
 const ErrorMessage = memo(() => {
-    const [errorText, setErrorTest] = useState("");
+    const [errorText, setErrorText] = useState("");
     useEffect(() => {
         const displayError = (errorType) => {
-            setErrorTest(getErrorMessage(errorType));
+            console.log("here?");
+            setErrorText(getErrorMessage(errorType));
         };
         const hideError = () => {
-            setErrorTest("");
+            console.log("hide?");
+            setErrorText("");
         };
         addEventListener(EVENTS.DISPLAY_ERROR, displayError);
         addEventListener(EVENTS.HIDE_ERROR, hideError);

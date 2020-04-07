@@ -1,4 +1,4 @@
-import React, {useState, memo, useEffect, useCallback} from "react";
+import React, {useState, memo, useCallback} from "react";
 
 import { STATUS_CODES} from "../utils/error-status";
 import {EVENTS, dispatch} from "../utils/event";
@@ -14,21 +14,17 @@ const Login = memo(() => {
     }, [setUsername]);
     const signin = useCallback((event) => {
         event.preventDefault();
-        if (username === "" || username === "dog") {
-            dispatch(EVENTS.DISPLAY_ERROR, ERROR_TYPE.USER_NAME_ERROR);
-        } else {
-            api.post(LOGIN_IN_URL, {username}).then(()=>{
-                setUsername("");
-                dispatch(EVENTS.REFRESH);
-            }).catch((response) => {
-                setUsername("");
-                if (response.status === STATUS_CODES.UNAUTHORIZED || response.status === STATUS_CODES.FORBIDDEN) {
-                    dispatch(EVENTS.DISPLAY_ERROR, ERROR_TYPE.SESSION_ERROR);
-                } else if (response.status === STATUS_CODES.NETWORK_ERROR) {
-                    dispatch(EVENTS.DISPLAY_ERROR, ERROR_TYPE.NETWORK_ERROR);
-                }
-            });
-        }
+        api.post(LOGIN_IN_URL, {username}).then(()=>{
+            setUsername("");
+            dispatch(EVENTS.REFRESH);
+        }).catch((response) => {
+            setUsername("");
+            if (response.status === STATUS_CODES.UNAUTHORIZED || response.status === STATUS_CODES.FORBIDDEN) {
+                dispatch(EVENTS.DISPLAY_ERROR, ERROR_TYPE.SESSION_ERROR);
+            } else if (response.status === STATUS_CODES.NETWORK_ERROR) {
+                dispatch(EVENTS.DISPLAY_ERROR, ERROR_TYPE.NETWORK_ERROR);
+            }
+        });
     }, [username, setUsername]);
     return (
         <div className="login-page">
