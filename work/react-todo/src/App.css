@@ -38,7 +38,7 @@
   --text-error-color: #a52826;
   --error-color: #a52826;
 }
-body {
+.App {
   font-family: "monaco", sans-serif;
   background-color: var(--background-color);
   color: var(--text-color);
@@ -103,7 +103,7 @@ html {
   box-sizing: border-box;
 }
 
-body {
+.App {
   display: flex;
   flex-direction: column;
   height: 100%;
