@@ -5,21 +5,26 @@ import ErrorMessage, {ERROR_TYPE} from "./Error-message";
 import { STATUS_CODES } from "../utils/error-status";
 import Login from "./Login";
 import Todo from "./Todo";
+import { DEFAULT_THEME } from "../theme-context";
 
 const SESSION_URL = "/session";
 
 const Main = memo(() => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [userName, setUsername] = useState("");
     const refreshPage = useCallback(() => {
-        api.get(SESSION_URL).then((data)=>{
-            setIsLoggedIn(true);
+        api.get(SESSION_URL).then(({data})=>{
+            const {username, theme} = data;
+            setUsername(username);
+            dispatch(EVENTS.HIDE_ERROR);
+            dispatch(EVENTS.SET_THEME, theme);
         }).catch((response) => {
-            setIsLoggedIn(false);
+            setUsername("");
             if (response.status !== STATUS_CODES.UNAUTHORIZED) {
                 dispatch(EVENTS.DISPLAY_ERROR, ERROR_TYPE.NETWORK_ERROR);
             }
+            dispatch(EVENTS.SET_THEME, DEFAULT_THEME);
         });
-        }, [setIsLoggedIn]);
+        }, [setUsername]);
     useEffect(() => {
         refreshPage();
         addEventListener(EVENTS.REFRESH, refreshPage);
@@ -27,10 +32,10 @@ const Main = memo(() => {
             removeEventListener(EVENTS.REFRESH, refreshPage);
         };
     }, [refreshPage])
-
+    console.log("hello", userName);
     return (<div id="stage">
         <ErrorMessage></ErrorMessage>
-        {isLoggedIn ? <Todo></Todo> : <Login></Login>}
+        {userName === "" ? <Login></Login> : <Todo username={userName}></Todo>}
     </div>);
 });
 

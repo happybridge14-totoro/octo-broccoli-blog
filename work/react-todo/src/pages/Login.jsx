@@ -30,7 +30,7 @@ const Login = memo(() => {
         <div className="login-page">
             <label>
                 User Name:
-                <input id="user-name" type="text" value={username} onChange={keyPressHandler}/>
+                <input id="user-name" type="text" value={username} onChange={keyPressHandler} minLength={1}/>
             </label>
             <button className="signin" onClick={signin}>submit</button>
         </div>
