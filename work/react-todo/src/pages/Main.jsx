@@ -32,7 +32,6 @@ const Main = memo(() => {
             removeEventListener(EVENTS.REFRESH, refreshPage);
         };
     }, [refreshPage])
-    console.log("hello", userName);
     return (<div id="stage">
         <ErrorMessage></ErrorMessage>
         {userName === "" ? <Login></Login> : <Todo username={userName}></Todo>}

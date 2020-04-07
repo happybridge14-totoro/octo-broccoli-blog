@@ -167,12 +167,73 @@ footer {
 .error.display {
   visibility: visible;
 }
+.options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  margin-bottom: 10px;
+  height: 30px;
+  align-items: center;
+}
+.options .filters label{
+  margin-right: 0.5em;
+}
+.options .orders span {
+  margin-right: 0.5em;
+}
+.options .orders label {
+  margin: 0px 0.5em 0px 0.2em;
+}
+.items {
+  overflow-y: auto;
+  height: calc(100vh - 346px);
+  margin-bottom: 10px;
+}
+.items .item {
+  margin-bottom: 1em;
+  display: flex;
+  align-items: center;
+}
+.items .item input {
+  margin-right: 1em;
+}
+.items .item .delete {
+  margin-left: auto;
+  margin-right: 1em;
+}
+.items .done {
+  text-decoration: line-through;
+}
+
+.new-item {
+  box-sizing: border-box;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.new-item input,
+.new-item span {
+  margin-right: 1em;
+}
+.refresh {
+  margin-left: auto;
+}
 
 .user-action {
   display: flex;
   height: 40px;
   align-items: center;
+  box-sizing: border-box;
 }
+.user-action input {
+  margin-right: 0.8em;
+}
+.user-action span,
+.user-action label {
+  margin-right: 1em;
+}
+
 .logout {
   margin-left: auto;
 }

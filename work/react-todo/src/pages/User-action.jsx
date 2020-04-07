@@ -15,32 +15,27 @@ const UserActions = memo(({username}) => {
     useEffect(() => {
         setTheme(storedTheme.theme);
     }, [storedTheme])
-    let isSubmitting = false;
     const changeTheme = useCallback((targetTheme) => {
-        if (!isSubmitting) {
-            isSubmitting = true;
-            api.put(THEME_URL + username, {theme: targetTheme}).then(() => {
-                setTheme(targetTheme);
-                isSubmitting = false;
-                dispatch(EVENTS.SET_THEME, targetTheme);
-            }).catch((response)=>{
-                isSubmitting = false;
-                if (response.status === STATUS_CODES.BAD_RQUEST) {
-                    dispatch(EVENTS.DISPLAY_ERROR, ERROR_TYPE.NETWORK_ERROR);
-                } else if (response.status === STATUS_CODES.FORBIDDEN || response.status === STATUS_CODES.UNAUTHORIZED) {
-                    dispatch(EVENTS.DISPLAY_ERROR, ERROR_TYPE.SESSION_ERROR);
-                    dispatch(EVENTS.REFRESH);
-                }
-            });
-        }
+        api.put(THEME_URL + username, {theme: targetTheme}).then(() => {
+            setTheme(targetTheme);
+            dispatch(EVENTS.SET_THEME, targetTheme);
+        }).catch((response)=>{
+            if (response.status === STATUS_CODES.BAD_RQUEST) {
+                dispatch(EVENTS.DISPLAY_ERROR, ERROR_TYPE.NETWORK_ERROR);
+            } else if (response.status === STATUS_CODES.FORBIDDEN || response.status === STATUS_CODES.UNAUTHORIZED) {
+                dispatch(EVENTS.DISPLAY_ERROR, ERROR_TYPE.SESSION_ERROR);
+                dispatch(EVENTS.REFRESH);
+            }
+        });
     }, [username, setTheme])
     const logout = useCallback(()=>{
         api.delete(SIGN_OUT_URL).finally(()=>{
             dispatch(EVENTS.REFRESH);
         });
-    });
+    }, []);
     return (
         <div className="user-action">
+            <span>Theme:</span>
             <input type="radio" 
                 name="theme" 
                 value={DEFAULT_THEME}

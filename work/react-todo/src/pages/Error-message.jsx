@@ -6,7 +6,7 @@ export const ERROR_TYPE = {
     NETWORK_ERROR: 1,
     RECIPE_ID_ERROR: 2,
     SESSION_ERROR: 3,
-    RECIPE_PARAM_ERROR: 4,
+    TASK_PARAM_ERROR: 4,
     UNEXPECTED_ERROR: 5,
 };
 const getErrorMessage = (type) => {
@@ -22,9 +22,9 @@ const getErrorMessage = (type) => {
             message = "Wrong recipe id!";
             break;
         case ERROR_TYPE.SESSION_ERROR:
-            message = "Invalid user!";
+            message = "Invalid user! Please login again!";
             break;
-        case ERROR_TYPE.RECIPE_PARAM_ERROR:
+        case ERROR_TYPE.TASK_PARAM_ERROR:
             message = "Param error!";
             break;
         case ERROR_TYPE.UNEXPECTED_ERROR:
