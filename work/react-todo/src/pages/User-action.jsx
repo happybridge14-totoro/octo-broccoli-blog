@@ -1,10 +1,10 @@
-import React, {useState, memo, useCallback, useEffect} from "react";
-import {EVENTS, dispatch} from "../utils/event";
+import React, {useState, memo, useCallback, useEffect, useContext} from "react";
+
 import ThemeContext, {DEFAULT_THEME, LIGHT_THEME} from "../theme-context";
-import { useContext } from "react";
-import api from "../proxy";
-import { STATUS_CODES } from "../utils/error-status";
-import { ERROR_TYPE } from "./Error-message";
+import { STATUS_CODES, ERROR_TYPE } from "../utils/error-status";
+import api from "../utils/proxy";
+
+import {EVENTS, dispatch} from "../utils/event";
 
 const SIGN_OUT_URL = "session";
 const THEME_URL = "/theme/";

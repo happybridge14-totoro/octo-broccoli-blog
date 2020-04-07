@@ -1,9 +1,8 @@
 import React, {useState, memo, useCallback} from "react";
 
-import { STATUS_CODES} from "../utils/error-status";
+import { ERROR_TYPE, STATUS_CODES} from "../utils/error-status";
 import {EVENTS, dispatch} from "../utils/event";
-import {ERROR_TYPE} from "./Error-message";
-import api from "../proxy";
+import api from "../utils/proxy";
 
 const LOGIN_IN_URL = "/session";
 const Login = memo(() => {

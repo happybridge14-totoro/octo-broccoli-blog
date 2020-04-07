@@ -1,8 +1,9 @@
 import React, {useState, memo, useEffect, useCallback, useReducer, useMemo} from "react";
-import api from "../proxy";
-import { STATUS_CODES} from "../utils/error-status";
+
 import {EVENTS, dispatch} from "../utils/event";
-import {ERROR_TYPE} from "./Error-message";
+import {ERROR_TYPE, STATUS_CODES} from "../utils/error-status";
+import api from "../utils/proxy";
+
 import UserActions from "./User-action";
 import ItemActions from "./Item-action";
 

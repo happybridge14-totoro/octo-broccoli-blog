@@ -1,11 +1,14 @@
 import React, {useState, memo, useEffect, useCallback} from "react";
+
 import { EVENTS, addEventListener, removeEventListener, dispatch } from "../utils/event"
-import api from "../proxy";
-import ErrorMessage, {ERROR_TYPE} from "./Error-message";
-import { STATUS_CODES } from "../utils/error-status";
+import { ERROR_TYPE, STATUS_CODES } from "../utils/error-status";
+import api from "../utils/proxy";
+
+import { DEFAULT_THEME } from "../theme-context";
+
 import Login from "./Login";
 import Todo from "./Todo";
-import { DEFAULT_THEME } from "../theme-context";
+import ErrorMessage from "./Error-message";
 
 const SESSION_URL = "/session";
 

@@ -1,14 +1,3 @@
-export const ERROR_CODES = {
-    "WRONG_USER_ID": 3,
-    "WRONG_USER_NAME": 4,
-    "SESSION_NOT_FOUND": 5,
-    "WRONG_SESSION": 6,
-    "ITEM_ID_ERROR": 10,
-    "ITEM_NAME_ERROR": 11,
-    "ITEM_QUANTITY_ERROR": 12,
-    "ITEM_DULPLICATED": 15,
-    "NOT_FOUND": 1000 
-};
 export const STATUS_CODES = {
     "SUCCESS": 200,
     "BAD_RQUEST": 400,
@@ -18,4 +7,12 @@ export const STATUS_CODES = {
     "DUPLICATED": 409,
     "INTERNAL_SERVER_ERROR": 500,
     "NETWORK_ERROR": 503
+};
+export const ERROR_TYPE = {
+    USER_NAME_ERROR: 0,
+    NETWORK_ERROR: 1,
+    RECIPE_ID_ERROR: 2,
+    SESSION_ERROR: 3,
+    TASK_PARAM_ERROR: 4,
+    UNEXPECTED_ERROR: 5,
 };

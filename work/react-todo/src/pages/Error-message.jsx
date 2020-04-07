@@ -1,14 +1,8 @@
 import React, {useState, memo, useEffect} from "react";
-import {EVENTS, addEventListener, removeEventListener} from "../utils/event";
 
-export const ERROR_TYPE = {
-    USER_NAME_ERROR: 0,
-    NETWORK_ERROR: 1,
-    RECIPE_ID_ERROR: 2,
-    SESSION_ERROR: 3,
-    TASK_PARAM_ERROR: 4,
-    UNEXPECTED_ERROR: 5,
-};
+import {EVENTS, addEventListener, removeEventListener} from "../utils/event";
+import {ERROR_TYPE} from "../utils/error-status";
+
 const getErrorMessage = (type) => {
     let message = "";
     switch(type) {

@@ -1,4 +1,4 @@
-import {STATUS_CODES} from "./utils/error-status";
+import {STATUS_CODES} from "./error-status";
 const api = {};
 const METHOD = {
     GET: "get",

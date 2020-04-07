@@ -1,9 +1,10 @@
-import React from 'react';
-import './App.css';
-import Main from "./pages/Main";
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect }  from 'react';
+
 import { EVENTS, addEventListener, removeEventListener } from './utils/event';
 import ThemeContext, {DEFAULT_THEME, LIGHT_THEME} from "./theme-context";
+
+import './App.css';
+import Main from "./pages/Main";
 
 const THEME_SUFFIX = "-theme";
 function App() {
