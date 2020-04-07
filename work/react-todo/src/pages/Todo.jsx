@@ -15,7 +15,7 @@ const TYPE_REMOVE = "remove";
 
 const ORDER_DEFAULT = "none";
 const ORDER_ASC = "asc";
-const ORDER_DEC = "des";
+const ORDER_DESC = "desc";
 
 const Todo = memo(({username}) => {
     const tasksURL = useMemo(() => TASK_URL + username, [username])
@@ -140,13 +140,6 @@ const Todo = memo(({username}) => {
 
     });
 
-    const handleOrderChange = useCallback((event, value) => {
-        const checked = event.target.checked;
-        if (checked) {
-            setOrder(value);
-        }
-    }, []);
-
     useEffect(()=>{
         refreshItems();
     }, [refreshItems]);
@@ -160,19 +153,13 @@ const Todo = memo(({username}) => {
         }
         switch (order) {
             case ORDER_ASC:
-                itemsToRender.sort((a, b) => {
-                    return a.content.localeCompare(b.content);
-                });
+                itemsToRender.sort((a, b) => a.content.localeCompare(b.content))
                 break;
-            case ORDER_DEC:
-                itemsToRender.sort((a, b) => {
-                    return b.content.localeCompare(a.content);
-                });
+            case ORDER_DESC:
+                itemsToRender.sort((a, b) => b.content.localeCompare(a.content));
                 break;
             default:
-                itemsToRender.sort((a, b)=>{
-                    return b.timestamp - a.timestamp;
-                });
+                itemsToRender.sort((a, b)=>(b.timestamp - a.timestamp));
                 break;
         }
         return itemsToRender.map((item) => {
@@ -189,16 +176,16 @@ const Todo = memo(({username}) => {
             <div className="options">
                 <div className="filters">
                     <label htmlFor="filter">Hide done tasks:</label>
-                    <input name="filter" type="checkbox" checked={!filterShowDone} onChange={(e)=>setFilterShowDone(!e.target.checked)}/>
+                    <input id="filter" name="filter" type="checkbox" checked={!filterShowDone} onChange={(e)=>setFilterShowDone(!e.target.checked)}/>
                 </div>
                 <div className="orders">
                     <span>Order:</span>
-                    <input type="radio" name="order" value="none" checked={order === ORDER_DEFAULT} onChange={(e)=>{handleOrderChange(e, ORDER_DEFAULT)}}/>
+                    <input type="radio" id="none" name="order" value="none" checked={order === ORDER_DEFAULT} onChange={()=>setOrder(ORDER_DEFAULT)}/>
                     <label htmlFor="none">Latest</label>
-                    <input type="radio" name="order" value="asc" checked={order === ORDER_ASC} onChange={(e)=>{handleOrderChange(e, ORDER_ASC)}}/>
+                    <input type="radio" id="asc" name="order" value="asc" checked={order === ORDER_ASC} onChange={()=>setOrder(ORDER_ASC)}/>
                     <label htmlFor="asc">A-Z</label>
-                    <input type="radio" name="order" value="dec" checked={order === ORDER_DEC} onChange={(e)=>{handleOrderChange(e, ORDER_DEC)}}/>
-                    <label htmlFor="dec">Z-A</label>
+                    <input type="radio" id="desc" name="order" value="desc" checked={order === ORDER_DESC} onChange={()=>setOrder(ORDER_DESC)}/>
+                    <label htmlFor="desc">Z-A</label>
                 </div>
             </div>
             <div className="items">

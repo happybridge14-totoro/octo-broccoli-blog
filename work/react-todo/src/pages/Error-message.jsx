@@ -33,11 +33,9 @@ const ErrorMessage = memo(() => {
     const [errorText, setErrorText] = useState("");
     useEffect(() => {
         const displayError = (errorType) => {
-            console.log("here?");
             setErrorText(getErrorMessage(errorType));
         };
         const hideError = () => {
-            console.log("hide?");
             setErrorText("");
         };
         addEventListener(EVENTS.DISPLAY_ERROR, displayError);

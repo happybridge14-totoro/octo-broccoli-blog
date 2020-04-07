@@ -175,9 +175,21 @@ footer {
   height: 30px;
   align-items: center;
 }
+.options .filters > * {
+  user-select: none;
+  cursor: pointer;
+}
 .options .filters label{
   margin-right: 0.5em;
 }
+.options .orders > * {
+  user-select: none;
+}
+.options .orders label,
+.options .orders input {
+  cursor: pointer;
+}
+
 .options .orders span {
   margin-right: 0.5em;
 }
