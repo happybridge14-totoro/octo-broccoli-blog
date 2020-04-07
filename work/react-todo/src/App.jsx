@@ -36,7 +36,7 @@ function App() {
                 <li className="footer-divider"></li>
                 <li>
                     <span>E-mail: </span>
-                    <a href="mailto:huang.yiji@husky.neu.edu">huang.yiji@husky.neu.edu</a>
+                    <a href="mailto:huang.yiji@northeastern.edu">huang.yiji@northeastern.edu</a>
                 </li>
             </ul>
         </footer>
