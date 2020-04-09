@@ -20,7 +20,7 @@ const ItemActions = memo(({refreshItems, addItem, deleteAll}) => {
                 onChange={handleInput}
             />
             <button onClick={handleAdd}>Add</button>
-            <button onClick={()=>deleteAll()} className="delete-all">Delete All</button>
+            <button onClick={deleteAll} className="delete-all">Delete All</button>
             <button onClick={refreshItems} className="refresh">Refresh</button>
         </div>
     );
