@@ -216,6 +216,9 @@ footer {
 .items .done {
   text-decoration: line-through;
 }
+.items .item-detail {
+  width: 100%;
+}
 
 .new-item {
   box-sizing: border-box;

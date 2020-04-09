@@ -138,7 +138,7 @@ const Todo = memo(({username}) => {
             }
         });
 
-    });
+    }, [tasksURL]);
 
     useEffect(()=>{
         refreshItems();
@@ -165,11 +165,11 @@ const Todo = memo(({username}) => {
         return itemsToRender.map((item) => {
             return (<div key={item.taskId} className="item">
                 <input type="checkbox" checked={item.done} onChange={(e)=>{handleCheck(e.target.checked, item)}}/>
-                <input type="text" onChange={(e)=>{handleTextChange(e.target.value, item)}} value={item.content} className={item.done ? "done" : ""}/>
+                <input type="text" onChange={(e)=>{handleTextChange(e.target.value, item)}} value={item.content} className={item.done ? "done item-detail" : "item-detail"}/>
                 <button onClick={()=>{handleDelete(item.taskId)}} className="delete">delete</button>
             </div>);
         });
-    }, [items, handleCheck, filterShowDone, order]);
+    }, [items, handleCheck, handleDelete, handleTextChange, filterShowDone, order]);
 
     return (
         <div>
