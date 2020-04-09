@@ -226,9 +226,16 @@ footer {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
+  white-space: nowrap;
+}
+.new-item input {
+  min-width: 0px;
 }
 .new-item input,
 .new-item span {
+  margin-right: 1em;
+}
+.new-item .add {
   margin-right: 1em;
 }
 .delete-all {
