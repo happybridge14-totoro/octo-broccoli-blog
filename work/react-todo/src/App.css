@@ -231,8 +231,9 @@ footer {
 .new-item span {
   margin-right: 1em;
 }
-.refresh {
+.delete-all {
   margin-left: auto;
+  margin-right: 1em;
 }
 
 .user-action {

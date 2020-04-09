@@ -1,6 +1,6 @@
 import React, {useState, memo, useCallback} from "react";
 
-const ItemActions = memo(({refreshItems, addItem}) => {
+const ItemActions = memo(({refreshItems, addItem, deleteAll}) => {
     const [newItem, setNewItem] = useState("");
     const handleInput = useCallback((event) => {
         const value = event.target.value;
@@ -20,6 +20,7 @@ const ItemActions = memo(({refreshItems, addItem}) => {
                 onChange={handleInput}
             />
             <button onClick={handleAdd}>Add</button>
+            <button onClick={()=>deleteAll()} className="delete-all">Delete All</button>
             <button onClick={refreshItems} className="refresh">Refresh</button>
         </div>
     );

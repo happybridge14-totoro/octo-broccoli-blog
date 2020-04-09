@@ -87,6 +87,21 @@ const Todo = memo(({username}) => {
         });
     }, [tasksURL]);
 
+    const deleteAll = useCallback(()=>{
+        api.delete(tasksURL).then(()=>{
+            refreshItems();
+        }).catch((response) => {
+            if (response.status === STATUS_CODES.UNAUTHORIZED || response.status === STATUS_CODES.FORBIDDEN) {
+                dispatch(EVENTS.DISPLAY_ERROR, ERROR_TYPE.SESSION_ERROR);
+                dispatch(EVENTS.REFRESH);
+            } else if (response.status === STATUS_CODES.NETWORK_ERROR) {
+                dispatch(EVENTS.DISPLAY_ERROR, ERROR_TYPE.NETWORK_ERROR);
+            } else if (response.status === STATUS_CODES.BAD_RQUEST || response.status === STATUS_CODES.NOT_FOUND) {
+                dispatch(EVENTS.DISPLAY_ERROR, ERROR_TYPE.TASK_PARAM_ERROR);
+            }
+        });
+    }, [tasksURL, refreshItems]);
+
     const handleCheck = useCallback((done, item) => {
         const urlWithId = tasksURL + "/" + item.taskId;
         const newItem = {...item, done};
@@ -191,7 +206,7 @@ const Todo = memo(({username}) => {
             <div className="items">
                 {renderItems()}
             </div>
-            <ItemActions refreshItems={refreshItems} addItem={addItem}></ItemActions>
+            <ItemActions deleteAll={deleteAll} refreshItems={refreshItems} addItem={addItem}></ItemActions>
             <UserActions username={username}></UserActions>
         </div>
     );
