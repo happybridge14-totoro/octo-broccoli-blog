@@ -168,12 +168,13 @@ footer {
   visibility: visible;
 }
 .options {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
   align-items: center;
   margin-bottom: 10px;
   height: 30px;
-  align-items: center;
+}
+.options .filters {
+  margin-right: 1em;
 }
 .options .filters > * {
   user-select: none;

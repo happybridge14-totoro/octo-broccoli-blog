@@ -16,6 +16,8 @@ const TYPE_REMOVE = "remove";
 const ORDER_DEFAULT = "none";
 const ORDER_ASC = "asc";
 const ORDER_DESC = "desc";
+const ORDER_DONE = "done";
+const ORDER_NOT_DONE = "notdone";
 
 const Todo = memo(({username}) => {
     const tasksURL = useMemo(() => TASK_URL + username, [username])
@@ -174,6 +176,32 @@ const Todo = memo(({username}) => {
             case ORDER_DESC:
                 itemsToRender.sort((a, b) => b.content.localeCompare(a.content));
                 break;
+            case ORDER_DONE:
+                itemsToRender.sort((a, b) => {
+                    if ((a.done && b.done) || (!a.done && !b.done)) {
+                        return b.timestamp - a.timestamp;
+                    } else {
+                        if (a.done) {
+                            return 1;
+                        } else {
+                            return -1;
+                        }
+                    }
+                });
+                break;
+            case ORDER_NOT_DONE:
+                itemsToRender.sort((a, b) => {
+                    if ((a.done && b.done) || (!a.done && !b.done)) {
+                        return b.timestamp - a.timestamp;
+                    } else {
+                        if (a.done) {
+                            return -1;
+                        } else {
+                            return 1;
+                        }
+                    }
+                });
+                break;
             default:
                 itemsToRender.sort((a, b)=>(b.timestamp - a.timestamp));
                 break;
@@ -202,6 +230,10 @@ const Todo = memo(({username}) => {
                     <label htmlFor="asc">A-Z</label>
                     <input type="radio" id="desc" name="order" value="desc" checked={order === ORDER_DESC} onChange={()=>setOrder(ORDER_DESC)}/>
                     <label htmlFor="desc">Z-A</label>
+                    <input type="radio" id="done" name="order" value="dont" checked={order === ORDER_DONE} onChange={()=>setOrder(ORDER_DONE)}/>
+                    <label htmlFor="desc">Done</label>
+                    <input type="radio" id="notdont" name="order" value="notdone" checked={order === ORDER_NOT_DONE} onChange={()=>setOrder(ORDER_NOT_DONE)}/>
+                    <label htmlFor="desc">Not Done</label>
                 </div>
             </div>
             <div className="items">
