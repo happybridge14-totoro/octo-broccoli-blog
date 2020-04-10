@@ -231,9 +231,9 @@ const Todo = memo(({username}) => {
                     <input type="radio" id="desc" name="order" value="desc" checked={order === ORDER_DESC} onChange={()=>setOrder(ORDER_DESC)}/>
                     <label htmlFor="desc">Z-A</label>
                     <input type="radio" id="done" name="order" value="dont" checked={order === ORDER_DONE} onChange={()=>setOrder(ORDER_DONE)}/>
-                    <label htmlFor="desc">Done</label>
+                    <label htmlFor="done">Done</label>
                     <input type="radio" id="notdont" name="order" value="notdone" checked={order === ORDER_NOT_DONE} onChange={()=>setOrder(ORDER_NOT_DONE)}/>
-                    <label htmlFor="desc">Not Done</label>
+                    <label htmlFor="notdont">Not Done</label>
                 </div>
             </div>
             <div className="items">
