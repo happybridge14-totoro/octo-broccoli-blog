@@ -97,7 +97,8 @@ const Todo = memo(({username}) => {
             } else if (response.status === STATUS_CODES.NETWORK_ERROR) {
                 dispatch(EVENTS.DISPLAY_ERROR, ERROR_TYPE.NETWORK_ERROR);
             } else if (response.status === STATUS_CODES.BAD_RQUEST || response.status === STATUS_CODES.NOT_FOUND) {
-                dispatch(EVENTS.DISPLAY_ERROR, ERROR_TYPE.TASK_PARAM_ERROR);
+                // Do nothing here
+                // dispatch(EVENTS.DISPLAY_ERROR, ERROR_TYPE.TASK_PARAM_ERROR);
             }
         });
     }, [tasksURL, refreshItems]);
