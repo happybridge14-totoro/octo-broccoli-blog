@@ -7,5 +7,5 @@
 * Add, commit, and push the branch to github
 * Create a PR to merge to master
 * Be sure to include the TAs and I as reviewers.  
-* Due by 11:59pm (PT) Mon Apr 20
+* Due by 11:59pm (PT) Sun Apr 19
 
