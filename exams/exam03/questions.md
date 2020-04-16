@@ -25,13 +25,13 @@ If we compare JSX components with pure function, they are similar in many places
 * In the above scenario, the client call service on port 4000 directly. All static files and services are called through port 4000.
 
 ## Q5: I have said that you can only pass data "down" in React, not "up".  What does that mean?  Give simple code sample if that makes it easier to describe.
-* Parent component has the right to pass the data to the child component, but child component directly pass the data to the parent components. Because parent component knows exactly what child component is, but child components have no idea how many and which parent component is using it. They can pass the necessary data back through other methods, like provider, or dispatch events.
+* Parent component has the right to pass the data to the child component, but child component can't directly pass the data to the parent components. Because parent component knows exactly what child component is, but child components have no idea how many and which parent component is using it. They can pass the necessary data back through other methods, like provider, or dispatch events.
 Example
 
 ## Q6: Follow-up: If you can't pass data "up" the component tree, how can anything that is "down" change data?  Give simple code samples if that makes it easier to describe.
 * Parent component pass callback to child component, parent component setup a context, or parent listener to specific events.
 ```Javascript
-const Login = memo(({refreshPage}) => {
+const Login = memo(({refreshPageWithUsername}) => {
     const [username, setUsername] = useState("");
     const keyPressHandler = useCallback((event)=>{
         const value = event.target.value;
@@ -41,7 +41,7 @@ const Login = memo(({refreshPage}) => {
         event.preventDefault();
         api.post(LOGIN_IN_URL, {username}).then(()=>{
             setUsername("");
-            refreshPage();
+            refreshPageWithUsername(username);
         }).catch((response) => {
             setUsername("");
             if (response.status === STATUS_CODES.UNAUTHORIZED || response.status === STATUS_CODES.FORBIDDEN) {
