@@ -6,7 +6,7 @@ const METHOD = {
 };
 const BASE64 = "base64";
 const ASCII = "ascii";
-const EXPIRED_DATE = "expriedDate";
+const EXPIRED_DATE = "expiredDate";
 const USER_ID = "userid";
 const base64Encode = (data) => {
     return Buffer.from(JSON.stringify(data)).toString(BASE64);
@@ -52,12 +52,12 @@ const verifyPayload = (payloadObj, userid) => {
     }
     return ret;
 };
-const encrypt = (userid, expriedDate) => {
+const encrypt = (userid, expiredDate) => {
     let ret;
     try {
         let payloadBase64 = base64Encode({
             userid,
-            expriedDate
+            expiredDate
         });
         payloadBase64 = payloadBase64.replace(/(={0,2})$/, "");
         const contents = METHOD_JSON_BASE64 + "." + payloadBase64;
