@@ -7,8 +7,18 @@ const PORT = 5000;
 app.use(express.json());
 app.use(cookieParser);
 app.use(express.static('./build'));
-
-// app.get('/session', routes.session.status);
+app.route('/session', (req, res)=>{
+    console.log("hello");
+    res.write("hello");
+    res.end();
+});
+app.get('/test/:id/name/:nameid', (req, res)=>{
+    console.log("hello");
+    console.log(req.params.id);
+    console.log(req.params.nameid);
+    res.write("hello");
+    res.end();
+});
 // app.post('/session', routes.session.create);
 // app.delete('/session', routes.session.remove);
 
