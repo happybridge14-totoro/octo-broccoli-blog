@@ -12,7 +12,7 @@
 * Separation of Concerns
 * Avoid side effect
 
-If we compare JSX components with pure function, they are similar in many places. Given the same input/props, always get the same result. (Unless you `useEffect` to get something). The input/props are readonly, we are not supposed to change these values directly. All params declared by `useState()` is just like temporary variables, they don't have side effect and will be used within the function/component only. 
+If we compare JSX components with pure function, they are similar in many places. Given the same input/props, always get the same result. (Unless you use `useEffect` to get something). The input/props are readonly, we are not supposed to change these values directly. All params declared by `useState()` is just like temporary variables, they don't have side effect and will be used within the function/component only. 
 
 ## Q2: I have said that using Progressive Enhancement (supporting both MPA and SPA) is best, but many places don't do so because of the effort involved.  What is at least one major reason not to use SPA alone?
 * SPA along is not good for SEO(search engine optimization)
@@ -22,11 +22,11 @@ If we compare JSX components with pure function, they are similar in many places
 * When having a service call, the server running on port 3000 received the request. This server will try to find out whether it is a call to get static react files or normal service call which it hasn't. If the call is not going to get the static files, it will send the request to port 4000, get the response and pipe the response back to the client.
 
 ## Q4: Follow-up: Using the above scenario, list and describe what the network calls are like after you run `npm run build` and are only running all of your content on localhost port 4000 when your JSX makes a call to `/service`
-* In the above scenario, the client call service on port 4000 directly. All static files and services are called through port 4000.
+* My understanding of "are only running all of your content" is running port 4000 only. In this case, the client call service on port 4000 directly. All static files and services are called through port 4000.
 
 ## Q5: I have said that you can only pass data "down" in React, not "up".  What does that mean?  Give simple code sample if that makes it easier to describe.
 * Parent component has the right to pass the data to the child component, but child component can't directly pass the data to the parent components. Because parent component knows exactly what child component is, but child components have no idea how many and which parent component is using it. They can pass the necessary data back through other methods, like provider, or dispatch events.
-Example
+Example: see below question
 
 ## Q6: Follow-up: If you can't pass data "up" the component tree, how can anything that is "down" change data?  Give simple code samples if that makes it easier to describe.
 * Parent component pass callback to child component, parent component setup a context, or parent listener to specific events.
