@@ -16,7 +16,7 @@ If we compare JSX components with pure function, they are similar in many places
 
 ## Q2: I have said that using Progressive Enhancement (supporting both MPA and SPA) is best, but many places don't do so because of the effort involved.  What is at least one major reason not to use SPA alone?
 * SPA along is not good for SEO(search engine optimization)
-* SPA usually is not readable
+* SPA along is not good for accessibility and various devices
 
 ## Q3: The "proxy" setting in your package.json is required for the create-react-app dev server to call a local service, but not if you are calling a service that will always be on a different domain.  Explain what happens (in terms of network traffic) when your dev server is running on localhost port 3000 and the page makes a call to `/service` when you have "proxy" set to `http://localhost:4000` and a server running on localhost port 4000 that has the `/service` service.  hint: This should list and describe multiple request/response steps.
 * When having a service call, the server running on port 3000 received the request. This server will try to find out whether it is a call to get static react files or normal service call which it hasn't. If the call is not going to get the static files, it will send the request to port 4000, get the response and pipe the response back to the client.
