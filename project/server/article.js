@@ -35,7 +35,6 @@ const one = {
         };
     }
 };
-one.get.ignoreAuth = true;
 const all = {
     get: (req, res) => {
         const articles = getArticles();

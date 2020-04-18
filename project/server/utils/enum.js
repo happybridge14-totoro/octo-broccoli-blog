@@ -1,3 +1,5 @@
 const COOKIE_KEY = "token";
 
-module.exports = {COOKIE_KEY};
+const TEN_MINUTES = 600000;
+
+module.exports = {COOKIE_KEY, TEN_MINUTES};

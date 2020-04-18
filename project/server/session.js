@@ -1,8 +1,7 @@
 const {STATUS_CODES, ERROR_CODES, RESPONSE_SUCCESS} = require("./utils/codes");
 const {getOrCreateUserByName} = require("./data/user");
 const {encrypt} = require("./utils/JWT");
-const {COOKIE_KEY} = require("./utils/enum");
-const TEN_MINUTES = 600000;
+const {COOKIE_KEY, TEN_MINUTES} = require("./utils/enum");
 const session = {
     post: (req, res) => {
         const username = req.body.username;
