@@ -15,5 +15,6 @@ router(app, "/session", session);
 router(app, "/user/:id", user);
 router(app, "/article", article.all);
 router(app, "/article/:id", article.one);
+router(app, "/article/:id/thumbsup", article.thumbsup);
 
 app.listen(PORT, () => console.log(`listening on http://localhost:${PORT}`) );

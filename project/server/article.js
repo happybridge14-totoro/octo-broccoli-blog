@@ -1,27 +1,78 @@
+const {STATUS_CODES, ERROR_CODES, RESPONSE_SUCCESS} = require("./utils/codes");
+const { createArticle, 
+    thumbup, 
+    cancelThumbup, 
+    updateArticle, 
+    deleteArticle, 
+    getArticles } = require("./data/article"); 
 const one = {
-    get: (req, res) => {
-        res.write("article.one.get");
-        res.end();
-    },
     put: (req, res) => {
-        res.write("article.one.put");
-        res.end();
+        const id = req.params.id;
+        if (id) {
+            const {title, tages} = req.body;
+            if (title && tages) {
+                const article = updateArticle(id, title, tages);
+                if (article) {
+                    res.json({...RESPONSE_SUCCESS, article});
+                    return;
+                }
+            } else {
+                res.status(STATUS_CODES.BAD_RQUEST);
+                res.json(ERROR_CODES.WRONG_ARTICLE_PARAMS);
+                return;
+            } 
+        }
+        res.status(STATUS_CODES.BAD_RQUEST);
+        res.json(STATUS_CODES.WRONG_ARTICLE);
     },
     delete: (req, res) => {
-        res.write("article.one.delete");
-        res.end();
+        if (articleId) {
+            deleteArticle(articleId);
+            req.json(RESPONSE_SUCCESS);
+        } else {
+            req.status(STATUS_CODES.BAD_RQUEST);
+            req.json(ERROR_CODES.WRONG_ARTICLE);
+        };
     }
 };
 one.get.ignoreAuth = true;
 const all = {
     get: (req, res) => {
-        res.write("article.all.get");
-        res.end();
+        const articles = getArticles();
+        req.json({...RESPONSE_SUCCESS, articles});
     },
     post: (req, res) => {
-        res.write("article.all.post");
-        res.end();
+        const {title, tages} = req.body;
+        if (title && tages) {
+            const article = createArticle(title, tages);
+            res.json({...RESPONSE_SUCCESS, article});
+        } else {
+            res.status(STATUS_CODES.BAD_RQUEST);
+            res.json(ERROR_CODES.WRONG_ARTICLE_PARAMS);
+        }
     },
 };
 all.get.ignoreAuth = true;
-module.exports = {one, all};
+const thumbsup = {
+    post: (req, res) => {
+        const articleId = req.params.id;
+        const article = thumbup(articleId);
+        if (article) {
+            req.json(RESPONSE_SUCCESS);
+        } else {
+            req.status(STATUS_CODES.BAD_RQUEST);
+            req.json(ERROR_CODES.WRONG_ARTICLE);
+        }
+    },
+    delete: (req, res) => {
+        const articleId = req.params.id;
+        const article = cancelThumbup(articleId);
+        if (article) {
+            req.json(RESPONSE_SUCCESS);
+        } else {
+            req.status(STATUS_CODES.BAD_RQUEST);
+            req.json(ERROR_CODES.WRONG_ARTICLE);
+        }
+    },
+};
+module.exports = {one, all, thumbsup};

@@ -38,12 +38,12 @@ const generateThirdPart = (content) => {
     });
     return hmac;
 };
-const verifyPayload = (payloadObj, userid) => {
+const verifyPayload = (payloadObj) => {
     let ret = false;
     try {
         const expiredTime = payloadObj[EXPIRED_DATE];
         if (expiredTime) {
-            ret = (expiredTime > Date.now()) && payloadObj[USER_ID] === userid;
+            ret = expiredTime > Date.now();
         } else {
             ret = true;
         }
@@ -68,13 +68,13 @@ const encrypt = (userid, expiredDate) => {
     }
     return ret;
 };
-const getInfoByToken = (token, userid) => {
+const getInfoByToken = (token) => {
     let payloadObj = null;
     try {
         let tokenAry = token.split(".");
         if (generateThirdPart(tokenAry[0] + "." + tokenAry[1]) === tokenAry[2]) {
             payloadObj = base64Decode(tokenAry[1]);
-            if (!verifyPayload(payloadObj, userid)) {
+            if (!verifyPayload(payloadObj)) {
                 payloadObj = null;
             }
         }
