@@ -98,8 +98,12 @@ const updateProperty = (property) => {
         case EDITABLE_PROPERTY.CONTRACTINFO:
             return (userid, newContent) => {
                 const user = users[userid];
-                if (user) {
-                    user.contractInfo = {...user.contractInfo, ...newContent};
+                if (user && user.profile) {
+                    const oldProfile = user.profile;
+                    user.profile.contractInfo = {
+                        ...oldProfile,
+                        ...newContent
+                    };
                 }
             };
         case EDITABLE_PROPERTY.EDUCATION:
@@ -108,8 +112,8 @@ const updateProperty = (property) => {
             // Can extend different operations
             return (userid, newContent) => {
                 const user = users[userid];
-                if (user) {
-                    user[property] = newContent;
+                if (user && user.profile) {
+                    user.profile[property] = newContent;
                 }
             };
         default:

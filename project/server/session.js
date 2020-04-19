@@ -3,6 +3,10 @@ const {getOrCreateUserByName} = require("./data/user");
 const {encrypt} = require("./utils/JWT");
 const {COOKIE_KEY, TEN_MINUTES} = require("./utils/enum");
 const session = {
+    get: (req, res) => {
+        const userid = req.userid;
+        res.json({...RESPONSE_SUCCESS, userid});
+    },
     post: (req, res) => {
         const username = req.body.username;
         if (username === "" || /^ +/.test(username)) {
