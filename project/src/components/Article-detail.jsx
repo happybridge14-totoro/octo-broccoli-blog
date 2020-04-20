@@ -14,7 +14,7 @@ const ArticleDetail = memo(({article}) => {
             <h4>{article.title}</h4>
             <div className="tags">
                 <span>Tags: </span>
-                {article.tags.map((tag)=><span key="tag">{tag}</span>)};
+                {article.tags.map((tag)=><span key={tag}>{tag}</span>)};
             </div>
             <p>{article.content}</p>
         </article>);

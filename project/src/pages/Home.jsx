@@ -1,4 +1,4 @@
-import React, { memo, useState, useMemo, useContext, useEffect, useCallback } from 'react';
+import React, { memo, useState, useMemo, useContext,  useCallback } from 'react';
 
 import userContext from "../context/user-context";
 
@@ -20,8 +20,10 @@ const Home = memo(() => {
     const [page, setPage] = useState(PAGE_DISPLAY);
     const [currentArticle, setCurrentArticle] = useState(null);
 
-    const addArticle = useCallback((title, content, tags)=>{
-        api.post(getArticleUrl(), { title, content, tags}).then(({article})=>{
+    const modifyArticle = useCallback((title, content, tags, id)=>{
+        const param = { title, content, tags };
+        let promise = id ? api.put(getArticleUrl(id), param) : api.post(getArticleUrl(), param);
+        promise.then(({article})=>{
             setCurrentArticle(article);
             setPage(PAGE_DETAIL);
         }).catch((response)=>{
@@ -36,37 +38,21 @@ const Home = memo(() => {
         });
     }, []);
 
-    const editArticle = useCallback((title, content, tags, id) => {
-        api.put(getArticleUrl(id), { title, content, tags }).then(({ article }) => {
-            setCurrentArticle(article);
-            setPage(PAGE_DETAIL);
-        }).catch((response) => {
-            if (response.status === STATUS_CODES.UNAUTHORIZED || response.status === STATUS_CODES.FORBIDDEN) {
-                dispatch(EVENTS.DISPLAY_ERROR, ERROR_TYPE.SESSION_ERROR);
-                dispatch(EVENTS.REFRESH);
-            } else if (response.status === STATUS_CODES.BAD_RQUEST) {
-                dispatch(EVENTS.DISPLAY_ERROR, ERROR_TYPE.ARTICLE_PARAM_ERROR);
-            } else if (response.status === STATUS_CODES.NETWORK_ERROR) {
-                dispatch(EVENTS.DISPLAY_ERROR, ERROR_TYPE.NETWORK_ERROR);
-            }
-        });
-    }, [])
-
     const pageAdd = useMemo(() => {
         return (<div className="home">
             <button onClick={()=>{setPage(PAGE_DISPLAY)}} className="article-action">Home</button>
-            <ArticleEdit action={addArticle}></ArticleEdit>
+            <ArticleEdit action={modifyArticle}></ArticleEdit>
         </div>);
-    }, [addArticle]);
+    }, [modifyArticle]);
     const pageEdit = useMemo(() => {
         if (currentArticle) {
             return (<div className="home">
                 <button onClick={() => { setPage(PAGE_DISPLAY) }} className="article-action">Home</button>
                 <button onClick={() => { setPage(PAGE_DETAIL) }} className="article-action">Back</button>
-                <ArticleEdit action={editArticle} article={{ articleId: currentArticle.id, articleTitle: currentArticle.title, articleContent: currentArticle.content, articleTags: currentArticle.tags}}></ArticleEdit>
+                <ArticleEdit action={modifyArticle} article={{ articleId: currentArticle.id, articleTitle: currentArticle.title, articleContent: currentArticle.content, articleTags: currentArticle.tags}}></ArticleEdit>
             </div>);
         }
-    }, [editArticle, currentArticle]);
+    }, [modifyArticle, currentArticle]);
     const pageDisplay = useMemo(() => {
         return (<div className="home">
             {user && <button onClick={() => { setPage(PAGE_ADD) }} className="article-action">New Article</button>}

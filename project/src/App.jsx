@@ -76,13 +76,13 @@ function App() {
   const navigation = useMemo(() => {
     if (user) {
       return (<ol>
-        <li className="nav" onClick={() => {setPage(HOME_PAGE)}}>Home</li>
+        <li className="nav" onClick={() => {setPage(HOME_PAGE)}}>Blog</li>
         <li className="nav" onClick={()=> {setPage(PROFILE_PAGE)}}>Profile</li>
         <li className="nav" onClick={() => {signOut()}}>Sign Out</li>
       </ol>);
     } else {
       return (<ol>
-        <li className="nav" onClick={()=>{setPage(HOME_PAGE)}}>Home</li>
+        <li className="nav" onClick={()=>{setPage(HOME_PAGE)}}>Blog</li>
         <li className="nav" onClick={()=>{setPage(LOGIN_PAGE)}}>Sign In</li>
       </ol>);
     }

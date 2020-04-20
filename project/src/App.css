@@ -145,6 +145,7 @@ header {
 .nav:hover {
   color: var(--clickable-text-hover-color);
   cursor: pointer;
+  text-decoration: underline;
 }
 
 main {
@@ -152,12 +153,12 @@ main {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  min-height: 320px;
+  min-height: 310px;
   width: 980px;
   margin: 0px auto;
 }
 .home {
-  height: 680px;
+  height: 660px;
   overflow-y: auto;
   margin-bottom: 2em;
 }
