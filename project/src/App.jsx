@@ -4,10 +4,10 @@ import ThemeContext, {LIGHT_THEME, DEFAULT_THEME, DARK_THEME} from "./context/th
 import UserContext from "./context/user-context";
 
 import ErrorMessage from "./components/Error-message";
-import Footer from "./components/Footer";
-import Home from "./components/Home";
-import Login from "./components/Login";
-// import Footer from "./components/Footer";
+import Footer from "./pages/Footer";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Profile from "./pages/Profile";
 
 import { EVENTS, addEventListener, removeEventListener, dispatch } from './utils/event';
 import { STATUS_CODES, ERROR_TYPE } from "./utils/error-status";
@@ -15,7 +15,6 @@ import { getSessionUrl, getUserUrl } from "./utils/url";
 import api from "./utils/proxy";
 
 import './App.css';
-// import Main from "./pages/Main";
 
 const THEME_SUFFIX = "-theme";
 
@@ -31,6 +30,7 @@ function App() {
     api.get(getSessionUrl()).then(({ userid }) => {
       return api.get(getUserUrl(userid));
     }).then(({ user }) => {
+      dispatch(EVENTS.HIDE_ERROR);
       setUser(user);
     }).catch((response) => {
       if (response.status === STATUS_CODES.NETWORK_ERROR) {
@@ -45,12 +45,20 @@ function App() {
     refreshUser();
   }, [refreshUser]);
 
+  const signOut = useCallback(() => {
+    api.delete(getSessionUrl()).finally(()=>{
+      setUser(null);
+      setPage(HOME_PAGE);
+    });
+  }, []);
+
   useEffect(() => {
+    refresh();
     addEventListener(EVENTS.REFRESH, refresh);
     return () => {
       removeEventListener(EVENTS.REFRESH, refresh);
     };
-  }, [refreshUser]);
+  }, [refresh]);
 
   useEffect(() => {
     const changeTheme = (theme) => {
@@ -69,28 +77,29 @@ function App() {
     if (user) {
       return (<ol>
         <li className="nav" onClick={() => {setPage(HOME_PAGE)}}>Home</li>
-        <li className="nav">Profile</li>
-        <li className="nav signin">Sign Out</li>
+        <li className="nav" onClick={()=> {setPage(PROFILE_PAGE)}}>Profile</li>
+        <li className="nav" onClick={() => {signOut()}}>Sign Out</li>
       </ol>);
     } else {
       return (<ol>
         <li className="nav" onClick={()=>{setPage(HOME_PAGE)}}>Home</li>
-        <li className="nav signin" onClick={()=>{setPage(LOGIN_PAGE)}}>Sign In</li>
+        <li className="nav" onClick={()=>{setPage(LOGIN_PAGE)}}>Sign In</li>
       </ol>);
     }
-  }, [user]);
+  }, [user, signOut]);
 
   const main = useMemo(()=>{
-    let pageRender = <Home></Home>;
+    let pageRender;
     switch (page) {
       case LOGIN_PAGE:
         pageRender = <Login></Login>;
         break;
       case PROFILE_PAGE:
-        pageRender = <Home></Home>;
+        pageRender = <Profile></Profile>;
         break;
       case HOME_PAGE:
       default:
+        pageRender = <Home></Home>;
         break;
     }
     return pageRender;
@@ -102,7 +111,7 @@ function App() {
         <header>
           <nav className="navigations">
             <img src="/logo.png" alt="blog logo" className="logo-title"/>
-            <h2>Welcome to my Blog</h2>
+            <h1>Welcome{user ? ", " + user.displayName: " to my Blog"}</h1>
             {navigation}
           </nav>
         </header>

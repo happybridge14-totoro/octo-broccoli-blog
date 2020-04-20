@@ -77,7 +77,7 @@ button[disabled]:hover {
   opacity: 0.2;
   cursor: default;
 }
-
+textarea,
 input {
   background-color: var(--input-background-color);
   border: 1px solid var(--input-border-color);
@@ -125,7 +125,6 @@ header {
 
 .logo-title {
   height: 40px;
-  margin-right: 1em;
 }
 
 .navigations {
@@ -147,9 +146,6 @@ header {
   color: var(--clickable-text-hover-color);
   cursor: pointer;
 }
-.nav.signin {
-  /* margin-left: auto; */
-}
 
 main {
   flex: 1 0 auto;
@@ -157,6 +153,65 @@ main {
   display: flex;
   flex-direction: column;
   min-height: 320px;
+  width: 980px;
+  margin: 0px auto;
+}
+.home {
+  height: 680px;
+  overflow-y: auto;
+  margin-bottom: 2em;
+}
+.article-action {
+  margin-right: 1em;
+  margin-bottom: 1em;
+}
+
+.article-edit {
+  display: grid;
+  grid-template-columns: 6em 1fr;
+  row-gap: 1em;
+}
+.article-edit .content {
+  resize: vertical;
+}
+.article-edit .tags {
+  overflow: hidden;
+  word-break: break-all;
+  min-height: 47px;
+}
+.article-edit .tags .tag-edit {
+  display: inline-block;
+  margin-right: 0.4em;
+  box-sizing: border-box;
+  border: 1px solid var(--input-border-color);
+  border-radius: 5px;
+  padding: 0px 5px;
+  margin-bottom: 1em;
+  user-select: none;
+}
+.article-edit .tags .tag-edit .tag-delete {
+  display: inline-block;
+  font-size: smaller;
+  border: 1px solid var(--button-background-color);
+  background-color: var(--button-background-color);
+  color: var(--button-text-color);
+  border-radius: 2px;
+  margin: 2px 2px 2px 6px;
+  padding: 1px 2px;
+}
+.article-edit .tags .tag-edit .tag-delete:hover {
+  cursor: pointer;
+}
+.article-edit .new-tag {
+  margin-right: 1em;
+}
+
+.article-detail {
+
+}
+
+.article-detail .tags {
+
 }
 
 footer {
@@ -195,100 +250,7 @@ footer {
 .error.display {
   visibility: visible;
 }
-.options {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-  height: 30px;
-}
-.options .filters {
-  margin-right: 1em;
-}
-.options .filters > * {
-  user-select: none;
-  cursor: pointer;
-}
-.options .filters label{
-  margin-right: 0.5em;
-}
-.options .orders > * {
-  user-select: none;
-}
-.options .orders label,
-.options .orders input {
-  cursor: pointer;
-}
 
-.options .orders span {
-  margin-right: 0.5em;
-}
-.options .orders label {
-  margin: 0px 0.5em 0px 0.2em;
-}
-.items {
-  overflow-y: auto;
-  height: calc(100vh - 346px);
-  margin-bottom: 10px;
-}
-.items .item {
-  margin-bottom: 1em;
-  display: flex;
-  align-items: center;
-}
-.items .item input {
-  margin-right: 1em;
-}
-.items .item .delete {
-  margin-left: auto;
-  margin-right: 1em;
-}
-.items .done {
-  text-decoration: line-through;
-}
-.items .item-detail {
-  width: 100%;
-}
-
-.new-item {
-  box-sizing: border-box;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-  white-space: nowrap;
-}
-.new-item input {
-  min-width: 0px;
-}
-.new-item input,
-.new-item span {
-  margin-right: 1em;
-}
-.new-item .add {
-  margin-right: 1em;
-}
-.delete-all {
-  margin-left: auto;
-  margin-right: 1em;
-}
-
-.user-action {
-  display: flex;
-  height: 40px;
-  align-items: center;
-  box-sizing: border-box;
-}
-.user-action input {
-  margin-right: 0.8em;
-}
-.user-action span,
-.user-action label {
-  margin-right: 1em;
-}
-
-.logout {
-  margin-left: auto;
-}
 
 .footer-personal-info {
   list-style: none;

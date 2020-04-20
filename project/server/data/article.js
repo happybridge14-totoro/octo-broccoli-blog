@@ -26,7 +26,7 @@ const getArticlesByTag = (tag) => {
     return Array.from(targetTags[tag]) || [];
 };
 
-const createArticle = (title, articleTags) => {
+const createArticle = (title, content, articleTags) => {
     const articleId = generatUUID();
     const now = Date.now();
     const article = {
@@ -34,12 +34,17 @@ const createArticle = (title, articleTags) => {
         createTime: now,
         lastModifyTime: now,
         title,
+        content,
         tags: articleTags,
         thumbups: 0,
     };
     articles[articleId] = article;
     setTags(articleTags, article);
     return article;
+};
+
+const getArticleById = (id) => {
+    return articles[id];
 };
 
 const getArticles = () => {
@@ -60,12 +65,13 @@ const cancelThumbsup = (articleId) => {
     }
 };
 
-const updateArticle = (articleId, title, articleTags) => {
+const updateArticle = (articleId, title, content, articleTags) => {
     const article = articles[articleId];
     if (article) {
-        clearTags(article.tages, article);
+        clearTags(article.tags, article);
         article.title = title;
-        article.tages = articleTags;
+        article.tags = articleTags;
+        article.content = content;
         article.lastModifyTime = Date.now();
         setTags(articleTags, article);
     }
@@ -76,4 +82,13 @@ const deleteArticle = (articleId) => {
     delete articles[articleId];
 };
 
-module.exports = {createArticle, thumbsup, cancelThumbsup, updateArticle, deleteArticle, getArticles, getArticlesByTag};
+module.exports = {
+    createArticle,
+    thumbsup,
+    cancelThumbsup,
+    updateArticle,
+    deleteArticle,
+    getArticles,
+    getArticlesByTag,
+    getArticleById
+};

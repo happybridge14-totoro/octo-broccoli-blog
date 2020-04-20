@@ -1,5 +1,6 @@
 const {STATUS_CODES, ERROR_CODES, RESPONSE_SUCCESS} = require("./utils/codes");
 const {getUserById} = require("./data/user");
+const { COOKIE_KEY } = require("./utils/enum");
 const user = {
     get: (req, res) => {
         const paramUserId = req.params.id;
@@ -11,6 +12,7 @@ const user = {
                 return;
             }
         } 
+        res.clearCookie(COOKIE_KEY);
         res.status(STATUS_CODES.FORBIDDEN);
         res.json(ERROR_CODES.WRONG_USER_ID);
     },

@@ -4,14 +4,30 @@ const { createArticle,
     cancelThumbup, 
     updateArticle, 
     deleteArticle, 
-    getArticles } = require("./data/article"); 
+    getArticles,
+    getArticleById } = require("./data/article");
 const one = {
+    get: (req, res) => {
+        const id = req.params.id;
+        if (id) {
+            const article = getArticleById(id);
+            if (article) {
+                res.json({
+                    ...RESPONSE_SUCCESS,
+                    article
+                });
+                return;
+            }
+        }
+        res.status(STATUS_CODES.BAD_RQUEST);
+        res.json(STATUS_CODES.WRONG_ARTICLE);
+    },
     put: (req, res) => {
         const id = req.params.id;
         if (id) {
-            const {title, tages} = req.body;
-            if (title && tages) {
-                const article = updateArticle(id, title, tages);
+            const {title, content, tags} = req.body;
+            if (title && tags) {
+                const article = updateArticle(id, title, content, tags);
                 if (article) {
                     res.json({...RESPONSE_SUCCESS, article});
                     return;
@@ -38,12 +54,12 @@ const one = {
 const all = {
     get: (req, res) => {
         const articles = getArticles();
-        req.json({...RESPONSE_SUCCESS, articles});
+        res.json({...RESPONSE_SUCCESS, articles});
     },
     post: (req, res) => {
-        const {title, tages} = req.body;
-        if (title && tages) {
-            const article = createArticle(title, tages);
+        const {title, content, tags} = req.body;
+        if (title && tags) {
+            const article = createArticle(title, content, tags);
             res.json({...RESPONSE_SUCCESS, article});
         } else {
             res.status(STATUS_CODES.BAD_RQUEST);

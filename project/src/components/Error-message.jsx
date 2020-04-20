@@ -12,13 +12,13 @@ const getErrorMessage = (type) => {
         case ERROR_TYPE.NETWORK_ERROR:
             message = "Unable to connect to server! Please try again!";
             break;
-        case ERROR_TYPE.RECIPE_ID_ERROR:
-            message = "Wrong recipe id!";
+        case ERROR_TYPE.ARTICLE_ID_ERROR:
+            message = "Wrong article id!";
             break;
         case ERROR_TYPE.SESSION_ERROR:
             message = "Invalid user! Please login again!";
             break;
-        case ERROR_TYPE.TASK_PARAM_ERROR:
+        case ERROR_TYPE.ARTICLE_PARAM_ERROR:
             message = "Param error!";
             break;
         case ERROR_TYPE.UNEXPECTED_ERROR:
