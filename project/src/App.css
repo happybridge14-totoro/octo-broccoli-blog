@@ -52,6 +52,7 @@ a {
 a:hover {
   color: var(--clickable-text-hover-color);
   text-decoration: underline;
+  cursor: pointer;
 }
 
 button {
@@ -161,6 +162,7 @@ main {
   height: 660px;
   overflow-y: auto;
   margin-bottom: 2em;
+  width: 100%;
 }
 .article-action {
   margin-right: 1em;
@@ -207,10 +209,17 @@ main {
   margin-right: 1em;
 }
 
+.article-detail {
+  max-height: 620px;
+  overflow-y: auto;
+}
+
 .article-detail .title {
   text-align: center;
   margin: 0px;
-  padding: 0px
+  padding: 0px;
+  word-break: break-all;
+  white-space: pre-line;
 }
 .article-detail .meta {
   font-size: smaller;
@@ -242,6 +251,11 @@ main {
 .article-detail .tags img {
   height: 1.5em;
 }
+.article-detail .content {
+  min-height: 300px;
+  word-break: break-all;
+  white-space: pre-line;
+}
 .article-detail .thumbup {
   display: flex;
   align-items: center;
@@ -251,6 +265,63 @@ main {
 }
 .article-detail .thumbup img:hover {
   cursor: pointer;
+}
+.article-brief {
+  margin-bottom: 2em;
+}
+.article-brief .seperator {
+  height: 2px;
+  width: 100%;
+  background-color: var(--line-color);
+  margin: 1em 0px;
+}
+.article-brief .article {
+  padding-bottom: 2em;
+  padding-top: 1em;
+  border-top: 1px dashed var(--line-color);
+}
+.article-brief .title {
+  font-size: larger;
+  margin: 0px;
+  padding: 0px;
+  color: var(--clickable-text-color);
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 920px;
+  display: inline-block;
+}
+.article-brief .title:hover {
+  color: var(--clickable-text-hover-color);
+  cursor: pointer;
+  text-decoration: underline;
+}
+.article-brief .content {
+  margin: 0px 0px 1em 0px;
+  padding: 0px;
+  max-width: 920px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.article-brief .tags {
+  font-size: smaller;
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 0.5em;
+  align-items: center;
+}
+.article-brief .tags .tag-icon {
+  height: 2em;
+  margin-right: 0.5em;
+}
+.article-brief .tags .tag {
+    line-height: 1.5em;
+    border: 1px solid var(--input-border-color);
+    border-radius: 5px;
+    padding: 0px 0.5em;
+    margin-right: 0.5em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 8em;
 }
 
 footer {

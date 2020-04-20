@@ -9,6 +9,7 @@ import { getArticleUrl} from "../utils/url";
 
 import ArticleEdit from "../components/Article-edit";
 import ArticleDetail from "../components/Article-detail";
+import ArticleList from "../components/Article-list";
 
 const PAGE_ADD = "addPage";
 const PAGE_DISPLAY = "displayPage";
@@ -38,6 +39,11 @@ const Home = memo(() => {
         });
     }, []);
 
+    const displayDetail = useCallback((article)=>{
+        setCurrentArticle(article);
+        setPage(PAGE_DETAIL);
+    }, []);
+
     const updateThumbup = useCallback((count)=>{
         setCurrentArticle({ ...currentArticle, thumbups:count});
     }, [currentArticle]);
@@ -60,6 +66,7 @@ const Home = memo(() => {
     const pageDisplay = useMemo(() => {
         return (<div className="home">
             {user && <button onClick={() => { setPage(PAGE_ADD) }} className="article-action">New Article</button>}
+            <ArticleList displayDetail={displayDetail}></ArticleList>
         </div>);
     }, [user]);
     const pageDetail = useMemo(() => {

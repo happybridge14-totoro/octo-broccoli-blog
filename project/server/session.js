@@ -20,7 +20,7 @@ const session = {
         }
     },
     delete: (req, res) => {
-        res.clearCookie();
+        res.clearCookie(COOKIE_KEY);
         res.json(RESPONSE_SUCCESS);
     },
 };
