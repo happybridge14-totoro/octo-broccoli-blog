@@ -43,7 +43,7 @@ const createUser = (username) => {
                 to: [],
             }]
         },
-        thumbsups: [],
+        // thumbsups: [],
     };
     users[uid] = user;
     usersByName[username] = user;
@@ -66,23 +66,27 @@ const getUserById = (userid) => {
     return user;
 };
 
-const thumbsup = (userid, articleid) => {
+const userThumbsup = (userid, articleid) => {
     const user = users[userid];
     if (user) {
         const idIndex = user.thumbsups.indexOf(articleid);
         if (idIndex === -1) {
             user.thumbsups.push(articleid);
+            return true;
         }
     }
+    return false;
 };
-const cancelThumbsup = (userid, articleid) => {
+const userCancelThumbsup = (userid, articleid) => {
     const user = users[userid];
     if (user) {
         const idIndex = user.thumbsups.indexOf(articleid);
         if (idIndex > -1) {
             user.thumbsups.splice(idIndex, 1);
+            return true;
         }
     }
+    return false;
 };
 
 const updateProperty = (property) => {
@@ -121,4 +125,11 @@ const updateProperty = (property) => {
             break;
     }
 };
-module.exports = {getUserById, getOrCreateUserByName, thumbsup, cancelThumbsup, EDITABLE_PROPERTY, updateProperty};
+module.exports = {
+    getUserById,
+    getOrCreateUserByName,
+    userThumbsup,
+    userCancelThumbsup,
+    EDITABLE_PROPERTY,
+    updateProperty
+};

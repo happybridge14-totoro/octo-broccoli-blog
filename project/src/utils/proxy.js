@@ -7,10 +7,11 @@ const METHOD = {
     POST: "post",
 };
 Object.values(METHOD).forEach((method) => {
-    const param = {
+    const PARAM = {
         method
     };
     api[method.toLowerCase()] = (url, content) => {
+        const param = {...PARAM};
         if (content) {
             if (method !== METHOD.GET) {
                 param.headers = { 'Content-Type': 'application/json' };

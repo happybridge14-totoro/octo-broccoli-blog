@@ -1,11 +1,12 @@
 const {STATUS_CODES, ERROR_CODES, RESPONSE_SUCCESS} = require("./utils/codes");
 const { createArticle, 
-    thumbup, 
-    cancelThumbup, 
+    articleThumbsup,
+    articleCancelThumbsup,
     updateArticle, 
     deleteArticle, 
     getArticles,
     getArticleById } = require("./data/article");
+// const { userThumbsup, userCancelThumbsup } = require("./data/user");
 const one = {
     get: (req, res) => {
         const id = req.params.id;
@@ -44,10 +45,10 @@ const one = {
     delete: (req, res) => {
         if (articleId) {
             deleteArticle(articleId);
-            req.json(RESPONSE_SUCCESS);
+            res.json(RESPONSE_SUCCESS);
         } else {
-            req.status(STATUS_CODES.BAD_RQUEST);
-            req.json(ERROR_CODES.WRONG_ARTICLE);
+            res.status(STATUS_CODES.BAD_RQUEST);
+            res.json(ERROR_CODES.WRONG_ARTICLE);
         };
     }
 };
@@ -70,24 +71,30 @@ const all = {
 all.get.ignoreAuth = true;
 const thumbsup = {
     post: (req, res) => {
-        const articleId = req.params.id;
-        const article = thumbup(articleId);
-        if (article) {
-            req.json(RESPONSE_SUCCESS);
-        } else {
-            req.status(STATUS_CODES.BAD_RQUEST);
-            req.json(ERROR_CODES.WRONG_ARTICLE);
-        }
+        // const userid = req.userid;
+        // if (userThumbsup(userid, articleId)) {
+            const articleId = req.params.id;
+            const article = articleThumbsup(articleId);
+            if (article) {
+                res.json({...RESPONSE_SUCCESS, count:article.thumbups});
+                return;
+            } 
+        // }
+        res.status(STATUS_CODES.BAD_RQUEST);
+        res.json(ERROR_CODES.WRONG_ARTICLE);
     },
     delete: (req, res) => {
-        const articleId = req.params.id;
-        const article = cancelThumbup(articleId);
-        if (article) {
-            req.json(RESPONSE_SUCCESS);
-        } else {
-            req.status(STATUS_CODES.BAD_RQUEST);
-            req.json(ERROR_CODES.WRONG_ARTICLE);
-        }
+        // const userid = req.userid;
+        // if (userCancelThumbsup(userid, articleId)) {
+            const articleId = req.params.id;
+            const article = articleCancelThumbsup(articleId);
+            if (article) {
+                res.json({...RESPONSE_SUCCESS, count:article.thumbups});
+                return;
+            }
+        // }
+        res.status(STATUS_CODES.BAD_RQUEST);
+        res.json(ERROR_CODES.WRONG_ARTICLE);
     },
 };
 module.exports = {one, all, thumbsup};

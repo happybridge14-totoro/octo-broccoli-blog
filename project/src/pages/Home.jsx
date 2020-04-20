@@ -22,7 +22,7 @@ const Home = memo(() => {
 
     const modifyArticle = useCallback((title, content, tags, id)=>{
         const param = { title, content, tags };
-        let promise = id ? api.put(getArticleUrl(id), param) : api.post(getArticleUrl(), param);
+        const promise = id ? api.put(getArticleUrl(id), param) : api.post(getArticleUrl(), param);
         promise.then(({article})=>{
             setCurrentArticle(article);
             setPage(PAGE_DETAIL);
@@ -38,6 +38,10 @@ const Home = memo(() => {
         });
     }, []);
 
+    const updateThumbup = useCallback((count)=>{
+        setCurrentArticle({ ...currentArticle, thumbups:count});
+    }, [currentArticle]);
+
     const pageAdd = useMemo(() => {
         return (<div className="home">
             <button onClick={()=>{setPage(PAGE_DISPLAY)}} className="article-action">Home</button>
@@ -48,7 +52,7 @@ const Home = memo(() => {
         if (currentArticle) {
             return (<div className="home">
                 <button onClick={() => { setPage(PAGE_DISPLAY) }} className="article-action">Home</button>
-                <button onClick={() => { setPage(PAGE_DETAIL) }} className="article-action">Back</button>
+                <button onClick={() => { setPage(PAGE_DETAIL) }} className="article-action">Cancel</button>
                 <ArticleEdit action={modifyArticle} article={{ articleId: currentArticle.id, articleTitle: currentArticle.title, articleContent: currentArticle.content, articleTags: currentArticle.tags}}></ArticleEdit>
             </div>);
         }
@@ -63,9 +67,9 @@ const Home = memo(() => {
             <div>
                 <button onClick={() => { setPage(PAGE_DISPLAY) }} className="article-action">Home</button>
                 <button onClick={() => { setPage(PAGE_EDIT) }} className="article-action">Edit</button>
-                {!currentArticle ? <div>loading</div> : <ArticleDetail article={currentArticle}></ArticleDetail>}
+                {!currentArticle ? <div>loading</div> : <ArticleDetail article={currentArticle} updateThumbup={updateThumbup}></ArticleDetail>}
             </div>);
-    }, [currentArticle]);
+    }, [currentArticle, updateThumbup]);
     const pageContent = useMemo(()=>{
         let pageRender;
         switch (page) {

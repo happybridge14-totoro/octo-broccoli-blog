@@ -5,7 +5,7 @@
   --background-color: #1a1d21;
   --hover-background-color: #262b31;
   --text-color: #d1d2d3;
-  --minor-text-color: #adabab;
+  --minor-text-color: #858585;
   --highlight-text-color: white;
   --clickable-text-color: #1cb3ff;
   --clickable-text-hover-color: #eb872b;
@@ -23,7 +23,7 @@
   --background-color: white;
   --hover-background-color: rgb(248, 248, 248);
   --text-color: rgb(29, 28, 29);
-  --minor-text-color: rgb(97, 96, 97);
+  --minor-text-color: rgb(102, 102, 102);
   --highlight-text-color: #black;
   --clickable-text-color: #201cff;
   --clickable-text-hover-color: #8a00a5;
@@ -207,12 +207,50 @@ main {
   margin-right: 1em;
 }
 
-.article-detail {
-
+.article-detail .title {
+  text-align: center;
+  margin: 0px;
+  padding: 0px
+}
+.article-detail .meta {
+  font-size: smaller;
+  text-align: center;
+  color: var(--minor-text-color);
+}
+.article-detail .sperator {
+  margin: 0px 1em;
 }
 
 .article-detail .tags {
-
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 0.5em;
+}
+.article-detail .tags > *{
+  word-break: break-all;
+  margin-right: 1em;
+  margin-bottom: 0.5em;
+}
+.article-detail .tags .tag {
+  font-size: small;
+  line-height: 2em;
+  border: 1px solid var(--input-border-color);
+  border-radius: 5px;
+  padding: 0px 0.5em;
+}
+.article-detail .tags img {
+  height: 1.5em;
+}
+.article-detail .thumbup {
+  display: flex;
+  align-items: center;
+}
+.article-detail .thumbup img {
+  height: 2em;
+}
+.article-detail .thumbup img:hover {
+  cursor: pointer;
 }
 
 footer {

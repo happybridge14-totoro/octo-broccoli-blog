@@ -51,18 +51,19 @@ const getArticles = () => {
     return articles;
 };
 
-const thumbsup = (articleId) => {
+const articleThumbsup = (articleId) => {
     const article = articles[articleId];
     if (article) {
         ++article.thumbups;
     }
     return article;
 };
-const cancelThumbsup = (articleId) => {
+const articleCancelThumbsup = (articleId) => {
     const article = articles[articleId];
     if (article && thumbups > 0) {
         --article.thumbups;
     }
+    return article;
 };
 
 const updateArticle = (articleId, title, content, articleTags) => {
@@ -84,8 +85,8 @@ const deleteArticle = (articleId) => {
 
 module.exports = {
     createArticle,
-    thumbsup,
-    cancelThumbsup,
+    articleThumbsup,
+    articleCancelThumbsup,
     updateArticle,
     deleteArticle,
     getArticles,
