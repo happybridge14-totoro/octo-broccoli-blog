@@ -22,7 +22,7 @@ const ArticleList = memo(({ displayDetail}) => {
         if (articles) {
             const timeBasedArticles = Object.values(articles);
             if (timeBasedArticles.length === 0) {
-                return <div>No articles yet. Logged in user can post new blog.</div>
+                return <div>No articles yet. Logged-in user can post new blog.</div>
             }
             timeBasedArticles.sort((a, b) => {
                 return a.createTime - b.createTime;

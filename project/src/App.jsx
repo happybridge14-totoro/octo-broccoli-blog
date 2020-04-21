@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useCallback, useMemo} from 'react';
 
-import ThemeContext, {LIGHT_THEME, DEFAULT_THEME, DARK_THEME} from "./context/theme-context";
+import ThemeContext, {DEFAULT_THEME} from "./context/theme-context";
 import UserContext from "./context/user-context";
 
 import ErrorMessage from "./components/Error-message";
@@ -23,20 +23,22 @@ const LOGIN_PAGE = "login";
 const PROFILE_PAGE = "profile";
 
 function App() {
-  const [theme, setTheme] = useState(DEFAULT_THEME);
   const [user, setUser] = useState(null);
   const [page, setPage] = useState(HOME_PAGE);
+  const [theme, setTheme] = useState(DEFAULT_THEME);
   const refreshUser = useCallback(() => {
     api.get(getSessionUrl()).then(({ userid }) => {
       return api.get(getUserUrl(userid));
     }).then(({ user }) => {
       dispatch(EVENTS.HIDE_ERROR);
       setUser(user);
+      setTheme(user.theme || DEFAULT_THEME);
     }).catch((response) => {
       if (response.status === STATUS_CODES.NETWORK_ERROR) {
         dispatch(EVENTS.DISPLAY_ERROR, ERROR_TYPE.NETWORK_ERROR);
       } else {
         setUser(null);
+        setTheme(DEFAULT_THEME);
       }
     });
   }, []);
@@ -47,33 +49,27 @@ function App() {
 
   const signOut = useCallback(() => {
     api.delete(getSessionUrl()).finally(()=>{
-      setUser(null);
       setPage(HOME_PAGE);
+      setUser(null);
+      setTheme(DEFAULT_THEME);
     });
   }, []);
 
   useEffect(() => {
     refresh();
+    const updateUser = (user) => {
+      setUser(user);
+      setTheme(user.theme || DEFAULT_THEME);
+    };
     addEventListener(EVENTS.REFRESH, refresh);
     addEventListener(EVENTS.CHECK_USER, refreshUser);
+    addEventListener(EVENTS.UPDATE_USER, updateUser);
     return () => {
       removeEventListener(EVENTS.REFRESH, refresh);
       removeEventListener(EVENTS.CHECK_USER, refreshUser);
+      removeEventListener(EVENTS.UPDATE_USER, updateUser);
     };
   }, [refresh, refreshUser]);
-
-  useEffect(() => {
-    const changeTheme = (theme) => {
-      if (theme !== LIGHT_THEME && theme !== DARK_THEME) {
-        theme = DEFAULT_THEME;
-      }
-      setTheme(theme);
-    };
-    addEventListener(EVENTS.SET_THEME, changeTheme);
-    return () => {
-      removeEventListener(EVENTS.SET_THEME, changeTheme);
-    };
-  }, [setTheme]);
 
   const navigation = useMemo(() => {
     if (user) {

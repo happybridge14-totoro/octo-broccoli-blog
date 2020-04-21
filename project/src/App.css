@@ -323,6 +323,62 @@ main {
     text-overflow: ellipsis;
     max-width: 8em;
 }
+.profile .basic,
+.profile .contact {
+  display: grid;
+  grid-template-columns: 10em 1fr;
+  align-items: center;
+  row-gap: 1em;
+  padding-bottom: 2em;
+  border-bottom: 2px dotted var(--line-color);
+  margin-bottom: 2em;
+}
+.profile .title {
+   grid-column: 1 / 3;
+   margin: 0;
+}
+.profile .theme {
+  padding: 0px 0.5em;
+}
+.profile .basic .label {
+  height: 3em;
+}
+.profile .contact .label {
+  height: 2em;
+}
+
+.profile .theme label {
+  margin-right: 2em;
+}
+.profile .theme label input{
+  margin-left: 1em;
+}
+
+.editable-input .read,
+.editable-input .edit {
+  display: flex;
+  align-items: center;
+  height: 2em;
+}
+.editable-input .read {
+  padding: 0px 0.5em;
+  border-radius: 5px;
+}
+.editable-input .edit > input{
+  margin-right: 1em;
+}
+.editable-input .read .edit-icon {
+  height: 1.5em;
+  margin-left: 4em;
+  visibility: hidden;
+}
+.editable-input .read:hover .edit-icon {
+  visibility: visible;
+}
+.editable-input .read:hover {
+  cursor: pointer;
+  background-color: var(--hover-background-color);
+}
 
 footer {
   flex: 0 0 auto;

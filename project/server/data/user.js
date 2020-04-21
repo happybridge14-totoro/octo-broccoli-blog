@@ -6,7 +6,7 @@ const usersByName = {};
 const EDITABLE_PROPERTY = {
     DISPLAYNAME: "displayName",
     THEME: "theme",
-    CONTRACTINFO: "contractInfo",
+    CONTACTINFO: "contactInfo",
     SKILLS: "skills",
     EDUCATION: "education",
     EXPERIENCE: "experience",
@@ -19,12 +19,12 @@ const createUser = (username) => {
         displayName: username,
         theme: "",
         profile: {
-            contractInfo: {
+            contactInfo: {
                 area: "",
                 github: "",
                 linkedin: "",
                 email: "",
-                desciption: ""
+                description: ""
             },
             skills: [{
                 field: "",
@@ -98,17 +98,19 @@ const updateProperty = (property) => {
                 if (user) {
                     user[property] = newContent;
                 }
+                return user;
             };
-        case EDITABLE_PROPERTY.CONTRACTINFO:
+        case EDITABLE_PROPERTY.CONTACTINFO:
             return (userid, newContent) => {
                 const user = users[userid];
                 if (user && user.profile) {
                     const oldProfile = user.profile;
-                    user.profile.contractInfo = {
+                    user.profile.contactInfo = {
                         ...oldProfile,
                         ...newContent
                     };
                 }
+                return user;
             };
         case EDITABLE_PROPERTY.EDUCATION:
         case EDITABLE_PROPERTY.EXPERIENCE:
@@ -119,6 +121,7 @@ const updateProperty = (property) => {
                 if (user && user.profile) {
                     user.profile[property] = newContent;
                 }
+                return user;
             };
         default:
             console.error("Wrong property!", property);

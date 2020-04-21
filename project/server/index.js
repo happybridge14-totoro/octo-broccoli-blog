@@ -12,7 +12,13 @@ app.use(cookieParser);
 app.use(express.static('./build'));
 
 router(app, "/session", session);
-router(app, "/user/:id", user);
+router(app, "/user/:id", user.one);
+router(app, "/user/:id/theme", user.theme);
+router(app, "/user/:id/displayName", user.displayName);
+router(app, "/user/:id/contactInfo", user.contactInfo);
+router(app, "/user/:id/education", user.education);
+router(app, "/user/:id/experience", user.experience);
+router(app, "/user/:id/skills", user.skills);
 router(app, "/article", article.all);
 router(app, "/article/:id", article.one);
 router(app, "/article/:id/thumbsup", article.thumbsup);
