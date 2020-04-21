@@ -79,7 +79,7 @@ const Home = memo(() => {
             {user && <button onClick={() => { setPage(PAGE_ADD) }} className="article-action">New Article</button>}
             <ArticleList displayDetail={displayDetail}></ArticleList>
         </div>);
-    }, [user]);
+    }, [user, displayDetail]);
     const pageDetail = useMemo(() => {
         return (
             <div>

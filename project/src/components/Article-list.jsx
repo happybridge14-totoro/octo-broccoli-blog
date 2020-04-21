@@ -57,7 +57,7 @@ const ArticleList = memo(({ displayDetail}) => {
         } else {
             return <div>loading...</div>
         }
-    }, [articles]);
+    }, [articles, displayDetail]);
     return (<div className="article-brief">
         {articleLists}
     </div>);
