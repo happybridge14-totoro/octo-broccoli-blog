@@ -15,7 +15,7 @@ const EditableInput = memo(({ update, originValue="", readonly=false}) => {
         if (!readonly) { 
             setIsEditMode(true);
         }
-    }, []);
+    }, [readonly]);
     useEffect(()=>{
         if (isEditMode && inputEl && inputEl.current) {
             inputEl.current.focus();

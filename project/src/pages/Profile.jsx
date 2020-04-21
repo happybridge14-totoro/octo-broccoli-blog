@@ -34,7 +34,7 @@ const Profile = memo(() => {
         return (newValue)=>{
             updateProperty(USER_PROPERTY.CONTACTINFO)({[property]: newValue});
         };
-    });
+    }, [updateProperty]);
     return (<div className="profile">
         <section className="basic">
             <h3 className="title">Basic Information</h3>
