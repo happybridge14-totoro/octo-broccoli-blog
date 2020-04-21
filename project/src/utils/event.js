@@ -1,5 +1,6 @@
 const EVENTS = {
     REFRESH: "refresh",
+    CHECK_USER: "checkUser",
     DISPLAY_ERROR: "displayError",
     HIDE_ERROR: "hideError",
     SET_THEME: "setTheme"

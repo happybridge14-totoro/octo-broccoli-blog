@@ -11,7 +11,6 @@ const ArticleList = memo(({ displayDetail}) => {
     const [articles, setArticles] = useState(null);
     useEffect(()=>{
         api.get(getArticleUrl()).then(({ articles})=>{
-            console.log(articles)
             setArticles(articles);
         }).catch(response=>{
             if (response.status === STATUS_CODES.NETWORK_ERROR) {
@@ -20,9 +19,11 @@ const ArticleList = memo(({ displayDetail}) => {
         });
     }, []);
     const articleLists = useMemo(() => {
-        console.log(articles)
         if (articles) {
             const timeBasedArticles = Object.values(articles);
+            if (timeBasedArticles.length === 0) {
+                return <div>No articles yet. Logged in user can post new blog.</div>
+            }
             timeBasedArticles.sort((a, b) => {
                 return a.createTime - b.createTime;
             });

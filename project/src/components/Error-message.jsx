@@ -2,6 +2,7 @@ import React, {useState, memo, useEffect} from "react";
 
 import {EVENTS, addEventListener, removeEventListener} from "../utils/event";
 import {ERROR_TYPE} from "../utils/error-status";
+import { TEN_SECOND} from "../utils/time";
 
 const getErrorMessage = (type) => {
     let message = "";
@@ -16,7 +17,7 @@ const getErrorMessage = (type) => {
             message = "Wrong article id!";
             break;
         case ERROR_TYPE.SESSION_ERROR:
-            message = "Invalid user! Please login again!";
+            message = "Please login first!";
             break;
         case ERROR_TYPE.ARTICLE_PARAM_ERROR:
             message = "Param error!";
@@ -32,10 +33,17 @@ const getErrorMessage = (type) => {
 const ErrorMessage = memo(() => {
     const [errorText, setErrorText] = useState("");
     useEffect(() => {
+        let timeoutHandler = -1;
         const displayError = (errorType) => {
+            clearTimeout(timeoutHandler);
             setErrorText(getErrorMessage(errorType));
+            timeoutHandler = setTimeout(() => {
+                hideError();
+            }, TEN_SECOND);
         };
         const hideError = () => {
+            clearTimeout(timeoutHandler);
+            timeoutHandler = -1;
             setErrorText("");
         };
         addEventListener(EVENTS.DISPLAY_ERROR, displayError);

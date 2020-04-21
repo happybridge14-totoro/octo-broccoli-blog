@@ -14,7 +14,7 @@ const ArticleDetail = memo(({ article, updateThumbup}) => {
         }).catch(response=>{
             if (response.status === STATUS_CODES.UNAUTHORIZED || response.status === STATUS_CODES.FORBIDDEN) {
                 dispatch(EVENTS.DISPLAY_ERROR, ERROR_TYPE.SESSION_ERROR);
-                dispatch(EVENTS.REFRESH);
+                dispatch(EVENTS.CHECK_USER);
             } else if (response.status === STATUS_CODES.NETWORK_ERROR) {
                 dispatch(EVENTS.DISPLAY_ERROR, ERROR_TYPE.NETWORK_ERROR);
             }

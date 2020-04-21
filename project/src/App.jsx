@@ -55,10 +55,12 @@ function App() {
   useEffect(() => {
     refresh();
     addEventListener(EVENTS.REFRESH, refresh);
+    addEventListener(EVENTS.CHECK_USER, refreshUser);
     return () => {
       removeEventListener(EVENTS.REFRESH, refresh);
+      removeEventListener(EVENTS.CHECK_USER, refreshUser);
     };
-  }, [refresh]);
+  }, [refresh, refreshUser]);
 
   useEffect(() => {
     const changeTheme = (theme) => {
