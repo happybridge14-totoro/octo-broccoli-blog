@@ -13,7 +13,7 @@ const user = {
                     return;
                 }
             } 
-            res.clearCookie(COOKIE_KEY);
+            res.clearCookie(COOKIE_KEY, { sameSite: "strict" });
             res.status(STATUS_CODES.FORBIDDEN);
             res.json(ERROR_CODES.WRONG_USER_ID);
         },
@@ -33,7 +33,7 @@ const attributeUpdate = (attribute) => {
                 return;
             }
         }
-        res.clearCookie(COOKIE_KEY);
+        res.clearCookie(COOKIE_KEY, { sameSite: "strict" });
         res.status(STATUS_CODES.FORBIDDEN);
         res.json(ERROR_CODES.WRONG_USER_ID);
     };

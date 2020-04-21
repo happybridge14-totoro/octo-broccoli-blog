@@ -10,12 +10,12 @@ const auth = (req, res, next) => {
             req.userid = userid;
             next();
         } else {
-            res.clearCookie(COOKIE_KEY);
+            res.clearCookie(COOKIE_KEY, { sameSite: "strict" });
             res.status(STATUS_CODES.FORBIDDEN);
             res.json(ERROR_CODES.WRONG_USER_ID);
         }
     } else {
-        res.clearCookie(COOKIE_KEY);
+        res.clearCookie(COOKIE_KEY, { sameSite: "strict" });
         res.status(STATUS_CODES.UNAUTHORIZED);
         res.json(ERROR_CODES.TOKEN_NOT_FOUND);
     }

@@ -106,7 +106,7 @@ const updateProperty = (property) => {
                 if (user && user.profile) {
                     const oldProfile = user.profile;
                     user.profile.contactInfo = {
-                        ...oldProfile,
+                        ...oldProfile.contactInfo,
                         ...newContent
                     };
                 }

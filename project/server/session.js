@@ -15,12 +15,15 @@ const session = {
         } else {
             const user = getOrCreateUserByName(username);
             const jwt = encrypt(user.id, Date.now() + ONE_HOUR);
-            res.cookie(COOKIE_KEY, jwt, {maxAge: ONE_HOUR}); 
+            res.cookie(COOKIE_KEY, jwt, {
+                maxAge: ONE_HOUR,
+                sameSite: "strict"
+            });
             res.json({...RESPONSE_SUCCESS, user});
         }
     },
     delete: (req, res) => {
-        res.clearCookie(COOKIE_KEY);
+        res.clearCookie(COOKIE_KEY, { sameSite: "strict" });
         res.json(RESPONSE_SUCCESS);
     },
 };

@@ -15,7 +15,7 @@ const USER_CONTACT_PROPERTY = {
     EMAIL: "email",
     GITHUB: "github",
     LINKEDIN: "linkedin",
-    AREA: "github",
+    AREA: "area",
     DESCRIPTION: "description",
 };
 const getSessionUrl = () => {

@@ -364,8 +364,13 @@ main {
   padding: 0px 0.5em;
   border-radius: 5px;
 }
-.editable-input .edit > input{
-  margin-right: 1em;
+.editable-input .read > span{
+  max-width: 800px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.editable-input .edit > button{
+  margin-left: 1em;
 }
 .editable-input .read .edit-icon {
   height: 1.5em;
